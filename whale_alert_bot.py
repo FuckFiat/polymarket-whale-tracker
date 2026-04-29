@@ -1,37 +1,30 @@
 #!/usr/bin/env python3
 """
 🐋 NANO Polymarket Whale Alert Bot
-Telegram bot with inline buttons for whale tracking alerts.
+Sends Telegram alerts with inline buttons when tracked whales trade.
 """
+import asyncio, aiohttp, json, time, os, sys
+from datetime import datetime, timezone
 
-import asyncio
-import aiohttp
-import json
-import time
-import os
-import sys
-from datetime import datetime
-
-# === CONFIG ===
-BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "8375563056:AAHqFtfsxK1zMfKrEBgMTa9d0QcIXVTlYGI")
-CHAT_ID = int(os.environ.get("TELEGRAM_CHAT_ID", "730668"))
+BOT_TOKEN = "8375563056:AAHqFtfsxK1zMfKrEBgMTa9d0QcIXVTlYGI"
+CHAT_ID = 730668
 DATA_API = "https://data-api.polymarket.com"
 GAMMA_API = "https://gamma-api.polymarket.com"
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results", "whale_state.json")
 
-WHALE_ADDRESSES = {
-    "0x2a2c": {"name": "🐋 Кит #1 — Геополитик-контрариан", "volume": "$26.3M", "strategy": "NO на геополитику, контрариан"},
-    "0xdc87": {"name": "🐋 Кит #2 — Mega Whale", "volume": "$20.2M", "strategy": "Крупные ставки на крипто"},
-    "0xe90b": {"name": "🐈 Кит #3 — Крипто-оракул", "volume": "$12.1M", "strategy": "15min крипто-направление"},
-    "0x0197": {"name": "🐋 Кит #4 — majorexploiter", "volume": "$6.9M", "strategy": "Арбитраж"},
-    "0x0222": {"name": "🐋 Кит #5 — HorizonSplendidView", "volume": "$6.5M", "strategy": "Макро-ставки"},
-    "0x07b8": {"name": "🐋 Кит #6 — joosangyoo", "volume": "$5.5M", "strategy": "Спорт"},
-    "0xb904": {"name": "🐋 Кит #7 — MinorKey4", "volume": "$5.1M", "strategy": "Длинные позиции"},
-    "0xc2e7": {"name": "🐠 Кит #8 — beachboy4", "volume": "$3.5M", "strategy": "Микро-капы"},
-    "0xb45a": {"name": "🐠 Кит #9 — bcda", "volume": "$3.2M", "strategy": "Стабильные рынки"},
-    "0x916f": {"name": "🐠 Кит #10 — WoofMaster", "volume": "$1.5M", "strategy": "Хай-ризк ставки"},
+# Full whale addresses from PolyMonit April 2026 leaderboard
+WHALES = {
+    "0x2a2c53bd278c04da9962fcf96490e17f3dfb9bc1": {"name": "🐋 Кит #1 — kcnyekchno", "vol": "$55.6M", "strat": "NO на геополитику, крупнейший объём", "tier": "whale"},
+    "0xdc876e6873772d38716fda7f2452a78d426d7ab6": {"name": "🐋 Кит #2 — 432614799197", "vol": "$20.2M", "strat": "Кросс-категорийный флоу", "tier": "whale"},
+    "0x02227b8f5a9636e895607edd3185ed6ee5598ff7": {"name": "🐋 Кит #3 — HorizonSplendidView", "vol": "$6.5M", "strat": "Спорт + макро, +$4M profit April", "tier": "whale"},
+    "0x019782cab5d844f02bafb71f512758be78579f3c": {"name": "🐋 Кит #4 — majorexploiter", "vol": "$6.9M", "strat": "Геополитика, политика", "tier": "whale"},
+    "0x492442eab586f242b53bda933fd5de859c8a3782": {"name": "🏆 Кит #5 — April #1 (+$6.3M)", "vol": "$24.5M", "strat": "Спорт, ивент-рынки", "tier": "whale"},
+    "0xefbc5fec8d7b0acdc8911bdd9a98d6964308f9a2": {"name": "🐋 Кит #6 — reachingthesky", "vol": "$3.7M", "strat": "Спорт, глобальные события", "tier": "whale"},
+    "0xc2e7800b5af46e6093872b177b7a5e7f0563be51": {"name": "🐋 Кит #7 — beachboy4", "vol": "$12.4M", "strat": "Спорт, футбол, +$3.5M profit", "tier": "whale"},
+    "0xde17f7144fbd0eddb2679132c10ff5e74b120988": {"name": "🐈 Кит #8 — Crypto Leader", "vol": "$727K", "strat": "Крипто, DeFi, +$727K profit", "tier": "dolphin"},
+    "0x2005d16a84ceefa912d4e380cd32e7ff827875ea": {"name": "🐋 Кит #9 — RN1", "vol": "$50.9M", "strat": "Хай-волюм ротация", "tier": "whale"},
+    "0xbddf61af533ff524d27154e589d2d7a81510c684": {"name": "🐋 Кит #10 — Countryside", "vol": "$14.9M", "strat": "Спорт, турниры, +$1.8M profit", "tier": "whale"},
 }
-
 
 def load_state():
     if os.path.exists(STATE_FILE):
@@ -39,272 +32,145 @@ def load_state():
             return json.load(f)
     return {"last_trades": {}, "last_check": 0, "alerts_sent": 0}
 
-
 def save_state(state):
     os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=2)
 
-
 def match_whale(address):
-    addr_lower = address.lower()
-    for prefix, info in WHALE_ADDRESSES.items():
-        if addr_lower.startswith(prefix.lower()):
+    if not address:
+        return None
+    addr = address.lower()
+    for full_addr, info in WHALES.items():
+        if addr == full_addr.lower() or addr.startswith(full_addr[:10].lower()):
             return info
     return None
 
-
-async def send_telegram(text, inline_keyboard=None):
-    """Send message via Telegram Bot API with optional inline buttons."""
+async def send_telegram(text, buttons=None):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    payload = {
-        "chat_id": CHAT_ID,
-        "parse_mode": "Markdown",
-        "text": text,
-        "disable_web_page_preview": True,
-    }
-    if inline_keyboard:
-        payload["reply_markup"] = {"inline_keyboard": inline_keyboard}
+    payload = {"chat_id": CHAT_ID, "parse_mode": "Markdown", "text": text, "disable_web_page_preview": True}
+    if buttons:
+        payload["reply_markup"] = {"inline_keyboard": buttons}
+    try:
+        async with aiohttp.ClientSession() as s:
+            async with s.post(url, json=payload) as r:
+                return (await r.json()).get("ok", False)
+    except Exception as e:
+        print(f"TG error: {e}")
+        return False
 
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=payload) as resp:
-            result = await resp.json()
-            if not result.get("ok"):
-                print(f"Telegram error: {result}")
-            return result.get("ok", False)
-
-
-def build_whale_alert(whale_info, trade):
-    """Build rich whale alert with analysis."""
+async def send_whale_alert(whale, trade):
     side = trade.get("side", "?")
     size = float(trade.get("size", 0) or 0)
     price = float(trade.get("price", 0) or 0)
     vol = size * price
-    title = trade.get("title", "Unknown market")[:60]
+    title = (trade.get("title") or trade.get("market", "?"))[:60]
     outcome = trade.get("outcome", "?")
-    slug = trade.get("slug", "")
-    pseudo = trade.get("pseudonym", "anon")
-    ts = trade.get("timestamp", "")
+    slug = trade.get("slug") or trade.get("market_slug", "")
+    pseudo = trade.get("pseudonym") or trade.get("taker", whale.get("name", "").split("—")[-1].strip())
 
-    side_emoji = "🟢" if side == "BUY" else "🔴"
-    side_text = "КУПИЛ" if side == "BUY" else "ПРОДАЛ"
-
-    # Risk assessment
-    if vol > 50000:
-        risk = "🔴 HIGH"
-        risk_desc = "Огромная ставка — рынок может отреагировать"
-    elif vol > 10000:
-        risk = "🟡 MEDIUM"
-        risk_desc = "Значительная позиция — следи за рынком"
-    else:
-        risk = "🟢 LOW"
-        risk_desc = "Средний трейд — мониторинг"
-
-    # Strategy match analysis
-    strategy = whale_info.get("strategy", "Неизвестно")
-    is_typical = "✅ Типичная стратегия" if any(kw in strategy.lower() for kw in ["контрариан", "крипто", "геополи"]) else "🤔 Необычная позиция для кита"
+    emoji = "🟢" if side == "BUY" else "🔴"
+    act = "КУПИЛ" if side == "BUY" else "ПРОДАЛ"
+    risk = "🔴 HIGH" if vol > 50000 else "🟡 MED" if vol > 10000 else "🟢 LOW"
 
     text = f"""🐋 *WHALE ALERT*
 ═══════════════════════════════════
 
-🐳 {whale_info['name']}
-📊 All-time volume: {whale_info['volume']}
+{whale['name']}
+📊 Volume: {whale['vol']}
+🧠 Strategy: {whale['strat']}
 
-{side_emoji} *{side_text}: {outcome}*
+{emoji} *{act}: {outcome}*
 💰 *${vol:,.0f}* ({size:,.0f} shares @ {price:.1f}¢)
 📈 *Market:* {title}
-🎯 *Outcome:* {outcome} @ {price:.1f}¢
-👤 Pseudonym: `{pseudo}`
-⏰ {ts}
+👤 {pseudo}
+⏰ {datetime.now(timezone.utc).strftime('%H:%M UTC')}
 
-📊 *АНАЛИЗ:*
-├─ {is_typical} — {strategy}
-├─ 💰 ${vol:,.0f} — {"крупная" if vol > 10000 else "средняя"} позиция
-├─ {risk} — {risk_desc}
-└─ 🧠 Стратегия кита: {strategy}
+💡 *Risk:* {risk}
+{'⚠️ Крупная позиция — рынок может отреагировать' if vol > 50000 else '📈 Умеренный сигнал'}"""
 
-💡 *Что делать:*
-├─ {"Сильный сигнал — кит уверен" if vol > 50000 else "Умеренный сигнал — следи"}
-└─ {risk} Риск"""
-
-    buttons = [
-        [{"text": "📈 View Market", "url": f"https://polymarket.com/event/{slug}"}],
-        [
-            {"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"},
-            {"text": "📊 Whale Profile", "url": "https://polymonit.com/leaderboard/polymarket-whales"}
-        ],
+    btns = [
+        [{"text": "📈 Open Market", "url": f"https://polymarket.com/event/{slug}"}],
+        [{"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}, {"text": "📊 PolyMonit", "url": "https://polymonit.com/leaderboard/polymarket-whales"}],
         [{"text": "🔍 PolyIntel", "url": "https://polyintel.io/"}]
     ]
+    await send_telegram(text, btns)
 
-    return text, buttons
-
-
-def build_cluster_alert(trades, market_title, slug):
-    """Build cluster signal alert when 3+ whales in same market."""
-    whales = {}
-    total_vol = 0
-    for t in trades:
-        addr = t.get("proxyWallet", "")
-        w = match_whale(addr)
-        if w:
-            wid = w["name"]
-            if wid not in whales:
-                whales[wid] = {"trades": [], "volume": 0, "strategy": w["strategy"]}
-            vol = float(t.get("size", 0) or 0) * float(t.get("price", 0) or 0)
-            whales[wid]["trades"].append(t)
-            whales[wid]["volume"] += vol
-            total_vol += vol
-
-    # Determine consensus
-    yes_count = sum(1 for t in trades if t.get("outcome") == "YES")
-    no_count = len(trades) - yes_count
-    consensus = "YES" if yes_count > no_count else "NO"
-    consensus_pct = max(yes_count, no_count) / len(trades) * 100
-
-    text = f"""🔥 *CLUSTER SIGNAL*
-═══════════════════════════════════
-
-{len(whales)} 🐋 *КИТОВ в одном рынке за 2ч!*
-
-📈 *Market:* {market_title[:60]}
-💰 Combined volume: *${total_vol:,.0f}*
-
-📊 *Consensus:* {consensus_pct:.0f}% на {consensus}
-├─ 🟢 YES: {yes_count} китов
-└─ 🔴 NO: {no_count} китов
-
-⚠️ *Это сильный Consensus-сигнал!*
-Несколько китов независимо делают одну ставку —
-вероятность прибыли выше средней.
-
-💡 Следи за рынком — входи после стабилизации цены."""
-
-    buttons = [
-        [{"text": "📈 View Market", "url": f"https://polymarket.com/event/{slug}"}],
-        [
-            {"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"},
-            {"text": "🔥 Cluster View", "url": "https://polyintel.io/"}
-        ]
-    ]
-
-    return text, buttons
-
-
-async def check_whales(session):
-    """Check for whale trades and send alerts."""
+async def check_and_alert(session):
     state = load_state()
-    alerts_sent = 0
+    alerts = 0
 
-    # Fetch top markets
-    try:
-        async with session.get(f"{GAMMA_API}/markets?limit=30&order=volume24hr&ascending=false&closed=false") as resp:
-            markets = await resp.json()
-    except Exception as e:
-        print(f"Error fetching markets: {e}")
-        return 0
-
-    # Fetch global trades
+    # Fetch recent trades
     all_trades = []
     try:
-        async with session.get(f"{DATA_API}/trades?limit=500&order=desc") as resp:
-            all_trades = await resp.json()
+        async with session.get(f"{DATA_API}/trades?limit=500&order=desc") as r:
+            all_trades = await r.json()
     except Exception as e:
-        print(f"Error fetching trades: {e}")
+        print(f"Trades fetch error: {e}")
 
-    # Fetch per-market trades for top 5
-    for m in markets[:5]:
-        slug = m.get("slug", "")
-        if slug:
-            try:
-                async with session.get(f"{DATA_API}/trades?limit=200&order=desc&slug={slug}") as resp:
-                    all_trades.extend(await resp.json())
-            except Exception:
-                pass
+    # Also check top markets
+    try:
+        async with session.get(f"{GAMMA_API}/markets?limit=20&order=volume24hr&ascending=false&closed=false") as r:
+            markets = await r.json()
+            for m in markets[:10]:
+                slug = m.get("slug", "")
+                if slug:
+                    async with session.get(f"{DATA_API}/trades?limit=100&order=desc&slug={slug}") as r2:
+                        data = await r2.json()
+                        all_trades.extend(data)
+    except Exception:
+        pass
 
     # Find whale trades
-    whale_trades_by_market = {}
     for t in all_trades:
-        addr = t.get("proxyWallet", "")
-        whale_info = match_whale(addr)
-        if not whale_info:
+        addr = t.get("proxyWallet", "") or t.get("taker", "")
+        whale = match_whale(addr)
+        if not whale:
             continue
 
-        ts_key = f"{addr}:{t.get('timestamp', '')}"
-        if ts_key in state["last_trades"]:
+        ts = t.get("timestamp", "") or t.get("created_at", "")
+        key = f"{addr}:{ts}"
+        if key in state["last_trades"]:
             continue
 
         vol = float(t.get("size", 0) or 0) * float(t.get("price", 0) or 0)
         if vol < 100:
             continue
 
-        # New whale trade!
-        text, buttons = build_whale_alert(whale_info, t)
-        await send_telegram(text, buttons)
-        state["last_trades"][ts_key] = time.time()
+        await send_whale_alert(whale, t)
+        state["last_trades"][key] = time.time()
         state["alerts_sent"] += 1
-        alerts_sent += 1
+        alerts += 1
 
-        # Track for cluster detection
-        slug = t.get("slug", "")
-        if slug not in whale_trades_by_market:
-            whale_trades_by_market[slug] = []
-        whale_trades_by_market[slug].append(t)
-
-    # Check for cluster signals
-    for slug, trades in whale_trades_by_market.items():
-        unique_whales = set(t.get("proxyWallet", "")[:6] for t in trades)
-        if len(unique_whales) >= 3:
-            title = trades[0].get("title", slug) if trades else slug
-            text, buttons = build_cluster_alert(trades, title, slug)
-            await send_telegram(text, buttons)
-            alerts_sent += 1
-
-    # Clean old entries (keep last 1000)
-    if len(state["last_trades"]) > 1000:
-        sorted_keys = sorted(state["last_trades"].keys(), key=lambda k: state["last_trades"][k])
-        for k in sorted_keys[:200]:
+    # Cleanup
+    if len(state["last_trades"]) > 2000:
+        sorted_k = sorted(state["last_trades"].keys(), key=lambda k: state["last_trades"][k])
+        for k in sorted_k[:500]:
             del state["last_trades"][k]
 
     state["last_check"] = time.time()
     save_state(state)
-    return alerts_sent
-
+    return alerts
 
 async def run_once():
-    """Single check for cron mode."""
-    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
-        count = await check_whales(session)
-        if count == 0:
-            print("NO_WHALE_ACTIVITY")
-        else:
-            print(f"SENT_{count}_ALERTS")
-
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as s:
+        n = await check_and_alert(s)
+        print(f"SENT_{n}_ALERTS" if n > 0 else "NO_WHALE_ACTIVITY")
 
 async def run_daemon(interval=300):
-    """Continuous daemon mode."""
-    print(f"🐋 Whale Alert Bot started. Checking every {interval}s")
-    print(f"📋 Tracking {len(WHALE_ADDRESSES)} whale addresses")
-    print(f"📱 Sending to chat_id {CHAT_ID}")
-
-    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+    print(f"🐋 Whale Alert Bot started. {len(WHALES)} whales tracked. Interval: {interval}s")
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as s:
         while True:
             try:
-                count = await check_whales(session)
-                ts = datetime.utcnow().strftime("%H:%M:%S UTC")
-                if count > 0:
-                    print(f"[{ts}] 🐋 Sent {count} alert(s)")
-                else:
-                    print(f"[{ts}] No whale activity")
+                n = await check_and_alert(s)
+                ts = datetime.now(timezone.utc).strftime("%H:%M:%S UTC")
+                print(f"[{ts}] {'🐋 ' + str(n) + ' alert(s)' if n else 'No whale activity'}")
             except Exception as e:
                 print(f"Error: {e}")
-
             await asyncio.sleep(interval)
-
 
 if __name__ == "__main__":
     if "--once" in sys.argv:
         asyncio.run(run_once())
-    elif "--daemon" in sys.argv:
-        asyncio.run(run_daemon())
     else:
         asyncio.run(run_daemon())
