@@ -29,6 +29,7 @@ WHALES = {
 }
 
 SIGNAL_TRACKER_FILE = os.path.join(RESULTS_DIR, "signal_tracker.json")
+VIRTUAL_TRADES_FILE = os.path.join(RESULTS_DIR, "virtual_trades.json")
 
 def load_signal_tracker():
     if os.path.exists(SIGNAL_TRACKER_FILE):
@@ -137,6 +138,16 @@ def generate_trade_instruction(whale_name, side, market_title, size, price, outc
         instructions.append(f"📊 Рекомендация: подожди подтверждения от других китов")
     
     return "\n".join(instructions)
+
+def load_virtual_portfolio():
+    """Load virtual trading portfolio for dashboard widget."""
+    if os.path.exists(VIRTUAL_TRADES_FILE):
+        try:
+            with open(VIRTUAL_TRADES_FILE) as f:
+                return json.load(f)
+        except:
+            pass
+    return {"balance": 1000, "initial_deposit": 1000, "positions": [], "resolved": [], "total_won": 0, "total_lost": 0, "total_bets": 0, "win_count": 0, "loss_count": 0}
 
 def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
     """Generate dynamic HTML dashboard."""
@@ -255,6 +266,83 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
         </div>'''
     
     now_str = datetime.now(timezone(timedelta(hours=2))).strftime("%d.%m.%Y %H:%M")
+    
+    # Build virtual trading widget
+    portfolio = load_virtual_portfolio()
+    open_positions = portfolio.get("positions", [])
+    resolved_positions = portfolio.get("resolved", [])
+    balance = portfolio.get("balance", 1000)
+    initial_deposit = portfolio.get("initial_deposit", 1000)
+    total_won = portfolio.get("total_won", 0)
+    total_lost = portfolio.get("total_lost", 0)
+    win_count = portfolio.get("win_count", 0)
+    loss_count = portfolio.get("loss_count", 0)
+    total_bets = portfolio.get("total_bets", 0)
+    total_value = balance + sum(p.get("cur_price", 0) * p.get("shares", 0) for p in open_positions)
+    open_pnl = sum(p.get("pnl", 0) for p in open_positions)
+    total_pnl = total_won - total_lost + open_pnl
+    roi = ((total_value - initial_deposit) / initial_deposit) * 100 if initial_deposit > 0 else 0
+    win_rate = (win_count / (win_count + loss_count) * 100) if (win_count + loss_count) > 0 else 0
+    
+    # Build position rows for widget
+    pos_rows = ""
+    for p in open_positions[:8]:
+        pnl = p.get("pnl", 0)
+        pnl_color = "#00ff88" if pnl >= 0 else "#ff4444"
+        entry = p.get("entry_price", 0)
+        pos_rows += f'''
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #111;font-size:10px">
+      <span style="color:#aaa;flex:1">{p.get("whale","?")}: {p.get("outcome","?")} {p.get("market","?")[:25]}</span>
+      <span style="color:#ffaa00;font-weight:600;margin:0 8px">${p.get("bet_size",50):.0f} @ {entry*100:.0f}¢</span>
+      <span style="color:{pnl_color};font-weight:700">{pnl:+,.2f}</span>
+    </div>'''
+    
+    roi_color = "#00ff88" if roi >= 0 else "#ff4444"
+    total_pnl_color = "#00ff88" if total_pnl >= 0 else "#ff4444"
+    
+    virtual_trading_html = f'''
+    <div class="section" style="margin-top:20px"><div class="section-title">🎰 ВИРТУАЛЬНЫЙ ДЕПОЗИТ <span class="badge">PAPER TRADING</span></div></div>
+
+    <div style="background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:2px solid #00ff8833;border-radius:15px;padding:20px;margin:10px 20px">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+        <div style="text-align:center;flex:1;min-width:100px">
+          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">Баланс</div>
+          <div style="font-size:28px;font-weight:700;color:#00ff88">${balance:,.2f}</div>
+        </div>
+        <div style="text-align:center;flex:1;min-width:100px">
+          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">Ставок</div>
+          <div style="font-size:28px;font-weight:700;color:#4488ff">{len(open_positions)}</div>
+        </div>
+        <div style="text-align:center;flex:1;min-width:100px">
+          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">Win Rate</div>
+          <div style="font-size:28px;font-weight:700;color:#ffaa00">{win_rate:.0f}%</div>
+        </div>
+        <div style="text-align:center;flex:1;min-width:100px">
+          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">ROI</div>
+          <div style="font-size:28px;font-weight:700;color:{roi_color}">{roi:+.1f}%</div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #1a1a3a;padding-top:12px;margin-top:8px">
+        <div style="font-size:10px;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Открытые ставки</div>
+        {pos_rows if pos_rows else '<div style="color:#333;text-align:center;padding:10px">Нет открытых ставок — /bet чтобы поставить</div>'}
+        <div style="margin-top:12px;padding-top:8px;border-top:1px solid #1a1a3a;font-size:10px;color:#666">
+          💰 Депозит: ${initial_deposit:.0f} | 💵 Выиграно: ${total_won:.2f} | 💸 Проиграно: ${total_lost:.2f}<br>
+          📊 P&L: <span style="color:{total_pnl_color}">${total_pnl:+,.2f}</span> | 📈 Старт: ${initial_deposit:.0f} | Сейчас: ${total_value:,.2f}
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:15px;margin:10px 20px">
+      <h3 style="color:#00ff88;font-size:12px;margin-bottom:10px">⚡ КАК ИСПОЛЬЗОВАТЬ</h3>
+      <div style="font-size:10px;color:#999;line-height:1.8">
+        <div>1️⃣ <b style="color:#ffaa00">/deposit</b> — баланс, P&L, ROI, открытые ставки</div>
+        <div>2️⃣ <b style="color:#ffaa00">/bet</b> — сигналы китов + кнопки ставок по $50</div>
+        <div>3️⃣ <b style="color:#ffaa00">/close</b> — закрыть ставку (WIN ✅ или LOSS ❌)</div>
+        <div>4️⃣ ➕ Пополнить — +$500 к депозиту</div>
+        <div style="margin-top:8px;color:#ff4444">⚠️ Это симуляция. Реальные деньги НЕ используются.</div>
+      </div>
+    </div>'''
     
     # Build P&L floating numbers
     pnl_animations = ""
@@ -408,6 +496,9 @@ body::after{{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:
 <div class="section fade-in" style="max-height:350px;overflow-y:auto">
 {market_html if market_html else '<div style="color:#333;text-align:center;padding:20px">Маркеты не загружены</div>'}
 </div>
+
+<!-- Virtual Trading Widget -->
+{virtual_trading_html}
 
 <!-- Strategy Guide -->
 <div class="section" style="margin-top:15px"><div class="section-title">💰 СТРАТЕГИИ <span class="badge">GUIDE</span></div></div>
