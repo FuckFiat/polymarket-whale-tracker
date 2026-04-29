@@ -1,551 +1,548 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐋 NANO Polymarket Whale Tracker v3.0</title>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐋 NANO Whale Tracker v3.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#060610;color:#e0e0e0;font-family:'JetBrains Mono',monospace;min-height:100vh;overflow-x:hidden}
-
-body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,#0a1a2a 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,#1a0a2e 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,#0a2a1a 0%,transparent 50%);z-index:-1;animation:bgPulse 8s ease-in-out infinite alternate}
-@keyframes bgPulse{0%{opacity:.6}100%{opacity:1}}
-
-body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.015) 2px,rgba(0,255,136,0.015) 4px);pointer-events:none;z-index:9999}
-
-/* Floating P&L numbers */
-.float-container{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:100;overflow:hidden}
-.float-number{position:absolute;font-size:32px;font-weight:700;text-shadow:0 0 20px currentColor;opacity:0;animation:floatUp 3s ease-out infinite}
-@keyframes floatUp{0%{opacity:0;transform:translateY(100vh) scale(0.5)}15%{opacity:1;transform:translateY(70vh) scale(1.2)}30%{opacity:0.9;transform:translateY(50vh) scale(1)}100%{opacity:0;transform:translateY(-10vh) scale(0.3)}}
-
-.header{background:linear-gradient(135deg,#0a0a1f 0%,#1a0a2e 50%,#0a1a1f 100%);border-bottom:1px solid #00ff8833;padding:25px 20px;text-align:center;position:relative;overflow:hidden}
-.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,#00ff8808,transparent,#00ff8808,transparent);animation:rotateBg 20s linear infinite}
-@keyframes rotateBg{to{transform:rotate(360deg)}}
-.header h1{font-size:28px;color:#00ff88;text-shadow:0 0 30px #00ff8866,0 0 60px #00ff8833;position:relative;z-index:1;letter-spacing:2px}
-.header .subtitle{color:#666;font-size:11px;margin-top:5px;position:relative;z-index:1}
-.live-dot{display:inline-block;width:8px;height:8px;background:#00ff88;border-radius:50%;margin-right:8px;animation:livePulse 1.5s ease-in-out infinite}
-@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 #00ff8888}50%{box-shadow:0 0 0 8px #00ff8800}}
-
-/* Stats */
-.stats-row{display:flex;gap:12px;padding:15px 20px;flex-wrap:wrap}
-.stat-card{flex:1;min-width:100px;background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px 10px;text-align:center;position:relative;overflow:hidden;transition:all .3s}
-.stat-card:hover{border-color:#00ff8855;transform:translateY(-2px);box-shadow:0 5px 20px #00ff8811}
-.stat-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,#ffffff06,transparent);animation:shimmer 3s infinite}
-@keyframes shimmer{to{left:100%}}
-.stat-card .label{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1.5px}
-.stat-card .value{font-size:20px;color:#00ff88;margin-top:4px;font-weight:700}
-.stat-card .value.red{color:#ff4444}.stat-card .value.blue{color:#4488ff}.stat-card .value.yellow{color:#ffaa00}.stat-card .value.purple{color:#aa66ff}
-
-/* P&L counter */
-.pnl-hero{background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:2px solid #00ff8833;border-radius:15px;padding:20px;margin:10px 20px;text-align:center;position:relative;overflow:hidden}
-.pnl-hero .pnl-label{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px}
-.pnl-hero .pnl-value{font-size:48px;font-weight:700;margin-top:5px;transition:all .5s}
-.pnl-hero .pnl-value.positive{color:#00ff88;text-shadow:0 0 30px #00ff8844}
-.pnl-hero .pnl-value.negative{color:#ff4444;text-shadow:0 0 30px #ff444444}
-.pnl-hero .pnl-details{font-size:11px;color:#666;margin-top:8px}
-.pnl-hero .pnl-details span{margin:0 8px}
-
-/* Signals */
-.section{padding:8px 20px}
-.section-title{color:#00ff88;font-size:13px;margin-bottom:12px;border-left:3px solid #00ff88;padding-left:10px;display:flex;align-items:center;gap:8px}
-.section-title .badge{background:#00ff8822;color:#00ff88;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:400}
-
-.signal-card{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;margin:8px 20px;position:relative;overflow:hidden;transition:all .3s}
-.signal-card:hover{border-color:#00ff8844;box-shadow:0 5px 25px #00ff8811}
-.signal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:5px}
-.signal-whale{color:#00ff88;font-weight:700;font-size:13px}
-.signal-side{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700}
-.side-buy{background:#00ff8822;color:#00ff88}.side-sell{background:#ff444422;color:#ff4444}
-.signal-pnl{font-size:16px;font-weight:700}
-.pnl-positive{color:#00ff88;text-shadow:0 0 10px #00ff8844}.pnl-negative{color:#ff4444;text-shadow:0 0 10px #ff444444}.pnl-pending{color:#ffaa00}
-.status-win{background:#00ff8822;color:#00ff88;padding:2px 6px;border-radius:4px;font-size:9px}.status-loss{background:#ff444422;color:#ff4444;padding:2px 6px;border-radius:4px;font-size:9px}.status-pending{background:#ffaa0022;color:#ffaa00;padding:2px 6px;border-radius:4px;font-size:9px}
-.signal-market{color:#aaa;font-size:11px;margin-bottom:6px}
-.signal-details{display:flex;gap:15px;font-size:10px;color:#888;margin-bottom:10px}
-.signal-instructions{background:#0a0a15;border:1px solid #1a1a3a;border-radius:8px;padding:10px;margin-top:8px}
-.instr-title{color:#ffaa00;font-size:10px;margin-bottom:5px;letter-spacing:1px}
-.instr-text{color:#ccc;font-size:10px;line-height:1.6;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
-.signal-pnl-popup{position:absolute;top:5px;right:10px;font-size:24px;font-weight:700;opacity:0;animation:pnlPop 3s ease-out infinite 2s}
-@keyframes pnlPop{0%{opacity:0;transform:scale(0.3) translateY(20px)}20%{opacity:1;transform:scale(1.3) translateY(0)}40%{opacity:0.8;transform:scale(1)}100%{opacity:0;transform:scale(0.5) translateY(-30px)}}
-
-/* Whale cards */
-.whale-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;padding:5px 20px}
-.whale-card{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;transition:all .3s}
-.whale-card.active{border-color:#00ff8833}.whale-card.inactive{border-color:#1a1a3a;opacity:.6}
-.whale-card:hover{border-color:#00ff8855;box-shadow:0 5px 20px #00ff8811}
-.whale-header{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.whale-emoji{font-size:18px}.whale-name{color:#00ff88;font-weight:700;font-size:13px}.whale-tier{color:#666;font-size:9px;padding:1px 6px;border:1px solid #333;border-radius:3px;margin-left:auto}.whale-positions{color:#ffaa00;font-size:10px}
-.whale-strat{color:#555;font-size:10px;margin-bottom:8px}
-.whale-positions-list .pos-item{display:flex;gap:8px;font-size:10px;padding:3px 0;border-bottom:1px solid #111}
-.pos-market{color:#aaa;flex:1}.pos-vol{color:#ffaa00;font-weight:600}
-.no-pos{color:#333;font-size:10px;font-style:italic}
-
-/* Markets */
-.market-item{padding:8px 5px;border-bottom:1px solid #0a0a15;font-size:11px;display:flex;justify-content:space-between;align-items:center}
-.market-vol{color:#ffaa00;font-size:10px;font-weight:600}
-
-.fade-in{animation:fadeIn .5s ease-out}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-.refresh-bar{position:fixed;bottom:0;left:0;right:0;background:#060610ee;border-top:1px solid #1a1a3a;padding:8px 20px;display:flex;justify-content:space-between;font-size:10px;color:#444;z-index:50}
-.spinner{display:inline-block;width:12px;height:12px;border:2px solid #1a1a3a;border-top-color:#00ff88;border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@media(max-width:768px){.stats-row{gap:8px}.stat-card{min-width:70px;padding:10px 5px}.stat-card .value{font-size:16px}.header h1{font-size:20px}.whale-grid{grid-template-columns:1fr}.pnl-hero .pnl-value{font-size:32px}}
-</style>
-</head>
-<body>
-
-<div class="float-container"></div>
-
-<div class="header">
-  <h1>🐋 NANO POLYMARKET WHALE TRACKER v3.0</h1>
-  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">29.04.2026 23:56</span></div>
+body{background:#060610;color:#e0e0e0;font-family:'JetBrains Mono',monospace;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,#0a1a2a,transparent 50%),radial-gradient(ellipse at 80% 20%,#1a0a2e,transparent 50%);z-index:-1}
+.float-wrap{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
+.float-num{position:absolute;top:100%;font-size:32px;font-weight:800;text-shadow:0 0 20px currentColor;opacity:0;animation:floatUp 4s ease-out infinite}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.5)}10%{opacity:1;transform:translateY(-15vh) scale(1.2)}30%{opacity:.9;transform:translateY(-40vh) scale(1)}100%{opacity:0;transform:translateY(-90vh) scale(.3)}}
+.header{background:linear-gradient(135deg,#0a0a1f,#1a0a2e,#0a1a1f);border-bottom:1px solid #00ff8833;padding:20px;text-align:center}
+.header h1{font-size:24px;color:#00ff88;text-shadow:0 0 30px #00ff8866;letter-spacing:2px}
+.header .sub{color:#555;font-size:10px;margin-top:4px}
+.live-dot{display:inline-block;width:8px;height:8px;background:#00ff88;border-radius:50%;margin-right:6px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px #00ff8800}}
+.stats{display:flex;gap:10px;padding:12px 16px;flex-wrap:wrap}
+.stat{flex:1;min-width:90px;background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:12px 8px;text-align:center;transition:all .3s}
+.stat:hover{border-color:#00ff8855;transform:translateY(-2px)}
+.stat .l{font-size:8px;color:#555;text-transform:uppercase;letter-spacing:1px}
+.stat .v{font-size:18px;color:#00ff88;margin-top:3px;font-weight:700}
+.stat .v.red{color:#ff4444}.stat .v.yellow{color:#ffaa00}.stat .v.blue{color:#4488ff}.stat .v.purple{color:#aa66ff}
+.pnl-hero{background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:2px solid #00ff8833;border-radius:12px;padding:16px;margin:8px 16px;text-align:center}
+.pnl-hero .label{font-size:9px;color:#666;text-transform:uppercase;letter-spacing:2px}
+.pnl-hero .value{font-size:42px;font-weight:700;margin-top:4px;transition:all .5s}
+.pnl-hero .value.pos{color:#00ff88;text-shadow:0 0 30px #00ff8844}.pnl-hero .value.neg{color:#ff4444;text-shadow:0 0 30px #ff444444}
+.pnl-hero .details{font-size:10px;color:#666;margin-top:6px}
+.pnl-hero .details span{margin:0 8px}
+.sec{padding:6px 16px}.sec-t{color:#00ff88;font-size:12px;margin-bottom:8px;border-left:3px solid #00ff88;padding-left:8px;display:flex;align-items:center;gap:6px}.sec-t .b{background:#00ff8822;color:#00ff88;font-size:9px;padding:1px 6px;border-radius:8px}
+.signal-card{background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:12px;margin:6px 16px;position:relative;overflow:hidden;transition:all .3s}
+.signal-card:hover{border-color:#00ff8844}
+.signal-header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.signal-whale{color:#00ff88;font-weight:700;font-size:12px}
+.signal-outcome{background:#00ff8822;color:#00ff88;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700}
+.signal-pnl{font-size:14px;font-weight:700}
+.signal-market{color:#aaa;font-size:10px;margin-bottom:4px}
+.signal-details{display:flex;gap:12px;font-size:9px;color:#666;margin-bottom:4px}
+.signal-instr{color:#ffaa00;font-size:9px;padding:6px;background:#0a0a15;border-radius:6px;margin-top:4px}
+.signal-hyp{font-size:10px;color:#888;margin-top:4px;padding:4px 0}
+.float-popup{position:absolute;top:4px;right:8px;font-size:22px;font-weight:700;opacity:0;animation:pop 3.5s ease-out infinite 1s}
+@keyframes pop{0%{opacity:0;transform:scale(.3) translateY(10px)}15%{opacity:1;transform:scale(1.3) translateY(0)}35%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(.4) translateY(-25px)}}
+.whale-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;padding:4px 16px}
+.whale-card{background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:12px;transition:all .3s}
+.whale-card.active{border-color:#00ff8833}.whale-card:hover{border-color:#00ff8855}
+.whale-header{display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.whale-emoji{font-size:16px}.whale-name{color:#00ff88;font-weight:700;font-size:12px}.whale-tier{color:#555;font-size:8px;border:1px solid #333;border-radius:3px;padding:0 4px}.whale-pos-count{color:#888;font-size:9px;margin-left:auto}.whale-pnl{font-size:11px;font-weight:700}
+.whale-strat{color:#555;font-size:9px;margin-bottom:6px}
+.pos-item{padding:4px 0;border-bottom:1px solid #111;font-size:9px;line-height:1.5}
+.pos-outcome{background:#00ff8822;color:#00ff88;padding:0 4px;border-radius:3px;font-size:8px;font-weight:700}
+.pos-market{color:#aaa}.pos-val{color:#ffaa00;font-weight:600}.pos-price{color:#666}
+.pos-instr{color:#ffaa00;font-size:8px;margin-top:2px}
+.hyp-profit{color:#00ff88;font-weight:700;font-size:11px}
+.market-item{padding:6px 0;border-bottom:1px solid #0a0a15;font-size:10px;display:flex;justify-content:space-between}
+.mkt-q{color:#aaa;flex:1}.mkt-vol{color:#ffaa00;font-weight:600;font-size:9px}
+.refresh{position:fixed;bottom:0;left:0;right:0;background:#060610ee;border-top:1px solid #1a1a3a;padding:6px 16px;display:flex;justify-content:space-between;font-size:9px;color:#444;z-index:50}
+@media(max-width:768px){.stats{gap:6px}.stat{min-width:60px;padding:8px 4px}.whale-grid{grid-template-columns:1fr}.pnl-hero .value{font-size:28px}}
+</style></head><body>
+<div class="float-wrap"><div class="float-num" style="left:10%;animation-delay:0.0s;color:#00ff88">+$115</div><div class="float-num" style="left:35%;animation-delay:0.7s;color:#00ff88">+$27</div><div class="float-num" style="left:55%;animation-delay:3.5s;color:#00ff88">+$124</div><div class="float-num" style="left:25%;animation-delay:4.8999999999999995s;color:#00ff88">+$73</div></div>
+<div class="header"><h1>🐋 NANO WHALE TRACKER v3.1</h1><div class="sub"><span class="live-dot"></span>Real-time + Trade Instructions + P&L | 29.04.2026 23:56</div></div>
+<div class="stats">
+  <div class="stat"><div class="l">Active</div><div class="v">9/10</div></div>
+  <div class="stat"><div class="l">Positions</div><div class="v blue">169</div></div>
+  <div class="stat"><div class="l">Winners</div><div class="v">31</div></div>
+  <div class="stat"><div class="l">Losers</div><div class="v red">138</div></div>
+  <div class="stat"><div class="l">ETH</div><div class="v purple">$2,254</div></div>
+  <div class="stat"><div class="l">BTC</div><div class="v purple">$75,967</div></div>
 </div>
-
-<div class="stats-row fade-in">
-  <div class="stat-card"><div class="label">Active Whales</div><div class="value">9/10</div></div>
-  <div class="stat-card"><div class="label">Positions</div><div class="value blue">77</div></div>
-  <div class="stat-card"><div class="label">Signals</div><div class="value yellow">1</div></div>
-  <div class="stat-card"><div class="label">Win Rate</div><div class="value red">0%</div></div>
-  <div class="stat-card"><div class="label">ETH</div><div class="value purple">$2,254</div></div>
-  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$75,967</div></div>
+<div class="pnl-hero">
+  <div class="label">If you followed every whale signal with $100</div>
+  <div class="value pos">$+338</div>
+  <div class="details"><span style="color:#00ff88">Winners only</span> | <span style="color:#ff4444">All signals: $-11,623</span> | <span style="color:#888">Whale P&L: $-21,232,262</span></div>
 </div>
+<div class="sec"><div class="sec-t">🏆 TOP WINNING SIGNALS + INSTRUCTIONS <span class="b">P&L</span></div></div>
 
-<!-- P&L Hero -->
-<div class="pnl-hero fade-in">
-  <div class="pnl-label">📈 Если бы ты отработал все сигналы</div>
-  <div class="pnl-value positive">$+0</div>
-  <div class="pnl-details">
-    <span style="color:#00ff88">✅ 0 wins</span>
-    <span style="color:#ff4444">❌ 0 losses</span>
-    <span style="color:#ffaa00">⏳ 0 pending</span>
-  </div>
-</div>
-
-<!-- Recent Signals with Instructions -->
-<div class="section"><div class="section-title">📋 ПОСЛЕДНИЕ СИГНАЛЫ + ИНСТРУКЦИИ <span class="badge">LIVE</span></div></div>
-
-        <div class="signal-card fade-in">
-          <div class="signal-header">
-            <span class="signal-whale">🐋 RN1</span>
-            <span class="signal-side side-buy">BUY</span>
-            <span class="signal-pnl pnl-pending">PENDING</span>
-            <span class="status-pending">PENDING</span>
-          </div>
-          <div class="signal-market">Games Total: O/U 2.5</div>
-          <div class="signal-details">
-            <span>💰 $210</span>
-            <span>📊 @ 82.0¢</span>
-            <span>📐 256 shares</span>
-          </div>
-          <div class="signal-instructions">
-            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
-            <pre class="instr-text">📈 Вход: купить YES @ 0.82¢ — почти гарантировано, но ROI мизерный
-💰 Прибыль: 18.0¢ на доллар если resolve=YES
-⚠️ Риск: 82¢ на доллар если resolve=NO — НЕ СТОИТ
-💰 Размер: кит ставит $210 — разведка/тест
-📊 Рекомендация: подожди подтверждения от других китов</pre>
-          </div>
-          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+    <div class="signal-card">
+      <div class="signal-header">
+        <span class="signal-whale">kcnyekchno</span>
+        <span class="signal-outcome">No</span>
+        <span class="signal-pnl" style="color:#00ff88">$+463,855 (+115%)</span>
+      </div>
+      <div class="signal-market">Will Arsenal FC win on 2026-04-29?</div>
+      <div class="signal-details">
+        <span>Value: $868,328</span>
+        <span>Price: 100c</span>
+        <span>Avg: 47c</span>
+      </div>
+      <div class="signal-instr">PROFIT: 0c/$ if resolves YES | STOP: if drops below 0.90 | ALREADY UP 115% — consider partial exit</div>
+      <div class="signal-hyp">If you followed with $100: <span style="color:#00ff88;font-size:18px;font-weight:700">$+115</span></div>
+      <div class="float-popup" style="color:#00ff88">$+115</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-header">
+        <span class="signal-whale">beachboy4</span>
+        <span class="signal-outcome">Yes</span>
+        <span class="signal-pnl" style="color:#00ff88">$+387,082 (+27%)</span>
+      </div>
+      <div class="signal-market">Will Paris Saint-Germain FC win on 2026-04-25?</div>
+      <div class="signal-details">
+        <span>Value: $1,842,871</span>
+        <span>Price: 100c</span>
+        <span>Avg: 79c</span>
+      </div>
+      <div class="signal-instr">PROFIT: 0c/$ if resolves YES | STOP: if drops below 0.90 | ALREADY UP 27% — consider partial exit</div>
+      <div class="signal-hyp">If you followed with $100: <span style="color:#00ff88;font-size:18px;font-weight:700">$+27</span></div>
+      <div class="float-popup" style="color:#00ff88">$+27</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-header">
+        <span class="signal-whale">kcnyekchno</span>
+        <span class="signal-outcome">Yes</span>
+        <span class="signal-pnl" style="color:#00ff88">$+39,360 (+0%)</span>
+      </div>
+      <div class="signal-market">Will Argentina win the 2026 FIFA World Cup?</div>
+      <div class="signal-details">
+        <span>Value: $39,360</span>
+        <span>Price: 9c</span>
+        <span>Avg: 0c</span>
+      </div>
+      <div class="signal-instr">LONGSHOT: 0.09c — risk 2% bankroll | TAKE: 0.43 (5x) or hold to resolve | ALREADY UP 0% — consider partial exit</div>
+      <div class="signal-hyp">If you followed with $100: <span style="color:#00ff88;font-size:18px;font-weight:700">$+0</span></div>
+      <div class="float-popup" style="color:#00ff88">$+0</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-header">
+        <span class="signal-whale">kcnyekchno</span>
+        <span class="signal-outcome">Yes</span>
+        <span class="signal-pnl" style="color:#00ff88">$+38,950 (+0%)</span>
+      </div>
+      <div class="signal-market">Will Brazil win the 2026 FIFA World Cup?</div>
+      <div class="signal-details">
+        <span>Value: $38,950</span>
+        <span>Price: 9c</span>
+        <span>Avg: 0c</span>
+      </div>
+      <div class="signal-instr">LONGSHOT: 0.09c — risk 2% bankroll | TAKE: 0.43 (5x) or hold to resolve | ALREADY UP 0% — consider partial exit</div>
+      <div class="signal-hyp">If you followed with $100: <span style="color:#00ff88;font-size:18px;font-weight:700">$+0</span></div>
+      <div class="float-popup" style="color:#00ff88">$+0</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-header">
+        <span class="signal-whale">kcnyekchno</span>
+        <span class="signal-outcome">Yes</span>
+        <span class="signal-pnl" style="color:#00ff88">$+33,483 (+0%)</span>
+      </div>
+      <div class="signal-market">Will Portugal win the 2026 FIFA World Cup?</div>
+      <div class="signal-details">
+        <span>Value: $33,483</span>
+        <span>Price: 7c</span>
+        <span>Avg: 0c</span>
+      </div>
+      <div class="signal-instr">LONGSHOT: 0.07c — risk 2% bankroll | TAKE: 0.37 (5x) or hold to resolve | ALREADY UP 0% — consider partial exit</div>
+      <div class="signal-hyp">If you followed with $100: <span style="color:#00ff88;font-size:18px;font-weight:700">$+0</span></div>
+      <div class="float-popup" style="color:#00ff88">$+0</div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-header">
+        <span class="signal-whale">RN1</span>
+        <span class="signal-outcome">Mattia Bellucci</span>
+        <span class="signal-pnl" style="color:#00ff88">$+24,575 (+124%)</span>
+      </div>
+      <div class="signal-market">Cagliari: Lorenzo Sonego vs Mattia Bellucci</div>
+      <div class="signal-details">
+        <span>Value: $44,398</span>
+        <span>Price: 100c</span>
+        <span>Avg: 45c</span>
+      </div>
+      <div class="signal-instr">PROFIT: 0c/$ if resolves YES | STOP: if drops below 0.90 | ALREADY UP 124% — consider partial exit</div>
+      <div class="signal-hyp">If you followed with $100: <span style="color:#00ff88;font-size:18px;font-weight:700">$+124</span></div>
+      <div class="float-popup" style="color:#00ff88">$+124</div>
+    </div>
+<div class="sec"><div class="sec-t">🐋 WHALE POSITIONS + P&L <span class="b">LIVE</span></div></div>
+<div class="whale-grid">
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐋</span>
+        <span class="whale-name">kcnyekchno</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">28 pos</span>
+        <span class="whale-pnl" style="color:#00ff88">$+173,703</span>
+      </div>
+      <div class="whale-strat">NO на геополитику</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Arsenal FC win on 2026-04-29?</span>
+          <span style="color:#00ff88;font-weight:700">$+463,855 (+115%)</span>
+          <span class="pos-val">$868,328</span>
+          <span class="pos-price">@100c</span>
+          <div class="pos-instr">PROFIT: 0c/$ if resolves YES | STOP: if drops below 0.90 | ALREADY UP 115% — consider partial exit | If $100: <span class="hyp-profit">$+115</span></div>
         </div>
-
-<!-- Whale Positions -->
-<div class="section"><div class="section-title">🐋 ПОЗИЦИИ КИТОВ <span class="badge">TOP 10</span></div></div>
-<div class="whale-grid fade-in">
-
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">kcnyekchno</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">10 поз.</span>
-          </div>
-          <div class="whale-strat">NO на геополитику</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will Arsenal FC win on 2026-04-29?</span>
-              <span style="color:#00ff88;font-weight:600">+463,855 (+115%)</span>
-              <span class="pos-vol">$868,328</span>
-              <span class="pos-price">@ 100.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Lakers vs. Rockets</span>
-              <span style="color:#ff4444;font-weight:600">-201,544 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 30.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will the Los Angeles Lakers win the 2026</span>
-              <span style="color:#00ff88;font-weight:600">+4,379 (+24%)</span>
-              <span class="pos-vol">$22,319</span>
-              <span class="pos-price">@ 3.6¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Arsenal FC win on 2026-04-25?</span>
-              <span style="color:#ff4444;font-weight:600">-129,617 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 25.1¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">Lakers</span>
+          <span class="pos-market">Lakers vs. Rockets</span>
+          <span style="color:#ff4444;font-weight:700">$-201,544 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">432614799197</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">10 поз.</span>
-          </div>
-          <div class="whale-strat">Кросс-категорийный</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will Liverpool FC win on 2026-01-31?</span>
-              <span style="color:#ff4444;font-weight:600">-1,002,810 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 40.8¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Arsenal FC win on 2026-03-01?</span>
-              <span style="color:#ff4444;font-weight:600">-772,669 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 35.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Liverpool FC win on 2026-01-21?</span>
-              <span style="color:#ff4444;font-weight:600">-1,053,636 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 48.7¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will BV Borussia 09 Dortmund win on 2026</span>
-              <span style="color:#ff4444;font-weight:600">-1,085,444 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 53.9¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will the Los Angeles Lakers win the</span>
+          <span style="color:#00ff88;font-weight:700">$+4,379 (+24%)</span>
+          <span class="pos-val">$22,319</span>
+          <span class="pos-price">@4c</span>
+          <div class="pos-instr">LONGSHOT: 0.04c — risk 2% bankroll | TAKE: 0.18 (5x) or hold to resolve | ALREADY UP 24% — consider partial exit | If $100: <span class="hyp-profit">$+24</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">HorizonSplendidView</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">10 поз.</span>
-          </div>
-          <div class="whale-strat">Спорт + макро</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will Manchester City FC win on 2026-02-2</span>
-              <span style="color:#ff4444;font-weight:600">-1,319,129 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 38.3¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Toulouse FC win on 2026-02-15?</span>
-              <span style="color:#ff4444;font-weight:600">-712,104 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 43.8¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Liverpool FC win on 2026-02-08?</span>
-              <span style="color:#ff4444;font-weight:600">-587,423 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 45.2¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Eintracht Frankfurt win on 2026-02-</span>
-              <span style="color:#ff4444;font-weight:600">-511,158 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 56.8¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Arsenal FC win on 2026-04-25?</span>
+          <span style="color:#ff4444;font-weight:700">$-129,617 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐋</span>
+        <span class="whale-name">432614799197</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">30 pos</span>
+        <span class="whale-pnl" style="color:#ff4444">$-12,101,417</span>
+      </div>
+      <div class="whale-strat">Кросс-категорийный</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Liverpool FC win on 2026-01-31</span>
+          <span style="color:#ff4444;font-weight:700">$-1,002,810 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card inactive fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">majorexploiter</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">0 поз.</span>
-          </div>
-          <div class="whale-strat">Геополитика</div>
-          <div class="whale-positions-list"><div class="no-pos">Нет открытых позиций</div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Arsenal FC win on 2026-03-01?</span>
+          <span style="color:#ff4444;font-weight:700">$-772,669 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🏆</span>
-            <span class="whale-name">April #1</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">9 поз.</span>
-          </div>
-          <div class="whale-strat">Спорт, ивенты</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Spread: Pistons (-3.5)</span>
-              <span style="color:#ff4444;font-weight:600">-266,737 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 49.5¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Spread: Thunder (-11.5)</span>
-              <span style="color:#ff4444;font-weight:600">-249,298 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 48.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Bruins vs. Sabres</span>
-              <span style="color:#ff4444;font-weight:600">-297,871 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 61.4¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Ducks vs. Oilers</span>
-              <span style="color:#ff4444;font-weight:600">-166,979 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 42.5¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Liverpool FC win on 2026-01-21</span>
+          <span style="color:#ff4444;font-weight:700">$-1,053,636 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">reachingthesky</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">5 поз.</span>
-          </div>
-          <div class="whale-strat">Спорт</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will Eintracht Frankfurt win on 2026-03-</span>
-              <span style="color:#ff4444;font-weight:600">-730,929 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 43.6¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will FC Barcelona win on 2026-03-18?</span>
-              <span style="color:#ff4444;font-weight:600">-640,415 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 40.4¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Newcastle United FC win on 2026-03-</span>
-              <span style="color:#ff4444;font-weight:600">-95,000 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 19.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Liverpool FC win on 2026-03-18?</span>
-              <span style="color:#ff4444;font-weight:600">-45,000 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 22.5¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will BV Borussia 09 Dortmund win on</span>
+          <span style="color:#ff4444;font-weight:700">$-1,085,444 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐋</span>
+        <span class="whale-name">HorizonSplendidView</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">10 pos</span>
+        <span class="whale-pnl" style="color:#ff4444">$-4,628,504</span>
+      </div>
+      <div class="whale-strat">Спорт + макро</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Manchester City FC win on 2026</span>
+          <span style="color:#ff4444;font-weight:700">$-1,319,129 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">beachboy4</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">3 поз.</span>
-          </div>
-          <div class="whale-strat">Спорт, футбол</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will Paris Saint-Germain FC win on 2026-</span>
-              <span style="color:#00ff88;font-weight:600">+387,082 (+27%)</span>
-              <span class="pos-vol">$1,842,871</span>
-              <span class="pos-price">@ 100.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Donald Trump win the 2028 Republica</span>
-              <span style="color:#ff4444;font-weight:600">-4,917 (-49%)</span>
-              <span class="pos-vol">$5,097</span>
-              <span class="pos-price">@ 2.1¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will J.D. Vance win the 2028 Republican </span>
-              <span style="color:#ff4444;font-weight:600">-29 (-29%)</span>
-              <span class="pos-vol">$71</span>
-              <span class="pos-price">@ 38.8¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Toulouse FC win on 2026-02-15?</span>
+          <span style="color:#ff4444;font-weight:700">$-712,104 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐈</span>
-            <span class="whale-name">Crypto Leader</span>
-            <span class="whale-tier">dolphin</span>
-            <span class="whale-positions">10 поз.</span>
-          </div>
-          <div class="whale-strat">Крипто, DeFi</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will the price of Bitcoin be between $70</span>
-              <span style="color:#ff4444;font-weight:600">-32,291 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 49.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will the price of Bitcoin be between $70</span>
-              <span style="color:#ff4444;font-weight:600">-19,165 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 32.3¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will the price of Bitcoin be between $72</span>
-              <span style="color:#ff4444;font-weight:600">-29,359 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 58.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will the price of Bitcoin be between $70</span>
-              <span style="color:#ff4444;font-weight:600">-3,570 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 8.2¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Liverpool FC win on 2026-02-08</span>
+          <span style="color:#ff4444;font-weight:700">$-587,423 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">RN1</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">10 поз.</span>
-          </div>
-          <div class="whale-strat">Хай-волюм ротация</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will Paris Saint-Germain FC win on 2026-</span>
-              <span style="color:#ff4444;font-weight:600">-14,737 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 19.9¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will AVS Futebol vs. Sporting CP end in </span>
-              <span style="color:#ff4444;font-weight:600">-5,650 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 11.4¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Cagliari: Lorenzo Sonego vs Mattia Bellu</span>
-              <span style="color:#00ff88;font-weight:600">+24,575 (+124%)</span>
-              <span class="pos-vol">$44,398</span>
-              <span class="pos-price">@ 100.0¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will FC Bayern München win on 2026-04-25</span>
-              <span style="color:#ff4444;font-weight:600">-19,565 (-100%)</span>
-              <span class="pos-vol">$0</span>
-              <span class="pos-price">@ 49.3¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Eintracht Frankfurt win on 202</span>
+          <span style="color:#ff4444;font-weight:700">$-511,158 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🏆</span>
+        <span class="whale-name">April #1</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">9 pos</span>
+        <span class="whale-pnl" style="color:#ff4444">$-1,171,241</span>
+      </div>
+      <div class="whale-strat">Спорт, ивенты</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">Pistons</span>
+          <span class="pos-market">Spread: Pistons (-3.5)</span>
+          <span style="color:#ff4444;font-weight:700">$-266,737 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="whale-card active fade-in">
-          <div class="whale-header">
-            <span class="whale-emoji">🐋</span>
-            <span class="whale-name">Countryside</span>
-            <span class="whale-tier">whale</span>
-            <span class="whale-positions">10 поз.</span>
-          </div>
-          <div class="whale-strat">Спорт, турниры</div>
-          <div class="whale-positions-list">
-            <div class="pos-item">
-              <span class="pos-market">Will Iran win the 2026 FIFA World Cup?</span>
-              <span style="color:#ff4444;font-weight:600">-10,237 (-59%)</span>
-              <span class="pos-vol">$7,236</span>
-              <span class="pos-price">@ 0.1¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Ivory Coast win the 2026 FIFA World</span>
-              <span style="color:#ff4444;font-weight:600">-4,453 (-17%)</span>
-              <span class="pos-vol">$21,319</span>
-              <span class="pos-price">@ 0.4¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Qatar win the 2026 FIFA World Cup?</span>
-              <span style="color:#ff4444;font-weight:600">-5,553 (-33%)</span>
-              <span class="pos-vol">$11,315</span>
-              <span class="pos-price">@ 0.2¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Tunisia win the 2026 FIFA World Cup</span>
-              <span style="color:#ff4444;font-weight:600">-5,116 (-25%)</span>
-              <span class="pos-vol">$15,435</span>
-              <span class="pos-price">@ 0.4¢</span>
-            </div></div>
+        <div class="pos-item">
+          <span class="pos-outcome">Thunder</span>
+          <span class="pos-market">Spread: Thunder (-11.5)</span>
+          <span style="color:#ff4444;font-weight:700">$-249,298 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-</div>
-
-<!-- Hot Markets -->
-<div class="section"><div class="section-title">🔥 HOT MARKETS <span class="badge">24H VOLUME</span></div></div>
-<div class="section fade-in" style="max-height:350px;overflow-y:auto">
-
-        <div class="market-item">
-          <span style="color:#666">othe</span> US x Iran ceasefire extended by April 22, 2026?
-          <span class="market-vol">$25.4M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">Sabres</span>
+          <span class="pos-market">Bruins vs. Sabres</span>
+          <span style="color:#ff4444;font-weight:700">$-297,871 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Will Arsenal FC win on 2026-04-29?
-          <span class="market-vol">$8.8M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">Ducks</span>
+          <span class="pos-market">Ducks vs. Oilers</span>
+          <span style="color:#ff4444;font-weight:700">$-166,979 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐋</span>
+        <span class="whale-name">reachingthesky</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">5 pos</span>
+        <span class="whale-pnl" style="color:#ff4444">$-1,530,129</span>
+      </div>
+      <div class="whale-strat">Спорт</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Eintracht Frankfurt win on 202</span>
+          <span style="color:#ff4444;font-weight:700">$-730,929 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Will Bitcoin hit $150k by June 30, 2026?
-          <span class="market-vol">$5.8M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will FC Barcelona win on 2026-03-18</span>
+          <span style="color:#ff4444;font-weight:700">$-640,415 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Will the Iranian regime fall by April 30?
-          <span class="market-vol">$4.3M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Newcastle United FC win on 202</span>
+          <span style="color:#ff4444;font-weight:700">$-95,000 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Will Club Atlético de Madrid win on 2026-04-29?
-          <span class="market-vol">$3.6M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Liverpool FC win on 2026-03-18</span>
+          <span style="color:#ff4444;font-weight:700">$-45,000 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐋</span>
+        <span class="whale-name">beachboy4</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">2 pos</span>
+        <span class="whale-pnl" style="color:#00ff88">$+382,165</span>
+      </div>
+      <div class="whale-strat">Спорт, футбол</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Paris Saint-Germain FC win on </span>
+          <span style="color:#00ff88;font-weight:700">$+387,082 (+27%)</span>
+          <span class="pos-val">$1,842,871</span>
+          <span class="pos-price">@100c</span>
+          <div class="pos-instr">PROFIT: 0c/$ if resolves YES | STOP: if drops below 0.90 | ALREADY UP 27% — consider partial exit | If $100: <span class="hyp-profit">$+27</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Indian Premier League: Mumbai Indians vs Sunrisers Hyderabad
-          <span class="market-vol">$2.7M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Donald Trump win the 2028 Repu</span>
+          <span style="color:#ff4444;font-weight:700">$-4,917 (-49%)</span>
+          <span class="pos-val">$5,097</span>
+          <span class="pos-price">@2c</span>
+          <div class="pos-instr">LONGSHOT: 0.02c — risk 2% bankroll | TAKE: 0.10 (5x) or hold to resolve | DOWN -49% — hold if you believe | If $100: <span class="hyp-profit">$-49</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐈</span>
+        <span class="whale-name">Crypto Leader</span>
+        <span class="whale-tier">dolphin</span>
+        <span class="whale-pos-count">26 pos</span>
+        <span class="whale-pnl" style="color:#ff4444">$-155,178</span>
+      </div>
+      <div class="whale-strat">Крипто, DeFi</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will the price of Bitcoin be betwee</span>
+          <span style="color:#ff4444;font-weight:700">$-32,291 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Clavicular pregnancy in 2026?
-          <span class="market-vol">$2.2M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will the price of Bitcoin be betwee</span>
+          <span style="color:#ff4444;font-weight:700">$-19,165 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Magic vs. Pistons
-          <span class="market-vol">$1.9M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will the price of Bitcoin be betwee</span>
+          <span style="color:#ff4444;font-weight:700">$-29,359 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> US x Iran permanent peace deal by April 30, 2026?
-          <span class="market-vol">$1.6M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will the price of Bitcoin be betwee</span>
+          <span style="color:#ff4444;font-weight:700">$-3,570 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐋</span>
+        <span class="whale-name">RN1</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">29 pos</span>
+        <span class="whale-pnl" style="color:#ff4444">$-155,684</span>
+      </div>
+      <div class="whale-strat">Хай-волюм ротация</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will Paris Saint-Germain FC win on </span>
+          <span style="color:#ff4444;font-weight:700">$-14,737 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Raptors vs. Cavaliers
-          <span class="market-vol">$1.6M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will AVS Futebol vs. Sporting CP en</span>
+          <span style="color:#ff4444;font-weight:700">$-5,650 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Rockets vs. Lakers
-          <span class="market-vol">$1.3M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">Mattia Bellucci</span>
+          <span class="pos-market">Cagliari: Lorenzo Sonego vs Mattia </span>
+          <span style="color:#00ff88;font-weight:700">$+24,575 (+124%)</span>
+          <span class="pos-val">$44,398</span>
+          <span class="pos-price">@100c</span>
+          <div class="pos-instr">PROFIT: 0c/$ if resolves YES | STOP: if drops below 0.90 | ALREADY UP 124% — consider partial exit | If $100: <span class="hyp-profit">$+124</span></div>
         </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Strait of Hormuz traffic returns to normal by end of April?
-          <span class="market-vol">$1.2M</span>
+        <div class="pos-item">
+          <span class="pos-outcome">No</span>
+          <span class="pos-market">Will FC Bayern München win on 2026-</span>
+          <span style="color:#ff4444;font-weight:700">$-19,565 (-100%)</span>
+          <span class="pos-val">$0</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.00 (5x) or hold to resolve | DOWN -100% — hold if you believe | If $100: <span class="hyp-profit">$-100</span></div>
+        </div></div>
+    </div>
+    <div class="whale-card active">
+      <div class="whale-header">
+        <span class="whale-emoji">🐋</span>
+        <span class="whale-name">Countryside</span>
+        <span class="whale-tier">whale</span>
+        <span class="whale-pos-count">30 pos</span>
+        <span class="whale-pnl" style="color:#ff4444">$-2,045,977</span>
+      </div>
+      <div class="whale-strat">Спорт, турниры</div>
+      <div class="whale-positions">
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Iran win the 2026 FIFA World C</span>
+          <span style="color:#ff4444;font-weight:700">$-10,237 (-59%)</span>
+          <span class="pos-val">$7,236</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.01 (5x) or hold to resolve | DOWN -59% — hold if you believe | If $100: <span class="hyp-profit">$-59</span></div>
         </div>
-</div>
-
-<!-- Strategy Guide -->
-<div class="section" style="margin-top:15px"><div class="section-title">💰 СТРАТЕГИИ <span class="badge">GUIDE</span></div></div>
-<div style="padding:5px 20px 80px 20px;font-size:10px;color:#888;line-height:1.8">
-<div style="background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:15px">
-  <h3 style="color:#00ff88;font-size:12px;margin-bottom:10px">⚡ КАК ПОЛЬЗОВАТЬСЯ СИГНАЛАМИ</h3>
-  <div>1️⃣ <b style="color:#ffaa00">Смотри сигналы выше</b> — каждый сигнал содержит конкретную инструкцию: когда входить, где тейк-профит, где стоп-лосс</div>
-  <div>2️⃣ <b style="color:#ffaa00">P&L трекер</b> — мы считаем сколько ты бы заработал если отработал каждый сигнал на $100</div>
-  <div>3️⃣ <b style="color:#ffaa00">Входи ПОСЛЕ кита</b> — не вместе с ним. Подожди стабилизации цены 1-5 минут</div>
-  <div>4️⃣ <b style="color:#ff4444">Стоп-лосс = жизнь</b> — каждый сигнал содержит точный стоп-лосс</div>
-  <div>5️⃣ <b style="color:#00ff88">Выходи раньше кита</b> — забирай прибыль и беги 💀</div>
-</div>
-</div>
-
-<div class="refresh-bar">
-  <span class="status"><span class="spinner"></span> LIVE • Auto-refresh <span id="countdown">120</span>s</span>
-  <span style="color:#444">NANO Whale Tracker v3.0 • Polymarket API</span>
-  <span style="color:#555" id="update-time">29.04.2026 23:56</span>
-</div>
-
-<script>
-let cd=120;
-setInterval(()=>{
-  cd--;
-  document.getElementById('countdown').textContent=cd;
-  if(cd<=0){cd=120;location.reload();}
-},1000);
-</script>
-</body>
-</html>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Ivory Coast win the 2026 FIFA </span>
+          <span style="color:#ff4444;font-weight:700">$-4,453 (-17%)</span>
+          <span class="pos-val">$21,319</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.02 (5x) or hold to resolve | DOWN -17% — hold if you believe | If $100: <span class="hyp-profit">$-17</span></div>
+        </div>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Qatar win the 2026 FIFA World </span>
+          <span style="color:#ff4444;font-weight:700">$-5,553 (-33%)</span>
+          <span class="pos-val">$11,315</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.01 (5x) or hold to resolve | DOWN -33% — hold if you believe | If $100: <span class="hyp-profit">$-33</span></div>
+        </div>
+        <div class="pos-item">
+          <span class="pos-outcome">Yes</span>
+          <span class="pos-market">Will Tunisia win the 2026 FIFA Worl</span>
+          <span style="color:#ff4444;font-weight:700">$-5,116 (-25%)</span>
+          <span class="pos-val">$15,435</span>
+          <span class="pos-price">@0c</span>
+          <div class="pos-instr">LONGSHOT: 0.00c — risk 2% bankroll | TAKE: 0.02 (5x) or hold to resolve | DOWN -25% — hold if you believe | If $100: <span class="hyp-profit">$-25</span></div>
+        </div></div>
+    </div></div>
+<div class="sec"><div class="sec-t">🔥 HOT MARKETS <span class="b">24H VOL</span></div></div>
+<div class="sec" style="max-height:250px;overflow-y:auto"><div class="market-item"><span class="mkt-q">US x Iran ceasefire extended by April 22, 2026?</span><span class="mkt-vol">$25.4M</span></div><div class="market-item"><span class="mkt-q">Will Arsenal FC win on 2026-04-29?</span><span class="mkt-vol">$8.8M</span></div><div class="market-item"><span class="mkt-q">Will Bitcoin hit $150k by June 30, 2026?</span><span class="mkt-vol">$5.8M</span></div><div class="market-item"><span class="mkt-q">Will the Iranian regime fall by April 30?</span><span class="mkt-vol">$4.3M</span></div><div class="market-item"><span class="mkt-q">Will Club Atlético de Madrid win on 2026-04-29?</span><span class="mkt-vol">$3.6M</span></div><div class="market-item"><span class="mkt-q">Indian Premier League: Mumbai Indians vs Sunrisers Hyderabad</span><span class="mkt-vol">$2.7M</span></div><div class="market-item"><span class="mkt-q">Clavicular pregnancy in 2026?</span><span class="mkt-vol">$2.2M</span></div><div class="market-item"><span class="mkt-q">Magic vs. Pistons</span><span class="mkt-vol">$1.9M</span></div><div class="market-item"><span class="mkt-q">US x Iran permanent peace deal by April 30, 2026?</span><span class="mkt-vol">$1.6M</span></div><div class="market-item"><span class="mkt-q">Raptors vs. Cavaliers</span><span class="mkt-vol">$1.6M</span></div></div>
+<div class="refresh"><span>🔄 Auto-refresh 120s</span><span>v3.1 | Polymarket API + PredictFun</span><span>29.04.2026 23:56</span></div>
+<script>let cd=120;setInterval(()=>{cd--;if(cd<=0)location.reload();},1000);</script>
+</body></html>
