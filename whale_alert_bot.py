@@ -376,6 +376,70 @@ async def cmd_positions(chat_id):
     btns = [[{"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}]]
     await tg_send(text, btns, chat_id)
 
+
+
+async def cmd_predictfun(chat_id):
+    """Show PredictFun markets that are also on Polymarket/Kalshi."""
+    await tg_send("🔍 Загружаю кросс-платформенные маркеты...", chat_id)
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=20)) as s:
+        cross, all_mkts = await get_cross_platform_markets(s)
+    
+    if not cross:
+        await tg_send("❌ Не удалось загрузить маркеты PredictFun", chat_id)
+        return
+    
+    lines = [f"🔮 *Кросс-платформенные маркеты* ({len(cross)} из {len(all_mkts)})", ""]
+    
+    # Group by platform count
+    poly_only = [m for m in cross if "Polymarket" in m.get("platforms", [])]
+    kalshi_only = [m for m in cross if "Kalshi" in m.get("platforms", [])]
+    both = [m for m in cross if "Polymarket" in m.get("platforms", []) and "Kalshi" in m.get("platforms", [])]
+    
+    lines.append(f"📊 Polymarket + Predict.fun: *{len(poly_only)}*")
+    lines.append(f"📊 Kalshi + Predict.fun: *{len(kalshi_only)}*")
+    lines.append(f"🔥 Все три: *{len(both)}*")
+    lines.append("")
+    
+    # Top 10 by volume
+    sorted_cross = sorted(cross, key=lambda m: float(m.get("volume24h", 0) or 0), reverse=True)[:10]
+    lines.append("🏆 *ТОП-10 по объёму:*")
+    for i, m in enumerate(sorted_cross, 1):
+        title = m.get("title", "?")[:45]
+        vol = float(m.get("volume24h", 0) or 0)
+        platforms = ", ".join(m.get("platforms", []))
+        lines.append(f"{i}. {title} — ${vol:,.0f} ({platforms})")
+    
+    text = "\n".join(lines)[:4096]
+    btns = [
+        [{"text": "🔮 Predict.fun", "url": "https://predict.fun"}, {"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}],
+        [{"text": "💰 Арбитраж", "callback_data": "arbitrage"}],
+    ]
+    await tg_send(text, btns, chat_id)
+
+async def cmd_arbitrage(chat_id):
+    """Find arbitrage opportunities between Predict.fun and Polymarket."""
+    await tg_send("🔍 Ищу арбитражные возможности...", chat_id)
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=20)) as s:
+        cross, _ = await get_cross_platform_markets(s)
+        arb = await find_arbitrage(s, cross)
+    
+    if not arb:
+        await tg_send("🤷 Арбитражных возможностей не найдено (спред < 3%)", chat_id)
+        return
+    
+    lines = [f"💰 *АРБИТРАЖ* — {len(arb)} возможностей", ""]
+    for i, a in enumerate(arb[:10], 1):
+        lines.append(f"{i}. *{a['title'][:40]}*")
+        lines.append(f"   PF YES: {a['predictfun_yes']:.1f}¢ | Poly YES: {a['polymarket_yes']:.1f}¢")
+        lines.append(f"   Спред: *{a['spread_pct']:.1f}%* | {a['direction']}")
+        lines.append("")
+    
+    text = "\n".join(lines)[:4096]
+    btns = [[{"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}]]
+    await tg_send(text, btns, chat_id)
+
 COMMANDS = {
     "/start": cmd_start,
     "/help": cmd_help,
