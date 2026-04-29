@@ -196,6 +196,7 @@ async def send_whale_alert(whale, trade):
     act = "КУПИЛ" if side == "BUY" else "ПРОДАЛ"
     risk = "🔴 HIGH" if vol > 50000 else "🟡 MED" if vol > 10000 else "🟢 LOW"
 
+    instructions = get_trade_instructions(side, price, vol)
     text = f"""🐋 *WHALE ALERT*
 ═══════════════════════════════════
 
@@ -209,7 +210,10 @@ async def send_whale_alert(whale, trade):
 👤 {pseudo}
 ⏰ {datetime.now(timezone.utc).strftime('%H:%M UTC')}
 
-💡 *Risk:* {risk}"""
+💡 *Risk:* {risk}
+
+📋 *ИНСТРУКЦИЯ:*
+{instructions}"""
 
     btns = [
         [{"text": "📈 Open Market", "url": f"https://polymarket.com/event/{slug}"}],
@@ -217,6 +221,41 @@ async def send_whale_alert(whale, trade):
         [{"text": "🔍 PolyIntel", "url": "https://polyintel.io/"}]
     ]
     await tg_send(text, btns)
+
+
+
+def get_trade_instructions(side, price, vol):
+    """Generate specific trading instructions."""
+    instr = []
+    if side == "BUY":
+        if price < 0.30:
+            instr.append("📈 Лангшот — риск <3% банкролла")
+            instr.append(f"🎯 Тейк: {price*3:.0f}¢ (3x)")
+            instr.append(f"🛑 Стоп: {price*0.5:.2f}¢ (-50%)")
+        elif price < 0.50:
+            instr.append(f"📈 Вход @ {price:.2f}¢ после стабилизации")
+            instr.append(f"🎯 Тейк: {price+0.15:.0f}¢ (+{0.15/price*100:.0f}%)")
+            instr.append(f"🛑 Стоп: {price*0.75:.2f}¢ (-25%)")
+        elif price < 0.80:
+            instr.append(f"📈 Высокая вероятность, низкий ROI")
+            instr.append(f"🎯 Тейк: {price+0.08:.0f}¢ (+{0.08/price*100:.0f}%)")
+            instr.append(f"🛑 Стоп: {price-0.10:.2f}¢ (-12%)")
+        else:
+            instr.append(f"⚠️ Почти гарантировано, но ROI = {(1-price)*100:.1f}% — НЕ СТОИТ")
+    else:
+        no_price = 1 - price
+        instr.append(f"📉 Short (NO) @ {no_price:.2f}¢")
+        instr.append(f"🎯 Тейк: resolve=NO → {no_price*100:.1f}¢/$")
+        instr.append(f"🛑 Стоп: цена YES > {price+0.10:.2f}¢")
+    
+    if vol > 50000:
+        instr.append("💰 Кит ВЫСОКО уверен — $100-500 за ним")
+    elif vol > 10000:
+        instr.append("💰 Средняя уверенность — $50-200")
+    else:
+        instr.append("💰 Разведка — подожди подтверждения")
+    
+    return "\n".join(instr)
 
 async def check_and_alert(session):
     state = load_state()
@@ -272,6 +311,71 @@ async def check_and_alert(session):
 
 # ===== POLLING LOOP =====
 
+
+
+async def cmd_positions(chat_id):
+    """Show current whale positions with P&L and instructions."""
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as s:
+        lines = ["📊 *ПОЗИЦИИ КИТОВ*", "═════════════════════════", ""]
+        for addr, info in WHALES.items():
+            try:
+                url = f"{DATA_API}/positions?user={addr.lower()}"
+                async with s.get(url) as r:
+                    positions = await r.json()
+                
+                # Filter significant positions (> $500 value)
+                significant = []
+                for p in positions[:30]:
+                    try:
+                        cv = float(p.get("currentValue", 0) or 0)
+                        if cv > 500:
+                            significant.append(p)
+                    except:
+                        continue
+                
+                if not significant:
+                    continue
+                
+                total_val = sum(float(p.get("currentValue", 0) or 0) for p in significant)
+                total_pnl = sum(float(p.get("cashPnl", 0) or 0) for p in significant)
+                pnl_emoji = "🟢" if total_pnl >= 0 else "🔴"
+                
+                lines.append(f"{info['emoji']} *{info['name']}* — ${total_val:,.0f} | {pnl_emoji} ${total_pnl:+,.0f}")
+                
+                for p in significant[:3]:
+                    title = p.get("title", "?")[:35]
+                    cv = float(p.get("currentValue", 0) or 0)
+                    pnl = float(p.get("cashPnl", 0) or 0)
+                    pct = float(p.get("percentPnl", 0) or 0)
+                    cur = float(p.get("curPrice", 0) or 0)
+                    avg = float(p.get("avgPrice", 0) or 0)
+                    outcome = p.get("outcome", "?")
+                    
+                    p_emoji = "🟢" if pnl >= 0 else "🔴"
+                    instr_line = ""
+                    if cur > 0 and avg > 0:
+                        if pnl > 0:
+                            instr_line = f"  💰 Тейк: держи или продавай @ {cur*100:.0f}¢ (+{pct:.0f}%)"
+                        else:
+                            instr_line = f"  🛑 Стоп: если упадёт до {avg*0.75*100:.0f}¢"
+                    
+                    lines.append(f"  {p_emoji} {outcome} {title} — ${cv:,.0f} ({pnl:+,.0f})")
+                    if instr_line:
+                        lines.append(f"  {instr_line}")
+                
+                lines.append("")
+                
+            except Exception as e:
+                lines.append(f"❌ {info['name']}: error")
+        
+        if len(lines) <= 3:
+            lines.append("🐋 Киты отдыхают — нет значимых позиций")
+        
+        text = "\n".join(lines[:4096])
+    
+    btns = [[{"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}]]
+    await tg_send(text, btns, chat_id)
+
 COMMANDS = {
     "/start": cmd_start,
     "/help": cmd_help,
@@ -279,6 +383,7 @@ COMMANDS = {
     "/status": cmd_status,
     "/markets": cmd_markets,
     "/check": cmd_check,
+    "/positions": cmd_positions,
 }
 
 async def run_bot():
