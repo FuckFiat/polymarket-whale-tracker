@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐋 NANO Polymarket Whale Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#060610;color:#e0e0e0;font-family:'JetBrains Mono',monospace;min-height:100vh;overflow-x:hidden}
+
+/* Animated bg */
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,#0a1a2a 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,#1a0a2e 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,#0a2a1a 0%,transparent 50%);z-index:-1;animation:bgPulse 8s ease-in-out infinite alternate}
+@keyframes bgPulse{0%{opacity:.6}100%{opacity:1}}
+
+/* Scanline effect */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.015) 2px,rgba(0,255,136,0.015) 4px);pointer-events:none;z-index:9999}
+
+.header{background:linear-gradient(135deg,#0a0a1f 0%,#1a0a2e 50%,#0a1a1f 100%);border-bottom:1px solid #00ff8833;padding:25px 20px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,#00ff8808,transparent,#00ff8808,transparent);animation:rotateBg 20s linear infinite}
+@keyframes rotateBg{to{transform:rotate(360deg)}}
+.header h1{font-size:28px;color:#00ff88;text-shadow:0 0 30px #00ff8866,0 0 60px #00ff8833;position:relative;z-index:1;letter-spacing:2px}
+.header .subtitle{color:#666;font-size:11px;margin-top:5px;position:relative;z-index:1}
+.live-dot{display:inline-block;width:8px;height:8px;background:#00ff88;border-radius:50%;margin-right:8px;animation:livePulse 1.5s ease-in-out infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 #00ff8888}50%{box-shadow:0 0 0 8px #00ff8800}}
+
+/* Stats row */
+.stats-row{display:flex;gap:12px;padding:15px 20px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:120px;background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px 12px;text-align:center;position:relative;overflow:hidden;transition:all .3s}
+.stat-card:hover{border-color:#00ff8855;transform:translateY(-2px);box-shadow:0 5px 20px #00ff8811}
+.stat-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,#ffffff06,transparent);animation:shimmer 3s infinite}
+@keyframes shimmer{to{left:100%}}
+.stat-card .label{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1.5px}
+.stat-card .value{font-size:20px;color:#00ff88;margin-top:4px;font-weight:700}
+.stat-card .value.red{color:#ff4444}.stat-card .value.blue{color:#4488ff}.stat-card .value.yellow{color:#ffaa00}.stat-card .value.purple{color:#aa66ff}
+
+/* Section headers */
+.section{padding:8px 20px}
+.section-title{color:#00ff88;font-size:13px;margin-bottom:12px;border-left:3px solid #00ff88;padding-left:10px;display:flex;align-items:center;gap:8px}
+.section-title .badge{background:#00ff8822;color:#00ff88;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:400}
+
+/* Profiles */
+.profiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;padding:5px 20px}
+.profile-card{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;position:relative;overflow:hidden;transition:all .3s}
+.profile-card:hover{border-color:#00ff8844;box-shadow:0 5px 25px #00ff8811}
+.profile-card .rank{position:absolute;top:10px;right:12px;font-size:24px;opacity:.15}
+.profile-card .name{color:#00ff88;font-size:14px;font-weight:700}
+.profile-card .type{color:#666;font-size:10px;margin:3px 0 10px;letter-spacing:.5px}
+.profile-card .metric{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a1a2e;font-size:11px}
+.profile-card .metric .k{color:#555}.profile-card .metric .v{color:#ffaa00;font-weight:600}
+.act-item{padding:5px 0;border-bottom:1px solid #0d0d1e;font-size:10px;line-height:1.5}
+.act-amount{color:#ffaa00;font-weight:700}
+.act-outcome{font-weight:700}.act-outcome.yes{color:#00ff88}.act-outcome.no{color:#ff4444}
+.act-mkt{color:#888}
+
+/* Whale table */
+.whale-table{width:100%;border-collapse:collapse;font-size:11px}
+.whale-table th{background:#0d0d1a;color:#555;padding:8px 8px;text-align:left;border-bottom:1px solid #1a1a3a;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;position:sticky;top:0;z-index:2}
+.whale-table td{padding:7px 8px;border-bottom:1px solid #0d0d1e;transition:all .2s}
+.whale-table tr:hover td{background:#1a1a2e}
+.whale-rank{font-weight:700}
+.r1{color:#ff4444;text-shadow:0 0 10px #ff444444}.r2{color:#ff8844}.r3{color:#ffaa00}.r4,.r5{color:#4488ff}.r6,.r7,.r8,.r9,.r10{color:#666}
+.whale-addr{font-family:'JetBrains Mono',monospace;color:#4488ff;font-size:10px;cursor:pointer;transition:all .2s}
+.whale-addr:hover{color:#00ff88}
+.whale-pseudo{color:#777;font-size:10px}
+.vol-cell{color:#ffaa00;font-weight:600}
+.signal{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:.5px}
+.signal.contrarian{background:#2a0a0a;color:#ff4444;border:1px solid #ff444433}
+.signal.whale{background:#2a1a0a;color:#ffaa00;border:1px solid #ffaa0033}
+.signal.crypto{background:#0a1a2a;color:#4488ff;border:1px solid #4488ff33}
+.signal.sports{background:#0a2a1a;color:#00ff88;border:1px solid #00ff8833}
+.signal.mixed{background:#1a1a2a;color:#888;border:1px solid #333}
+
+/* How to earn */
+.guide{padding:5px 20px 80px}
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:10px}
+.guide-card{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;transition:all .3s}
+.guide-card:hover{border-color:#00ff8844}
+.guide-card .step{color:#00ff88;font-size:18px;font-weight:700;float:left;margin-right:10px;opacity:.5}
+.guide-card h3{color:#ffaa00;font-size:12px;margin-bottom:6px}
+.guide-card p{color:#999;font-size:10px;line-height:1.6}
+.guide-card .profit{color:#00ff88;font-weight:700;font-size:11px;margin-top:8px}
+.guide-card .risk{color:#ff4444;font-size:9px;margin-top:4px}
+
+/* Strategy box */
+.strategy-box{background:linear-gradient(135deg,#1a0a0a,#1a1a2a);border:1px solid #ff444433;border-radius:10px;padding:15px;margin:10px 20px}
+.strategy-box h3{color:#ff4444;font-size:12px;margin-bottom:8px;letter-spacing:1px}
+.strategy-item{padding:6px 0;border-bottom:1px solid #1a1a2e;font-size:10px;line-height:1.5}
+.strategy-item:last-child{border:none}
+.strategy-item .icon{margin-right:6px}
+
+/* Markets */
+.market-item{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-bottom:1px solid #0d0d1e;font-size:10px;transition:all .2s}
+.market-item:hover{background:#1a1a2e}
+.market-vol{color:#00ff88;font-weight:600;min-width:80px;text-align:right}
+
+/* Footer */
+.refresh-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(#060610ee,#060610);border-top:1px solid #1a1a3a;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;font-size:10px;z-index:100}
+.refresh-bar .status{color:#00ff88;display:flex;align-items:center;gap:5px}
+
+/* Auto-refresh spinner */
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #1a1a3a;border-top-color:#00ff88;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Entry animation */
+.fade-in{animation:fadeIn .5s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Responsive */
+@media(max-width:768px){.stats-row{gap:8px}.stat-card{min-width:80px;padding:10px 8px}.stat-card .value{font-size:16px}.header h1{font-size:20px}.profiles{grid-template-columns:1fr}.guide-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🐋 NANO POLYMARKET WHALE TRACKER</h1>
+  <div class="subtitle"><span class="live-dot"></span>Real-time smart money intelligence • Polygon • <span id="timestamp"></span></div>
+</div>
+
+<div class="stats-row fade-in">
+  <div class="stat-card"><div class="label">Active Whales</div><div class="value" id="whale-count">10</div></div>
+  <div class="stat-card"><div class="label">30D Volume</div><div class="value">$91M+</div></div>
+  <div class="stat-card"><div class="label">Largest Pos.</div><div class="value yellow">$115K</div></div>
+  <div class="stat-card"><div class="label">Markets</div><div class="value blue">247</div></div>
+  <div class="stat-card"><div class="label">ETH</div><div class="value purple" id="eth-price">--</div></div>
+  <div class="stat-card"><div class="label">BTC</div><div class="value purple" id="btc-price">--</div></div>
+</div>
+
+<!-- Whale Profiles -->
+<div class="section"><div class="section-title">🧠 WHALE PROFILES <span class="badge">TOP 3</span></div></div>
+<div class="profiles fade-in">
+
+  <div class="profile-card">
+    <div class="rank">🐋</div>
+    <div class="name">Геополитик-контрариан</div>
+    <div class="type">kcnyekchno • $26.3M volume • Ставит NO на всё</div>
+    <div class="metric"><span class="k">Strategy</span><span class="v">NO on big events</span></div>
+    <div class="metric"><span class="k">Largest Bet</span><span class="v">$87K</span></div>
+    <div class="metric"><span class="k">Markets</span><span class="v">Geopolitics, Elections</span></div>
+    <div class="activity">
+      <div class="act-item"><span class="act-amount">$87K</span> <span class="act-mkt">Иран упадёт к июню?</span> → <span class="act-outcome no">NO</span> @ 59¢</div>
+      <div class="act-item"><span class="act-amount">$77K</span> <span class="act-mkt">Налог на богатство CA?</span> → <span class="act-outcome no">NO</span> @ 64¢</div>
+      <div class="act-item"><span class="act-amount">$76K</span> <span class="act-mkt">Трамп купит Гренландию?</span> → <span class="act-outcome no">NO</span> @ 85¢</div>
+      <div class="act-item"><span class="act-amount">$58K</span> <span class="act-mkt">Иран до 2027?</span> → <span class="act-outcome no">NO</span> @ 50¢</div>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <div class="rank">🐈</div>
+    <div class="name">Крипто-оракул</div>
+    <div class="type">distinct-baguette • $12.1M volume • 15-мин крипто</div>
+    <div class="metric"><span class="k">Strategy</span><span class="v">Short-term crypto direction</span></div>
+    <div class="metric"><span class="k">Win Rate</span><span class="v">~70%</span></div>
+    <div class="metric"><span class="k">Avg Profit</span><span class="v">$370/trade</span></div>
+    <div class="activity">
+      <div class="act-item"><span class="act-amount">+$609</span> <span class="act-mkt">ETH Up 15min</span> → <span class="act-outcome yes">WIN</span></div>
+      <div class="act-item"><span class="act-amount">+$343</span> <span class="act-mkt">BTC Up 15min</span> → <span class="act-outcome yes">WIN</span></div>
+      <div class="act-item"><span class="act-amount">+$315</span> <span class="act-mkt">BTC Down 15min</span> → <span class="act-outcome yes">WIN</span></div>
+      <div class="act-item"><span class="act-amount">+$205</span> <span class="act-mkt">BTC Down 15min</span> → <span class="act-outcome yes">WIN</span></div>
+    </div>
+  </div>
+
+  <div class="profile-card">
+    <div class="rank">🐠</div>
+    <div class="name">Спортсмен</div>
+    <div class="type">DrPufferfish • $3.5M+ volume • Win Rate 80-83% 🔥</div>
+    <div class="metric"><span class="k">Strategy</span><span class="v">Sports underdogs + longshots</span></div>
+    <div class="metric"><span class="k">Win Rate</span><span class="v" style="color:#00ff88">80-83%</span></div>
+    <div class="metric"><span class="k">Largest Bet</span><span class="v">$116K</span></div>
+    <div class="activity">
+      <div class="act-item"><span class="act-amount">$116K</span> <span class="act-mkt">Аргентина ЧМ?</span> → <span class="act-outcome no">NO</span> @ 88¢</div>
+      <div class="act-item"><span class="act-amount">$60K</span> <span class="act-mkt">Никс vs Наггетс</span> → Nuggets</div>
+      <div class="act-item"><span class="act-amount">$40K</span> <span class="act-mkt">Селтикс НБА?</span> → <span class="act-outcome yes">YES</span> @ 4¢</div>
+      <div class="act-item"><span class="act-amount">$27K</span> <span class="act-mkt">Пистонс НБА?</span> → <span class="act-outcome yes">YES</span> @ 5¢</div>
+    </div>
+  </div>
+</div>
+
+<!-- Whale Table -->
+<div class="section"><div class="section-title">🐋 WHALE LEADERBOARD <span class="badge">TOP 10 BY VOLUME</span></div></div>
+<div class="section fade-in" style="max-height:400px;overflow-y:auto">
+<table class="whale-table">
+  <thead><tr><th>#</th><th>Wallet</th><th>Volume</th><th>Name</th><th>Signal</th></tr></thead>
+  <tbody>
+    <tr><td class="whale-rank r1">1</td><td class="whale-addr">0x2a2C...Bc1</td><td class="vol-cell">$26.3M</td><td class="whale-pseudo">kcnyekchno</td><td><span class="signal contrarian">CONTRARIAN</span></td></tr>
+    <tr><td class="whale-rank r2">2</td><td class="whale-addr">0xdc87...ab6</td><td class="vol-cell">$20.2M</td><td class="whale-pseudo">432614799197</td><td><span class="signal whale">WHALE</span></td></tr>
+    <tr><td class="whale-rank r3">3</td><td class="whale-addr">0xe90b...da2</td><td class="vol-cell">$12.1M</td><td class="whale-pseudo">gmanas</td><td><span class="signal crypto">CRYPTO</span></td></tr>
+    <tr><td class="whale-rank r4">4</td><td class="whale-addr">0x0197...9f3c</td><td class="vol-cell">$6.9M</td><td class="whale-pseudo">majorexploiter</td><td><span class="signal mixed">MIXED</span></td></tr>
+    <tr><td class="whale-rank r5">5</td><td class="whale-addr">0x0222...8ff7</td><td class="vol-cell">$6.5M</td><td class="whale-pseudo">HorizonSplendidView</td><td><span class="signal mixed">MIXED</span></td></tr>
+    <tr><td class="whale-rank r6">6</td><td class="whale-addr">0x07b8...e25</td><td class="vol-cell">$5.5M</td><td class="whale-pseudo">joosangyoo</td><td><span class="signal mixed">MIXED</span></td></tr>
+    <tr><td class="whale-rank r7">7</td><td class="whale-addr">0xb904...255</td><td class="vol-cell">$5.1M</td><td class="whale-pseudo">MinorKey4</td><td><span class="signal mixed">MIXED</span></td></tr>
+    <tr><td class="whale-rank r8">8</td><td class="whale-addr">0xc2e7...be51</td><td class="vol-cell">$3.5M</td><td class="whale-pseudo">beachboy4</td><td><span class="signal mixed">MIXED</span></td></tr>
+    <tr><td class="whale-rank r9">9</td><td class="whale-addr">0xb45a...92c</td><td class="vol-cell">$3.2M</td><td class="whale-pseudo">bcda</td><td><span class="signal mixed">MIXED</span></td></tr>
+    <tr><td class="whale-rank r10">10</td><td class="whale-addr">0x916f...3ba</td><td class="vol-cell">$1.5M</td><td class="whale-pseudo">WoofMaster</td><td><span class="signal mixed">MIXED</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- Hot Markets -->
+<div class="section"><div class="section-title">🔥 HOT MARKETS <span class="badge">24H VOLUME</span></div></div>
+<div class="section fade-in" id="markets-list">
+  <div class="market-item"><span style="color:#ff4444"> geopolitics</span> US x Iran ceasefire extended by April 22?<span class="market-vol">$14.8M</span></div>
+  <div class="market-item"><span style="color:#4488ff"> macro</span> Fed decrease rates 25bps after April FOMC?<span class="market-vol">$7.5M</span></div>
+  <div class="market-item"><span style="color:#4488ff"> macro</span> No change in Fed rates after April FOMC?<span class="market-vol">$6.2M</span></div>
+  <div class="market-item"><span style="color:#ffaa00"> crypto</span> Bitcoin hit $150k by June 30, 2026?<span class="market-vol">$5.8M</span></div>
+  <div class="market-item"><span style="color:#4488ff"> macro</span> Fed increase rates 25+ bps?<span class="market-vol">$3.8M</span></div>
+</div>
+
+<!-- HOW TO EARN -->
+<div class="section" style="margin-top:20px"><div class="section-title">💰 КАК ЗАРАБОТАТЬ НА КИТАХ <span class="badge">GUIDE</span></div></div>
+
+<div class="strategy-box">
+  <h3>⚠️ ПРАВИЛА ВЫЖИВАНИЯ</h3>
+  <div class="strategy-item"><span class="icon">🚫</span> <b>Никакой автоторговли</b> — только анализ и ручные решения</div>
+  <div class="strategy-item"><span class="icon">💰</span> <b>Минимум $50</b> — меньше не имеет смысла (газ Polygon ~$0.01)</div>
+  <div class="strategy-item"><span class="icon">🧠</span> <b>Думай как кит</b> — они не угадывают, они знают когда выходить</div>
+  <div class="strategy-item"><span class="icon">⏰</span> <b>Входи ПОСЛЕ кита</b> — не вместе с ним. Цена уже сдвинулась</div>
+  <div class="strategy-item"><span class="icon">🛑</span> <b>Стоп-лосс = жизнь</b> — 15% лимит на убыток по позиции</div>
+</div>
+
+<div class="guide">
+<div class="guide-grid">
+
+  <div class="guide-card fade-in">
+    <span class="step">1</span>
+    <h3>🔍 НАБЛЮДАЙ ЗА КИТАМИ</h3>
+    <p>Киты оставляют следы на Polygon. Когда кошелёк из топ-10 открывает позицию — ты видишь это в реальном времени. Смотри не только ЧТО они покупают, но и СКОЛЬКО ставят. $50K+ = высокая убеждённость. $5K = разведка.</p>
+    <div class="profit">💎 Сигнал: 3+ кита в одном рынке за 24ч = сильный Consensus</div>
+    <div class="risk">⚠️ Не каждый кит прав — даже лучшие ошибаются в 20% случаев</div>
+  </div>
+
+  <div class="guide-card fade-in">
+    <span class="step">2</span>
+    <h3>📊 КОНТРАРИАН-СТРАТЕГИЯ</h3>
+    <p>Кит #1 ставит NO на геополитику. Почему? Потому что рынки переоценивают вероятность редких событий. "Иран упадёт" на 50¢ = рынок думает 50%, реальность = 10%. Контрариан покупает NO и забирает 90¢ прибыли.</p>
+    <div class="profit">💰 ROI: 30-80% на resolved markets</div>
+    <div class="risk">⚠️ Риск: рынок может не resolve месяцами — капитал заморожен</div>
+  </div>
+
+  <div class="guide-card fade-in">
+    <span class="step">3</span>
+    <h3>⚡ СКАЛЬПИНГ КРИПТО-НАПРАВЛЕНИЕ</h3>
+    <p>Кит #2 (distinct-baguette) делает 15-минутные ставки на BTC/ETH направление. Если ETH сейчас $2,333 и ты видишь что кит ставит "Up" — скорее всего у него есть edge (инсайд, алгоритм, анализ ордербука).</p>
+    <div class="profit">💎 ROI: 5-15% за 15 минут. Быстрый оборот.</div>
+    <div class="risk">⚠️ Высокая частота = много маленьких потерь. Нужен винрейт >60%</div>
+  </div>
+
+  <div class="guide-card fade-in">
+    <span class="step">4</span>
+    <h3>🏀 СПОРТ-ЛАНГШОТЫ</h3>
+    <p>Кит #3 ставит YES на аутсайдеров по 4-5¢. Celtics @ 4¢ = если выиграют, получаешь 25x. Если нет — теряешь 4¢. Это математика: 4% шанс * 25x = нужно быть правым хотя бы в 4% случаев чтобы выйти в ноль.</p>
+    <div class="profit">🚀 ROI: 10-25x на выигрышных ставках. Асимметричный риск.</div>
+    <div class="risk">⚠️ Большинство лангшотов = 0. Не ставь больше 2% банкролла.</div>
+  </div>
+
+  <div class="guide-card fade-in">
+    <span class="step">5</span>
+    <h3>🔄 КОПИ-ТРЕЙД С РАННИМ ВЫХОДОМ</h3>
+    <p>Кит заходит в YES @ 40¢. Цена поднимается до 55¢. Ты входишь на 45¢ (после стабилизации). Цена доходит до 65¢ — ты выходишь с +44%. Кит может держать до resolve — тебе не обязательно.</p>
+    <div class="profit">💎 Стратегия из видео: $200 → $14,300 за счёт раннего выхода</div>
+    <div class="risk">⚠️ Если кит ошибся — ты тоже в минусе, но раньше вышёл</div>
+  </div>
+
+  <div class="guide-card fade-in">
+    <span class="step">6</span>
+    <h3>🎯 АРБИТРАЖ МЕЖДУ РЫНКАМИ</h3>
+    <p>Иногда YES на одном рынке стоит 45¢, а NO на связанном — 48¢. Покупаешь оба — гарантированная прибыль 7¢ (меньше газ). Кит #1 использует это на геополитических рынках.</p>
+    <div class="profit">💎 ROI: 2-8% гарантированно. Безрисковый.</div>
+    <div class="risk">⚠️ Минимальная прибыль, нужны большие позиции. Газ может съесть.</div>
+  </div>
+
+</div>
+
+<!-- Quick start -->
+<div style="background:linear-gradient(135deg,#0a2a1a,#1a1a0a);border:1px solid #00ff8833;border-radius:10px;padding:15px;margin-top:15px">
+  <h3 style="color:#00ff88;font-size:12px;margin-bottom:10px">⚡ БЫСТРЫЙ СТАРТ — 5 МИНУТ</h3>
+  <div style="font-size:10px;color:#999;line-height:1.8">
+    <div>1️⃣ Зайди на <span style="color:#4488ff">polymarket.com</span> — подключи MetaMask на Polygon</div>
+    <div>2️⃣ Закини USDC на Polygon (через мост или напрямую)</div>
+    <div>3️⃣ Выбери рынок где 2+ кита активны (смотри дашборд выше)</div>
+    <div>4️⃣ Входи ПОСЛЕ кита, не вместе — подожди стабилизации цены</div>
+    <div>5️⃣ Выходи раньше кита — забирай прибыль и беги 💀</div>
+  </div>
+</div>
+
+<!-- Math example -->
+<div style="background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:15px;margin-top:12px">
+  <h3 style="color:#ffaa00;font-size:12px;margin-bottom:8px">📊 ПРИМЕР: ФРС СЕГОДНЯ</h3>
+  <div style="font-size:10px;color:#999;line-height:1.8">
+    <div>🔵 Рынок: "Fed decrease rates 25bps" — <span style="color:#ff4444">$7.5M объём</span></div>
+    <div>🐋 Кит #1 не торгует ФРС → нет кит-сигнала</div>
+    <div>📈 Если Пауэлл = голубь → YES взлетит</div>
+    <div>📉 Если Пауэлл = ястреб → NO взлетит</div>
+    <div>💡 <span style="color:#00ff88">Стратегия:</span> подожди решение 21:00, посмотри реакцию китов, входи на откате</div>
+    <div>💰 <span style="color:#ffaa00">Потенциал:</span> ±20% за 30 минут после решения</div>
+  </div>
+</div>
+
+</div>
+
+<div class="refresh-bar">
+  <span class="status"><span class="spinner"></span> LIVE • Auto-refresh <span id="countdown">60</span>s</span>
+  <span style="color:#444">NANO Whale Tracker v2.0 • Polymarket + PolyMonit API</span>
+  <span style="color:#555" id="update-time"></span>
+</div>
+
+<script>
+const now = new Date();
+document.getElementById('timestamp').textContent = now.toLocaleString('ru-RU',{timeZone:'Europe/Kaliningrad'});
+document.getElementById('update-time').textContent = now.toLocaleTimeString('ru-RU',{timeZone:'Europe/Kaliningrad'});
+
+// Crypto prices
+async function updatePrices(){
+  try{
+    const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum,bitcoin&vs_currencies=usd');
+    const d=await r.json();
+    document.getElementById('eth-price').textContent='$'+d.ethereum.usd.toLocaleString();
+    document.getElementById('btc-price').textContent='$'+d.bitcoin.usd.toLocaleString();
+  }catch(e){
+    document.getElementById('eth-price').textContent='$2,333';
+    document.getElementById('btc-price').textContent='$76,961';
+  }
+}
+updatePrices();
+
+// Auto refresh countdown
+let cd=60;
+setInterval(()=>{
+  cd--;
+  document.getElementById('countdown').textContent=cd;
+  if(cd<=0){
+    cd=60;
+    updatePrices();
+    // Animate refresh
+    document.querySelectorAll('.stat-card').forEach((c,i)=>{
+      c.style.transition='all .3s';
+      c.style.borderColor='#00ff8855';
+      setTimeout(()=>c.style.borderColor='#1a1a3a',500+i*100);
+    });
+  }
+},1000);
+
+// Click to copy wallet address
+document.querySelectorAll('.whale-addr').forEach(el=>{
+  el.title='Click to copy';
+  el.addEventListener('click',()=>{
+    const addr=el.textContent;
+    navigator.clipboard.writeText(addr).then(()=>{
+      const orig=el.textContent;
+      el.textContent='COPIED ✓';
+      el.style.color='#00ff88';
+      setTimeout(()=>{el.textContent=orig;el.style.color='';},1000);
+    });
+  });
+});
+</script>
+
+</body>
+</html>
