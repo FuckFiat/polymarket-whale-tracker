@@ -740,18 +740,33 @@ async def collect_data_and_generate():
         
         # Auto-deploy to gh-pages
         try:
-            import subprocess
+            import subprocess, shutil
             repo_dir = os.path.dirname(os.path.abspath(__file__))
+            # Commit to main
             subprocess.run(["git", "add", "dashboard.html"], cwd=repo_dir, capture_output=True, timeout=10)
             subprocess.run(["git", "commit", "-m", "dashboard auto-refresh"], cwd=repo_dir, capture_output=True, timeout=10)
             subprocess.run(["git", "push", "origin", "main"], cwd=repo_dir, capture_output=True, timeout=30)
-            # Sync to gh-pages
-            subprocess.run(["git", "checkout", "gh-pages"], cwd=repo_dir, capture_output=True, timeout=10)
-            subprocess.run(["git", "checkout", "main", "--", "dashboard.html", "results/virtual_trades.json"], cwd=repo_dir, capture_output=True, timeout=10)
-            subprocess.run(["git", "add", "dashboard.html", "results/virtual_trades.json"], cwd=repo_dir, capture_output=True, timeout=10)
-            subprocess.run(["git", "commit", "-m", "dashboard auto-refresh gh-pages"], cwd=repo_dir, capture_output=True, timeout=10)
-            subprocess.run(["git", "push", "origin", "gh-pages"], cwd=repo_dir, capture_output=True, timeout=30)
-            subprocess.run(["git", "checkout", "main"], cwd=repo_dir, capture_output=True, timeout=10)
+            # Deploy to gh-pages by copying files directly (no branch switching)
+            gh_dir = repo_dir + "-gh-pages"
+            if os.path.exists(gh_dir):
+                subprocess.run(["git", "pull"], cwd=gh_dir, capture_output=True, timeout=15)
+            else:
+                subprocess.run(["git", "clone", "-b", "gh-pages", "https://github.com/FuckFiat/polymarket-whale-tracker.git", gh_dir], capture_output=True, timeout=30)
+            # Copy dashboard
+            src = os.path.join(repo_dir, "dashboard.html")
+            dst = os.path.join(gh_dir, "dashboard.html")
+            shutil.copy2(src, dst)
+            # Copy virtual trades
+            vt_src = os.path.join(repo_dir, "results", "virtual_trades.json")
+            if os.path.exists(vt_src):
+                vt_dst = os.path.join(gh_dir, "results", "virtual_trades.json")
+                os.makedirs(os.path.dirname(vt_dst), exist_ok=True)
+                shutil.copy2(vt_src, vt_dst)
+                subprocess.run(["git", "add", "dashboard.html", "results/virtual_trades.json"], cwd=gh_dir, capture_output=True, timeout=10)
+            else:
+                subprocess.run(["git", "add", "dashboard.html"], cwd=gh_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "commit", "-m", "dashboard auto-refresh"], cwd=gh_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "push", "origin", "gh-pages"], cwd=gh_dir, capture_output=True, timeout=30)
             print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Deployed to gh-pages")
         except Exception as e:
             print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] gh-pages deploy error: {e}")
