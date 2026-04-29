@@ -440,6 +440,117 @@ async def cmd_arbitrage(chat_id):
     btns = [[{"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}]]
     await tg_send(text, btns, chat_id)
 
+
+
+async def cmd_deposit(chat_id):
+    """Show virtual portfolio status."""
+    portfolio = load_portfolio()
+    stats = get_stats(portfolio)
+    
+    text = f"""🎰 *NANO ВИРТУАЛЬНЫЙ ДЕПОЗИТ*
+═══════════════════════════════════
+
+💰 Баланс: *${stats['balance']:.2f}*
+📊 Открытых ставок: *{stats['open_positions']}*
+✅ Побед: *{stats['wins']}* | ❌ Поражений: *{stats['losses']}*
+📈 Win Rate: *{stats['win_rate']:.0f}%*
+💵 Всего выиграно: *${stats['total_won']:.2f}*
+💸 Всего проиграно: *${stats['total_lost']:.2f}*
+📊 Открытый P&L: *${stats['open_pnl']:+.2f}*
+💰 Всего P&L: *${stats['total_pnl']:+.2f}*
+📈 ROI: *{stats['roi_pct']:+.1f}%*
+🎯 Стартовый депозит: *${stats['initial_deposit']:.2f}*"""
+
+    if portfolio["positions"]:
+        text += "\n\n📋 *Открытые ставки:*"
+        for p in portfolio["positions"][:8]:
+            pnl_emoji = "🟢" if p["pnl"] >= 0 else "🔴"
+            text += f"\n{pnl_emoji} {p['whale']}: {p['outcome']} {p['market'][:30]} @ {p['entry_price']*100:.0f}c — ${p['pnl']:+.2f}"
+    
+    if portfolio["resolved"]:
+        text += f"\n\n🏁 Разрешённых: {len(portfolio['resolved'])}"
+    
+    btns = [
+        [{"text": "🎰 Ставка", "callback_data": "vt_bet"}, {"text": "📊 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}],
+        [{"text": "🔄 Обновить цены", "callback_data": "vt_refresh"}, {"text": "➕ Пополнить", "callback_data": "vt_topup"}],
+    ]
+    await tg_send(text, btns, chat_id)
+
+async def cmd_bet(chat_id):
+    """Show available whale signals to bet on."""
+    portfolio = load_portfolio()
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as s:
+        # Get top whale positions as bet signals
+        signals = []
+        for addr, info in WHALES.items():
+            try:
+                url = f"{DATA_API}/positions?user={addr.lower()}"
+                async with s.get(url) as r:
+                    positions = await r.json()
+                for p in positions[:10]:
+                    cv = float(p.get("currentValue", 0) or 0)
+                    cur = float(p.get("curPrice", 0) or 0)
+                    avg = float(p.get("avgPrice", 0) or 0)
+                    if cv > 500 and cur > 0:
+                        signals.append({
+                            "whale": info["name"],
+                            "emoji": info["emoji"],
+                            "market": p.get("title", "?"),
+                            "outcome": p.get("outcome", "?"),
+                            "cur_price": cur,
+                            "avg_price": avg,
+                            "value": cv,
+                            "pnl": float(p.get("cashPnl", 0) or 0),
+                        })
+            except:
+                continue
+    
+    # Sort by whale P&L direction (winning positions first)
+    signals.sort(key=lambda x: x["pnl"], reverse=True)
+    
+    if not signals:
+        await tg_send("🐋 Нет доступных сигналов от китов", chat_id)
+        return
+    
+    text = f"🎰 *ДОСТУПНЫЕ СИГНАЛЫ*\nБаланс: ${portfolio['balance']:.2f}\n\n"
+    
+    # Create inline buttons for top signals
+    btns = []
+    for i, sig in enumerate(signals[:6]):
+        pnl_emoji = "🟢" if sig["pnl"] >= 0 else "🔴"
+        text += f"\n{pnl_emoji} {sig['emoji']} {sig['whale']}: {sig['outcome']} {sig['market'][:35]}"
+        text += f"\n   @ {sig['cur_price']*100:.0f}c | ${sig['value']:,.0f} | ${sig['pnl']:+,.0f}"
+        
+        # Button to bet on this signal
+        cb_data = f"bet_{sig['whale']}_{sig['outcome']}_{sig['cur_price']}_{sig['market'][:20]}"
+        if len(cb_data) <= 64:
+            btns.append([{"text": f"🎰 {sig['emoji']} {sig['whale']}: {sig['outcome']} @ {sig['cur_price']*100:.0f}c ($50)", "callback_data": cb_data}])
+    
+    text += f"\n\nСтавка: $50 | Баланс: ${portfolio['balance']:.2f}"
+    
+    btns.append([{"text": "🎰 Кастомная ставка", "callback_data": "vt_custom"}])
+    await tg_send(text, btns, chat_id)
+
+async def cmd_close(chat_id):
+    """Close a position."""
+    portfolio = load_portfolio()
+    if not portfolio["positions"]:
+        await tg_send("📋 Нет открытых ставок", chat_id)
+        return
+    
+    text = "🏁 *ЗАКРЫТЬ СТАВКУ*\n\n"
+    btns = []
+    for p in portfolio["positions"][:6]:
+        pnl_emoji = "🟢" if p["pnl"] >= 0 else "🔴"
+        text += f"{pnl_emoji} {p['whale']}: {p['outcome']} {p['market'][:30]} — ${p['pnl']:+.2f}\n"
+        btns.append([
+            {"text": f"✅ WIN {p['id']}", "callback_data": f"close_win_{p['id']}"},
+            {"text": f"❌ LOSS {p['id']}", "callback_data": f"close_loss_{p['id']}"},
+        ])
+    
+    await tg_send(text, btns, chat_id)
+
 COMMANDS = {
     "/start": cmd_start,
     "/help": cmd_help,
