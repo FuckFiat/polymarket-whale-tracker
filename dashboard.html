@@ -100,16 +100,16 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
 <div class="header">
   <h1>🐋 NANO POLYMARKET WHALE TRACKER v3.0</h1>
-  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">29.04.2026 23:29</span></div>
+  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">29.04.2026 23:32</span></div>
 </div>
 
 <div class="stats-row fade-in">
   <div class="stat-card"><div class="label">Active Whales</div><div class="value">9/10</div></div>
   <div class="stat-card"><div class="label">Positions</div><div class="value blue">77</div></div>
-  <div class="stat-card"><div class="label">Signals</div><div class="value yellow">0</div></div>
+  <div class="stat-card"><div class="label">Signals</div><div class="value yellow">1</div></div>
   <div class="stat-card"><div class="label">Win Rate</div><div class="value red">0%</div></div>
-  <div class="stat-card"><div class="label">ETH</div><div class="value purple">$2,247</div></div>
-  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$75,824</div></div>
+  <div class="stat-card"><div class="label">ETH</div><div class="value purple">$2,246</div></div>
+  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$75,794</div></div>
 </div>
 
 <!-- P&L Hero -->
@@ -125,7 +125,30 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
 <!-- Recent Signals with Instructions -->
 <div class="section"><div class="section-title">📋 ПОСЛЕДНИЕ СИГНАЛЫ + ИНСТРУКЦИИ <span class="badge">LIVE</span></div></div>
-<div style="padding:20px;color:#333;text-align:center">Сигналов пока нет — киты отдыхают 🐋</div>
+
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Games Total: O/U 2.5</div>
+          <div class="signal-details">
+            <span>💰 $210</span>
+            <span>📊 @ 82.0¢</span>
+            <span>📐 256 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.82¢ — почти гарантировано, но ROI мизерный
+💰 Прибыль: 18.0¢ на доллар если resolve=YES
+⚠️ Риск: 82¢ на доллар если resolve=NO — НЕ СТОИТ
+💰 Размер: кит ставит $210 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
 
 <!-- Whale Positions -->
 <div class="section"><div class="section-title">🐋 ПОЗИЦИИ КИТОВ <span class="badge">TOP 10</span></div></div>
@@ -383,28 +406,28 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
           <div class="whale-strat">Хай-волюм ротация</div>
           <div class="whale-positions-list">
             <div class="pos-item">
-              <span class="pos-market">Will Arsenal FC win on 2026-04-29?</span>
-              <span style="color:#00ff88;font-weight:600">+31,214 (+73%)</span>
-              <span class="pos-vol">$74,042</span>
-              <span class="pos-price">@ 100.0¢</span>
-            </div>
-            <div class="pos-item">
               <span class="pos-market">Will Paris Saint-Germain FC win on 2026-</span>
               <span style="color:#ff4444;font-weight:600">-14,737 (-100%)</span>
               <span class="pos-vol">$0</span>
               <span class="pos-price">@ 19.9¢</span>
             </div>
             <div class="pos-item">
-              <span class="pos-market">Will Club Atlético de Madrid win on 2026</span>
-              <span style="color:#00ff88;font-weight:600">+13,094 (+30%)</span>
-              <span class="pos-vol">$56,450</span>
-              <span class="pos-price">@ 100.0¢</span>
-            </div>
-            <div class="pos-item">
               <span class="pos-market">Will AVS Futebol vs. Sporting CP end in </span>
               <span style="color:#ff4444;font-weight:600">-5,650 (-100%)</span>
               <span class="pos-vol">$0</span>
               <span class="pos-price">@ 11.4¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Cagliari: Lorenzo Sonego vs Mattia Bellu</span>
+              <span style="color:#00ff88;font-weight:600">+24,553 (+124%)</span>
+              <span class="pos-vol">$44,376</span>
+              <span class="pos-price">@ 100.0¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will FC Bayern München win on 2026-04-25</span>
+              <span style="color:#ff4444;font-weight:600">-19,565 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 49.3¢</span>
             </div></div>
         </div>
         <div class="whale-card active fade-in">
@@ -449,7 +472,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
         <div class="market-item">
           <span style="color:#666">othe</span> US x Iran ceasefire extended by April 22, 2026?
-          <span class="market-vol">$17.2M</span>
+          <span class="market-vol">$20.0M</span>
         </div>
         <div class="market-item">
           <span style="color:#666">othe</span> Will Arsenal FC win on 2026-04-29?
@@ -513,7 +536,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 <div class="refresh-bar">
   <span class="status"><span class="spinner"></span> LIVE • Auto-refresh <span id="countdown">120</span>s</span>
   <span style="color:#444">NANO Whale Tracker v3.0 • Polymarket API</span>
-  <span style="color:#555" id="update-time">29.04.2026 23:29</span>
+  <span style="color:#555" id="update-time">29.04.2026 23:32</span>
 </div>
 
 <script>
