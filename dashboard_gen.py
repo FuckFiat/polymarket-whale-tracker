@@ -1,0 +1,581 @@
+#!/usr/bin/env python3
+"""
+🐋 NANO Polymarket Whale Tracker v3.0
+- Динамический дашборд с реальными данными
+- Торговые инструкции к каждой сделке
+- Визуализация дохода (всплывающие цифры)
+- Сигнальный P&L трекер
+"""
+
+import asyncio, aiohttp, json, time, os, sys
+from datetime import datetime, timezone, timedelta
+
+DATA_API = "https://data-api.polymarket.com"
+GAMMA_API = "https://gamma-api.polymarket.com"
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
+os.makedirs(RESULTS_DIR, exist_ok=True)
+
+WHALES = {
+    "0x2a2c53bd278c04da9962fcf96490e17f3dfb9bc1": {"name": "kcnyekchno", "tier": "whale", "strat": "NO на геополитику", "emoji": "🐋"},
+    "0xdc876e6873772d38716fda7f2452a78d426d7ab6": {"name": "432614799197", "tier": "whale", "strat": "Кросс-категорийный", "emoji": "🐋"},
+    "0x02227b8f5a9636e895607edd3185ed6ee5598ff7": {"name": "HorizonSplendidView", "tier": "whale", "strat": "Спорт + макро", "emoji": "🐋"},
+    "0x019782cab5d844f02bafb71f512758be78579f3c": {"name": "majorexploiter", "tier": "whale", "strat": "Геополитика", "emoji": "🐋"},
+    "0x492442eab586f242b53bda933fd5de859c8a3782": {"name": "April #1", "tier": "whale", "strat": "Спорт, ивенты", "emoji": "🏆"},
+    "0xefbc5fec8d7b0acdc8911bdd9a98d6964308f9a2": {"name": "reachingthesky", "tier": "whale", "strat": "Спорт", "emoji": "🐋"},
+    "0xc2e7800b5af46e6093872b177b7a5e7f0563be51": {"name": "beachboy4", "tier": "whale", "strat": "Спорт, футбол", "emoji": "🐋"},
+    "0xde17f7144fbd0eddb2679132c10ff5e74b120988": {"name": "Crypto Leader", "tier": "dolphin", "strat": "Крипто, DeFi", "emoji": "🐈"},
+    "0x2005d16a84ceefa912d4e380cd32e7ff827875ea": {"name": "RN1", "tier": "whale", "strat": "Хай-волюм ротация", "emoji": "🐋"},
+    "0xbddf61af533ff524d27154e589d2d7a81510c684": {"name": "Countryside", "tier": "whale", "strat": "Спорт, турниры", "emoji": "🐋"},
+}
+
+SIGNAL_TRACKER_FILE = os.path.join(RESULTS_DIR, "signal_tracker.json")
+
+def load_signal_tracker():
+    if os.path.exists(SIGNAL_TRACKER_FILE):
+        with open(SIGNAL_TRACKER_FILE) as f:
+            return json.load(f)
+    return {"signals": [], "total_pnl": 0, "wins": 0, "losses": 0, "pending": 0}
+
+def save_signal_tracker(tracker):
+    with open(SIGNAL_TRACKER_FILE, "w") as f:
+        json.dump(tracker, f, indent=2, ensure_ascii=False)
+
+async def fetch_whale_positions(session, addr):
+    """Fetch current positions for a whale address."""
+    try:
+        url = f"{DATA_API}/positions?user={addr.lower()}"
+        async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as r:
+            if r.status == 200:
+                return await r.json()
+    except:
+        pass
+    return []
+
+async def fetch_top_markets(session, limit=15):
+    """Fetch top markets by volume."""
+    try:
+        url = f"{GAMMA_API}/markets?limit={limit}&order=volume24hr&ascending=false&closed=false"
+        async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as r:
+            if r.status == 200:
+                return await r.json()
+    except:
+        pass
+    return []
+
+async def fetch_recent_trades(session, limit=200):
+    """Fetch recent trades."""
+    try:
+        url = f"{DATA_API}/trades?limit={limit}&order=desc"
+        async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as r:
+            if r.status == 200:
+                return await r.json()
+    except:
+        pass
+    return []
+
+async def fetch_crypto_prices(session):
+    """Fetch BTC/ETH prices."""
+    try:
+        url = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,bitcoin&vs_currencies=usd"
+        async with session.get(url, timeout=aiohttp.ClientTimeout(total=5)) as r:
+            if r.status == 200:
+                data = await r.json()
+                return {
+                    "eth": data.get("ethereum", {}).get("usd", 0),
+                    "btc": data.get("bitcoin", {}).get("usd", 0)
+                }
+    except:
+        pass
+    return {"eth": 0, "btc": 0}
+
+def generate_trade_instruction(whale_name, side, market_title, size, price, outcome):
+    """Generate specific trading instructions for a whale trade."""
+    vol = size * price
+    instructions = []
+    
+    # Entry strategy
+    if side == "BUY":
+        entry_price = price
+        if price < 0.30:
+            instructions.append(f"📈 Вход: купить YES @ {price:.2f}¢ — лангшот, риск <30% капитала")
+            instructions.append(f"🎯 Тейк-профит: {price*3:.0f}¢ (3x) или держи до resolve")
+            instructions.append(f"🛑 Стоп-лосс: {(price*0.5):.2f}¢ (потеря 50%)")
+        elif price < 0.50:
+            instructions.append(f"📈 Вход: купить YES @ {price:.2f}¢ после стабилизации (1-5 мин)")
+            instructions.append(f"🎯 Тейк-профит: {(price + 0.15):.0f}¢ (+{0.15/price*100:.0f}%) или до resolve")
+            instructions.append(f"🛑 Стоп-лосс: {(price*0.75):.2f}¢ (-25%)")
+        elif price < 0.80:
+            instructions.append(f"📈 Вход: купить YES @ {price:.2f}¢ — высокая вероятность, низкий ROI")
+            instructions.append(f"🎯 Тейк-профит: {(price + 0.08):.0f}¢ (+{0.08/price*100:.0f}%) или держи")
+            instructions.append(f"🛑 Стоп-лосс: {(price - 0.10):.2f}¢ (-10-15%)")
+        else:
+            instructions.append(f"📈 Вход: купить YES @ {price:.2f}¢ — почти гарантировано, но ROI мизерный")
+            instructions.append(f"💰 Прибыль: {(1-price)*100:.1f}¢ на доллар если resolve=YES")
+            instructions.append(f"⚠️ Риск: {price*100:.0f}¢ на доллар если resolve=NO — НЕ СТОИТ")
+    else:  # SELL
+        if price > 0.70:
+            instructions.append(f"📉 Вход: продать (NO) @ {(1-price):.2f}¢ — кит ставит против")
+            instructions.append(f"🎯 Тейк-профит: resolve=NO → профит {(1-price)*100:.1f}¢/$")
+            instructions.append(f"🛑 Стоп-лосс: цена YES падает ниже {(price-0.10):.2f}¢")
+        elif price > 0.40:
+            instructions.append(f"📉 Вход: продать (NO) @ {(1-price):.2f}¢ — средний риск")
+            instructions.append(f"🎯 Тейк-профит: {(1-price)*2:.0f}¢ (2x) или до resolve")
+            instructions.append(f"🛑 Стоп-лосс: {(1-price)*0.5:.2f}¢ (-50%)")
+        else:
+            instructions.append(f"📉 Вход: продать (NO) @ {(1-price):.2f}¢ — ВЫСОКИЙ РИСК")
+            instructions.append(f"⚠️ YES на {(1-price)*100:.0f}% — если resolve=YES, теряешь {price*100:.0f}¢/$")
+    
+    # Position sizing
+    if vol > 50000:
+        instructions.append(f"💰 Размер: кит ставит ${vol:,.0f} — ВЫСОКАЯ убеждённость")
+        instructions.append(f"📊 Рекомендация: $100-500 за ним, не больше 5% банкролла")
+    elif vol > 10000:
+        instructions.append(f"💰 Размер: кит ставит ${vol:,.0f} — средняя убеждённость")
+        instructions.append(f"📊 Рекомендация: $50-200 за ним, не больше 3% банкролла")
+    else:
+        instructions.append(f"💰 Размер: кит ставит ${vol:,.0f} — разведка/тест")
+        instructions.append(f"📊 Рекомендация: подожди подтверждения от других китов")
+    
+    return "\n".join(instructions)
+
+def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
+    """Generate dynamic HTML dashboard."""
+    
+    # Calculate stats
+    total_volume = sum(w.get("total_vol", 0) for w in whale_data.values())
+    active_whales = sum(1 for w in whale_data.values() if w.get("active"))
+    total_positions = sum(len(w.get("positions", [])) for w in whale_data.values())
+    
+    # P&L data
+    pnl = tracker.get("total_pnl", 0)
+    wins = tracker.get("wins", 0)
+    losses = tracker.get("losses", 0)
+    pending = tracker.get("pending", 0)
+    win_rate = (wins / (wins + losses) * 100) if (wins + losses) > 0 else 0
+    
+    # Build signal cards HTML
+    signal_cards = ""
+    for sig in recent_signals[:8]:
+        whale_name = sig.get("whale_name", "?")
+        side = sig.get("side", "?")
+        market = sig.get("market", "?")
+        price = sig.get("price", 0)
+        size = sig.get("size", 0)
+        vol = size * price
+        outcome = sig.get("outcome", "?")
+        instructions = sig.get("instructions", "")
+        pnl_val = sig.get("pnl", 0)
+        status = sig.get("status", "pending")
+        
+        pnl_class = "pnl-positive" if pnl_val > 0 else "pnl-negative" if pnl_val < 0 else "pnl-pending"
+        pnl_text = f"+${pnl_val:,.0f}" if pnl_val > 0 else f"-${abs(pnl_val):,.0f}" if pnl_val < 0 else "PENDING"
+        status_badge = f'<span class="status-{status}">{status.upper()}</span>'
+        
+        side_class = "side-buy" if side == "BUY" else "side-sell"
+        
+        signal_cards += f'''
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">{sig.get("emoji","🐋")} {whale_name}</span>
+            <span class="signal-side {side_class}">{side}</span>
+            <span class="signal-pnl {pnl_class}">{pnl_text}</span>
+            {status_badge}
+          </div>
+          <div class="signal-market">{market[:80]}</div>
+          <div class="signal-details">
+            <span>💰 ${vol:,.0f}</span>
+            <span>📊 @ {price*100:.1f}¢</span>
+            <span>📐 {size:,.0f} shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">{instructions}</pre>
+          </div>
+          <div class="signal-pnl-popup {pnl_class}" data-pnl="{pnl_val}">${pnl_val:+,.0f}</div>
+        </div>'''
+    
+    # Build whale position cards
+    whale_cards = ""
+    for addr, info in WHALES.items():
+        w = whale_data.get(addr, {})
+        positions = w.get("positions", [])
+        active_count = len(positions)
+        w_vol = w.get("total_vol", 0)
+        is_active = w.get("active", False)
+        act_class = "active" if is_active else "inactive"
+        
+        pos_html = ""
+        for p in positions[:4]:
+            title = p.get("title", "?")[:40]
+            size_p = float(p.get("size", 0))
+            price_p = float(p.get("price", 0))
+            side_p = p.get("side", "?")
+            vol_p = p.get("currentValue", size_p * price_p)
+            outcome_p = p.get("outcome", "?")
+            
+            cash_pnl_p = p.get("cashPnl", 0)
+            pct_pnl_p = p.get("percentPnl", 0)
+            pnl_clr = "#00ff88" if cash_pnl_p >= 0 else "#ff4444"
+            current_val = p.get("currentValue", vol_p)
+            pos_html += f"""
+            <div class="pos-item">
+              <span class="pos-market">{title}</span>
+              <span style="color:{pnl_clr};font-weight:600">{cash_pnl_p:+,.0f} ({pct_pnl_p:+.0f}%)</span>
+              <span class="pos-vol">${current_val:,.0f}</span>
+              <span class="pos-price">@ {price_p*100:.1f}¢</span>
+            </div>"""
+        
+        whale_cards += f'''
+        <div class="whale-card {act_class} fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">{info["emoji"]}</span>
+            <span class="whale-name">{info["name"]}</span>
+            <span class="whale-tier">{info["tier"]}</span>
+            <span class="whale-positions">{active_count} поз.</span>
+          </div>
+          <div class="whale-strat">{info["strat"]}</div>
+          <div class="whale-positions-list">{pos_html if pos_html else '<div class="no-pos">Нет открытых позиций</div>'}</div>
+        </div>'''
+    
+    # Build market list
+    market_html = ""
+    for m in markets[:12]:
+        question = m.get("question", "?")[:70]
+        vol_24h = float(m.get("volume24hr", 0) or 0)
+        slug = m.get("slug", "")
+        cat = m.get("category", "other")
+        cat_colors = {"geopolitics": "#ff4444", "macro": "#4488ff", "crypto": "#ffaa00", 
+                      "sports": "#00ff88", "politics": "#aa66ff", "other": "#666"}
+        cat_color = cat_colors.get(cat, "#666")
+        
+        market_html += f'''
+        <div class="market-item">
+          <span style="color:{cat_color}">{cat[:4]}</span> {question}
+          <span class="market-vol">${vol_24h/1e6:.1f}M</span>
+        </div>'''
+    
+    now_str = datetime.now(timezone(timedelta(hours=2))).strftime("%d.%m.%Y %H:%M")
+    
+    # Build P&L floating numbers
+    pnl_animations = ""
+    for i, sig in enumerate(recent_signals[:6]):
+        pnl_v = sig.get("pnl", 0)
+        if pnl_v != 0:
+            color = "#00ff88" if pnl_v > 0 else "#ff4444"
+            delay = i * 0.8
+            pnl_animations += f'''
+            <div class="float-number" style="animation-delay:{delay}s;color:{color}">
+              {"+" if pnl_v > 0 else ""}${pnl_v:,.0f}
+            </div>'''
+    
+    dashboard = f'''<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐋 NANO Polymarket Whale Tracker v3.0</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{background:#060610;color:#e0e0e0;font-family:'JetBrains Mono',monospace;min-height:100vh;overflow-x:hidden}}
+
+body::before{{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,#0a1a2a 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,#1a0a2e 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,#0a2a1a 0%,transparent 50%);z-index:-1;animation:bgPulse 8s ease-in-out infinite alternate}}
+@keyframes bgPulse{{0%{{opacity:.6}}100%{{opacity:1}}}}
+
+body::after{{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.015) 2px,rgba(0,255,136,0.015) 4px);pointer-events:none;z-index:9999}}
+
+/* Floating P&L numbers */
+.float-container{{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:100;overflow:hidden}}
+.float-number{{position:absolute;font-size:32px;font-weight:700;text-shadow:0 0 20px currentColor;opacity:0;animation:floatUp 3s ease-out infinite}}
+@keyframes floatUp{{0%{{opacity:0;transform:translateY(100vh) scale(0.5)}}15%{{opacity:1;transform:translateY(70vh) scale(1.2)}}30%{{opacity:0.9;transform:translateY(50vh) scale(1)}}100%{{opacity:0;transform:translateY(-10vh) scale(0.3)}}}}
+
+.header{{background:linear-gradient(135deg,#0a0a1f 0%,#1a0a2e 50%,#0a1a1f 100%);border-bottom:1px solid #00ff8833;padding:25px 20px;text-align:center;position:relative;overflow:hidden}}
+.header::before{{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,#00ff8808,transparent,#00ff8808,transparent);animation:rotateBg 20s linear infinite}}
+@keyframes rotateBg{{to{{transform:rotate(360deg)}}}}
+.header h1{{font-size:28px;color:#00ff88;text-shadow:0 0 30px #00ff8866,0 0 60px #00ff8833;position:relative;z-index:1;letter-spacing:2px}}
+.header .subtitle{{color:#666;font-size:11px;margin-top:5px;position:relative;z-index:1}}
+.live-dot{{display:inline-block;width:8px;height:8px;background:#00ff88;border-radius:50%;margin-right:8px;animation:livePulse 1.5s ease-in-out infinite}}
+@keyframes livePulse{{0%,100%{{box-shadow:0 0 0 0 #00ff8888}}50%{{box-shadow:0 0 0 8px #00ff8800}}}}
+
+/* Stats */
+.stats-row{{display:flex;gap:12px;padding:15px 20px;flex-wrap:wrap}}
+.stat-card{{flex:1;min-width:100px;background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px 10px;text-align:center;position:relative;overflow:hidden;transition:all .3s}}
+.stat-card:hover{{border-color:#00ff8855;transform:translateY(-2px);box-shadow:0 5px 20px #00ff8811}}
+.stat-card::after{{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,#ffffff06,transparent);animation:shimmer 3s infinite}}
+@keyframes shimmer{{to{{left:100%}}}}
+.stat-card .label{{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1.5px}}
+.stat-card .value{{font-size:20px;color:#00ff88;margin-top:4px;font-weight:700}}
+.stat-card .value.red{{color:#ff4444}}.stat-card .value.blue{{color:#4488ff}}.stat-card .value.yellow{{color:#ffaa00}}.stat-card .value.purple{{color:#aa66ff}}
+
+/* P&L counter */
+.pnl-hero{{background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:2px solid #00ff8833;border-radius:15px;padding:20px;margin:10px 20px;text-align:center;position:relative;overflow:hidden}}
+.pnl-hero .pnl-label{{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px}}
+.pnl-hero .pnl-value{{font-size:48px;font-weight:700;margin-top:5px;transition:all .5s}}
+.pnl-hero .pnl-value.positive{{color:#00ff88;text-shadow:0 0 30px #00ff8844}}
+.pnl-hero .pnl-value.negative{{color:#ff4444;text-shadow:0 0 30px #ff444444}}
+.pnl-hero .pnl-details{{font-size:11px;color:#666;margin-top:8px}}
+.pnl-hero .pnl-details span{{margin:0 8px}}
+
+/* Signals */
+.section{{padding:8px 20px}}
+.section-title{{color:#00ff88;font-size:13px;margin-bottom:12px;border-left:3px solid #00ff88;padding-left:10px;display:flex;align-items:center;gap:8px}}
+.section-title .badge{{background:#00ff8822;color:#00ff88;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:400}}
+
+.signal-card{{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;margin:8px 20px;position:relative;overflow:hidden;transition:all .3s}}
+.signal-card:hover{{border-color:#00ff8844;box-shadow:0 5px 25px #00ff8811}}
+.signal-header{{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:5px}}
+.signal-whale{{color:#00ff88;font-weight:700;font-size:13px}}
+.signal-side{{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700}}
+.side-buy{{background:#00ff8822;color:#00ff88}}.side-sell{{background:#ff444422;color:#ff4444}}
+.signal-pnl{{font-size:16px;font-weight:700}}
+.pnl-positive{{color:#00ff88;text-shadow:0 0 10px #00ff8844}}.pnl-negative{{color:#ff4444;text-shadow:0 0 10px #ff444444}}.pnl-pending{{color:#ffaa00}}
+.status-win{{background:#00ff8822;color:#00ff88;padding:2px 6px;border-radius:4px;font-size:9px}}.status-loss{{background:#ff444422;color:#ff4444;padding:2px 6px;border-radius:4px;font-size:9px}}.status-pending{{background:#ffaa0022;color:#ffaa00;padding:2px 6px;border-radius:4px;font-size:9px}}
+.signal-market{{color:#aaa;font-size:11px;margin-bottom:6px}}
+.signal-details{{display:flex;gap:15px;font-size:10px;color:#888;margin-bottom:10px}}
+.signal-instructions{{background:#0a0a15;border:1px solid #1a1a3a;border-radius:8px;padding:10px;margin-top:8px}}
+.instr-title{{color:#ffaa00;font-size:10px;margin-bottom:5px;letter-spacing:1px}}
+.instr-text{{color:#ccc;font-size:10px;line-height:1.6;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}}
+.signal-pnl-popup{{position:absolute;top:5px;right:10px;font-size:24px;font-weight:700;opacity:0;animation:pnlPop 3s ease-out infinite 2s}}
+@keyframes pnlPop{{0%{{opacity:0;transform:scale(0.3) translateY(20px)}}20%{{opacity:1;transform:scale(1.3) translateY(0)}}40%{{opacity:0.8;transform:scale(1)}}100%{{opacity:0;transform:scale(0.5) translateY(-30px)}}}}
+
+/* Whale cards */
+.whale-grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;padding:5px 20px}}
+.whale-card{{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;transition:all .3s}}
+.whale-card.active{{border-color:#00ff8833}}.whale-card.inactive{{border-color:#1a1a3a;opacity:.6}}
+.whale-card:hover{{border-color:#00ff8855;box-shadow:0 5px 20px #00ff8811}}
+.whale-header{{display:flex;align-items:center;gap:8px;margin-bottom:5px}}
+.whale-emoji{{font-size:18px}}.whale-name{{color:#00ff88;font-weight:700;font-size:13px}}.whale-tier{{color:#666;font-size:9px;padding:1px 6px;border:1px solid #333;border-radius:3px;margin-left:auto}}.whale-positions{{color:#ffaa00;font-size:10px}}
+.whale-strat{{color:#555;font-size:10px;margin-bottom:8px}}
+.whale-positions-list .pos-item{{display:flex;gap:8px;font-size:10px;padding:3px 0;border-bottom:1px solid #111}}
+.pos-market{{color:#aaa;flex:1}}.pos-vol{{color:#ffaa00;font-weight:600}}
+.no-pos{{color:#333;font-size:10px;font-style:italic}}
+
+/* Markets */
+.market-item{{padding:8px 5px;border-bottom:1px solid #0a0a15;font-size:11px;display:flex;justify-content:space-between;align-items:center}}
+.market-vol{{color:#ffaa00;font-size:10px;font-weight:600}}
+
+.fade-in{{animation:fadeIn .5s ease-out}}
+@keyframes fadeIn{{from{{opacity:0;transform:translateY(10px)}}to{{opacity:1;transform:translateY(0)}}}}
+
+.refresh-bar{{position:fixed;bottom:0;left:0;right:0;background:#060610ee;border-top:1px solid #1a1a3a;padding:8px 20px;display:flex;justify-content:space-between;font-size:10px;color:#444;z-index:50}}
+.spinner{{display:inline-block;width:12px;height:12px;border:2px solid #1a1a3a;border-top-color:#00ff88;border-radius:50%;animation:spin 1s linear infinite}}
+@keyframes spin{{to{{transform:rotate(360deg)}}}}
+
+@media(max-width:768px){{.stats-row{{gap:8px}}.stat-card{{min-width:70px;padding:10px 5px}}.stat-card .value{{font-size:16px}}.header h1{{font-size:20px}}.whale-grid{{grid-template-columns:1fr}}.pnl-hero .pnl-value{{font-size:32px}}}}
+</style>
+</head>
+<body>
+
+<div class="float-container">{pnl_animations}</div>
+
+<div class="header">
+  <h1>🐋 NANO POLYMARKET WHALE TRACKER v3.0</h1>
+  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">{now_str}</span></div>
+</div>
+
+<div class="stats-row fade-in">
+  <div class="stat-card"><div class="label">Active Whales</div><div class="value">{active_whales}/{len(WHALES)}</div></div>
+  <div class="stat-card"><div class="label">Positions</div><div class="value blue">{total_positions}</div></div>
+  <div class="stat-card"><div class="label">Signals</div><div class="value yellow">{len(recent_signals)}</div></div>
+  <div class="stat-card"><div class="label">Win Rate</div><div class="value {"" if win_rate > 50 else "red"}">{win_rate:.0f}%</div></div>
+  <div class="stat-card"><div class="label">ETH</div><div class="value purple">${prices.get("eth",0):,.0f}</div></div>
+  <div class="stat-card"><div class="label">BTC</div><div class="value purple">${prices.get("btc",0):,.0f}</div></div>
+</div>
+
+<!-- P&L Hero -->
+<div class="pnl-hero fade-in">
+  <div class="pnl-label">📈 Если бы ты отработал все сигналы</div>
+  <div class="pnl-value {"positive" if pnl >= 0 else "negative"}">${pnl:+,.0f}</div>
+  <div class="pnl-details">
+    <span style="color:#00ff88">✅ {wins} wins</span>
+    <span style="color:#ff4444">❌ {losses} losses</span>
+    <span style="color:#ffaa00">⏳ {pending} pending</span>
+  </div>
+</div>
+
+<!-- Recent Signals with Instructions -->
+<div class="section"><div class="section-title">📋 ПОСЛЕДНИЕ СИГНАЛЫ + ИНСТРУКЦИИ <span class="badge">LIVE</span></div></div>
+{signal_cards if signal_cards else '<div style="padding:20px;color:#333;text-align:center">Сигналов пока нет — киты отдыхают 🐋</div>'}
+
+<!-- Whale Positions -->
+<div class="section"><div class="section-title">🐋 ПОЗИЦИИ КИТОВ <span class="badge">TOP 10</span></div></div>
+<div class="whale-grid fade-in">
+{whale_cards}
+</div>
+
+<!-- Hot Markets -->
+<div class="section"><div class="section-title">🔥 HOT MARKETS <span class="badge">24H VOLUME</span></div></div>
+<div class="section fade-in" style="max-height:350px;overflow-y:auto">
+{market_html if market_html else '<div style="color:#333;text-align:center;padding:20px">Маркеты не загружены</div>'}
+</div>
+
+<!-- Strategy Guide -->
+<div class="section" style="margin-top:15px"><div class="section-title">💰 СТРАТЕГИИ <span class="badge">GUIDE</span></div></div>
+<div style="padding:5px 20px 80px 20px;font-size:10px;color:#888;line-height:1.8">
+<div style="background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:15px">
+  <h3 style="color:#00ff88;font-size:12px;margin-bottom:10px">⚡ КАК ПОЛЬЗОВАТЬСЯ СИГНАЛАМИ</h3>
+  <div>1️⃣ <b style="color:#ffaa00">Смотри сигналы выше</b> — каждый сигнал содержит конкретную инструкцию: когда входить, где тейк-профит, где стоп-лосс</div>
+  <div>2️⃣ <b style="color:#ffaa00">P&L трекер</b> — мы считаем сколько ты бы заработал если отработал каждый сигнал на $100</div>
+  <div>3️⃣ <b style="color:#ffaa00">Входи ПОСЛЕ кита</b> — не вместе с ним. Подожди стабилизации цены 1-5 минут</div>
+  <div>4️⃣ <b style="color:#ff4444">Стоп-лосс = жизнь</b> — каждый сигнал содержит точный стоп-лосс</div>
+  <div>5️⃣ <b style="color:#00ff88">Выходи раньше кита</b> — забирай прибыль и беги 💀</div>
+</div>
+</div>
+
+<div class="refresh-bar">
+  <span class="status"><span class="spinner"></span> LIVE • Auto-refresh <span id="countdown">120</span>s</span>
+  <span style="color:#444">NANO Whale Tracker v3.0 • Polymarket API</span>
+  <span style="color:#555" id="update-time">{now_str}</span>
+</div>
+
+<script>
+let cd=120;
+setInterval(()=>{{
+  cd--;
+  document.getElementById('countdown').textContent=cd;
+  if(cd<=0){{cd=120;location.reload();}}
+}},1000);
+</script>
+</body>
+</html>'''
+    
+    return dashboard
+
+
+async def collect_data_and_generate():
+    """Main data collection + dashboard generation."""
+    print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Collecting data...")
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as session:
+        # Parallel fetches
+        prices_task = fetch_crypto_prices(session)
+        markets_task = fetch_top_markets(session)
+        trades_task = fetch_recent_trades(session)
+        
+        prices, markets, trades = await asyncio.gather(prices_task, markets_task, trades_task)
+        
+        # Fetch whale positions
+        whale_data = {}
+        for addr, info in WHALES.items():
+            positions = await fetch_whale_positions(session, addr)
+            # Filter positions > $50
+            active_positions = []
+            for p in positions:
+                try:
+                    size = float(p.get("size", 0) or 0)
+                    avg_price = float(p.get("avgPrice", 0) or 0)
+                    cur_price = float(p.get("curPrice", 0) or 0)
+                    current_value = float(p.get("currentValue", 0) or 0)
+                    initial_value = float(p.get("initialValue", 0) or 0)
+                    cash_pnl = float(p.get("cashPnl", 0) or 0)
+                    pct_pnl = float(p.get("percentPnl", 0) or 0)
+                    if current_value > 50 or initial_value > 50:
+                        outcome = p.get("outcome", "?")
+                        side = "BUY"
+                        active_positions.append({
+                            "title": p.get("title", p.get("market", "?")),
+                            "size": size,
+                            "price": cur_price or avg_price,
+                            "avgPrice": avg_price,
+                            "curPrice": cur_price,
+                            "side": side,
+                            "outcome": outcome,
+                            "currentValue": current_value,
+                            "initialValue": initial_value,
+                            "cashPnl": cash_pnl,
+                            "percentPnl": pct_pnl,
+                        })
+                except:
+                    continue
+            
+            # Match whale against recent trades
+            whale_trades = [t for t in trades if (t.get("proxyWallet","") or t.get("taker","")).lower() == addr.lower()]
+            total_vol = sum(float(p.get("currentValue",0) or 0) for p in positions[:30])
+            
+            whale_data[addr] = {
+                "positions": active_positions[:10],
+                "active": len(active_positions) > 0 or len(whale_trades) > 0,
+                "total_vol": total_vol,
+            }
+        
+        # Build recent signals from whale trades
+        tracker = load_signal_tracker()
+        recent_signals = tracker.get("signals", [])[-20:]
+        
+        # Also generate signals from current trades
+        for t in trades[:500]:
+            addr = (t.get("proxyWallet", "") or t.get("taker", "")).lower()
+            whale_info = None
+            for wa, wi in WHALES.items():
+                if wa.lower() == addr:
+                    whale_info = wi
+                    break
+            
+            if not whale_info:
+                continue
+            
+            size = float(t.get("size", 0) or 0)
+            price = float(t.get("price", 0) or 0)
+            vol = size * price
+            if vol < 100:
+                continue
+            
+            market_title = t.get("market", t.get("title", "?"))
+            side = t.get("side", "?")
+            
+            # Check if already tracked
+            sig_key = f"{addr}:{market_title}:{side}:{size:.0f}"
+            existing = [s for s in recent_signals if s.get("key") == sig_key]
+            if existing:
+                continue
+            
+            instructions = generate_trade_instruction(
+                whale_info["name"], side, market_title, size, price, t.get("outcome", "?")
+            )
+            
+            signal = {
+                "key": sig_key,
+                "whale_name": whale_info["name"],
+                "emoji": whale_info["emoji"],
+                "side": side,
+                "market": market_title,
+                "size": size,
+                "price": price,
+                "instructions": instructions,
+                "pnl": 0,  # Will be calculated when market resolves
+                "status": "pending",
+                "timestamp": time.time(),
+            }
+            recent_signals.append(signal)
+        
+        # Save updated signals
+        tracker["signals"] = recent_signals[-50:]
+        save_signal_tracker(tracker)
+        
+        # Generate dashboard
+        dashboard = generate_dashboard(whale_data, markets, prices, tracker, recent_signals)
+        
+        # Write
+        dash_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dashboard.html")
+        with open(dash_path, "w", encoding="utf-8") as f:
+            f.write(dashboard)
+        
+        print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Dashboard updated! {len(whale_data)} whales, {len(markets)} markets, {len(recent_signals)} signals")
+        return dashboard
+
+
+async def main_loop(interval=120):
+    """Main loop - update dashboard every 2 minutes."""
+    while True:
+        try:
+            await collect_data_and_generate()
+        except Exception as e:
+            print(f"Error: {e}")
+        await asyncio.sleep(interval)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--once":
+        asyncio.run(collect_data_and_generate())
+    else:
+        asyncio.run(main_loop())
