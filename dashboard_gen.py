@@ -149,8 +149,93 @@ def load_virtual_portfolio():
             pass
     return {"balance": 1000, "initial_deposit": 1000, "positions": [], "resolved": [], "total_won": 0, "total_lost": 0, "total_bets": 0, "win_count": 0, "loss_count": 0}
 
+def generate_virtual_trading_html():
+    """Generate virtual trading widget HTML from portfolio."""
+    vp = load_virtual_portfolio()
+    balance = vp.get("balance", 1000)
+    initial = vp.get("initial_deposit", 1000)
+    positions = vp.get("positions", [])
+    resolved = vp.get("resolved", [])
+    total_won = vp.get("total_won", 0)
+    total_lost = vp.get("total_lost", 0)
+    total_bets = vp.get("total_bets", 0)
+    win_count = vp.get("win_count", 0)
+    loss_count = vp.get("loss_count", 0)
+    
+    pnl = balance - initial
+    pnl_class = "pnl-positive" if pnl >= 0 else "pnl-negative"
+    pnl_sign = "+" if pnl >= 0 else ""
+    roi = (pnl / initial * 100) if initial > 0 else 0
+    roi_class = "pnl-positive" if roi >= 0 else "pnl-negative"
+    
+    # Active positions
+    pos_rows = ""
+    for p in positions[:5]:
+        market = p.get("market", "?")[:50]
+        side = p.get("side", "?")
+        amount = p.get("amount", 0)
+        entry = p.get("price", 0)
+        pos_rows += f'''<div class="pos-item">
+          <span class="pos-market">{market}</span>
+          <span class="{('side-buy' if side=='BUY' else 'side-sell')}">{side}</span>
+          <span class="pos-vol">${amount:,.0f}</span>
+        </div>'''
+    
+    if not pos_rows:
+        pos_rows = '<div class="no-pos">Нет открытых позиций</div>'
+    
+    # Recent resolved
+    res_rows = ""
+    for r in resolved[-3:]:
+        market = r.get("market", "?")[:40]
+        result = r.get("result", "?")
+        profit = r.get("profit", 0)
+        clr = "#00ff88" if profit >= 0 else "#ff4444"
+        res_rows += f'''<div class="pos-item">
+          <span class="pos-market">{market}</span>
+          <span style="color:{clr};font-weight:600">{profit:+,.0f}</span>
+          <span class="status-{result.lower()}">{result}</span>
+        </div>'''
+    
+    if not res_rows:
+        res_rows = '<div class="no-pos">Нет завершённых</div>'
+    
+    return f'''
+<!-- Virtual Trading Widget -->
+<div class="section"><div class="section-title">💼 ВИРТУАЛЬНЫЙ ТРЕЙДИНГ <span class="badge">PAPER</span></div></div>
+<div style="background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;margin:5px 20px;padding:15px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div>
+      <div style="font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px">Баланс</div>
+      <div style="font-size:24px;font-weight:700;color:#00ff88">${balance:,.0f}</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px">P&L / ROI</div>
+      <div style="font-size:18px;font-weight:700" class="{pnl_class}">{pnl_sign}${pnl:,.0f} ({roi:+.1f}%)</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:15px;font-size:10px;color:#888;margin-bottom:10px">
+    <span style="color:#00ff88">✅ {win_count}W</span>
+    <span style="color:#ff4444">❌ {loss_count}L</span>
+    <span>💰 ${total_won:,.0f} won</span>
+    <span>💀 ${total_lost:,.0f} lost</span>
+    <span>📊 {total_bets} bets</span>
+  </div>
+  <div style="border-top:1px solid #1a1a3a;padding-top:8px;margin-top:5px">
+    <div style="font-size:9px;color:#555;margin-bottom:5px">АКТИВНЫЕ ПОЗИЦИИ</div>
+    {pos_rows}
+  </div>
+  <div style="border-top:1px solid #1a1a3a;padding-top:8px;margin-top:5px">
+    <div style="font-size:9px;color:#555;margin-bottom:5px">ПОСЛЕДНИЕ РЕЗУЛЬТАТЫ</div>
+    {res_rows}
+  </div>
+</div>'''
+
 def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
     """Generate dynamic HTML dashboard."""
+    
+    # Virtual trading widget
+    virtual_trading_html = generate_virtual_trading_html()
     
     # Calculate stats
     total_volume = sum(w.get("total_vol", 0) for w in whale_data.values())
@@ -652,6 +737,25 @@ async def collect_data_and_generate():
             f.write(dashboard)
         
         print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Dashboard updated! {len(whale_data)} whales, {len(markets)} markets, {len(recent_signals)} signals")
+        
+        # Auto-deploy to gh-pages
+        try:
+            import subprocess
+            repo_dir = os.path.dirname(os.path.abspath(__file__))
+            subprocess.run(["git", "add", "dashboard.html"], cwd=repo_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "commit", "-m", "dashboard auto-refresh"], cwd=repo_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "push", "origin", "main"], cwd=repo_dir, capture_output=True, timeout=30)
+            # Sync to gh-pages
+            subprocess.run(["git", "checkout", "gh-pages"], cwd=repo_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "checkout", "main", "--", "dashboard.html", "results/virtual_trades.json"], cwd=repo_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "add", "dashboard.html", "results/virtual_trades.json"], cwd=repo_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "commit", "-m", "dashboard auto-refresh gh-pages"], cwd=repo_dir, capture_output=True, timeout=10)
+            subprocess.run(["git", "push", "origin", "gh-pages"], cwd=repo_dir, capture_output=True, timeout=30)
+            subprocess.run(["git", "checkout", "main"], cwd=repo_dir, capture_output=True, timeout=10)
+            print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Deployed to gh-pages")
+        except Exception as e:
+            print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] gh-pages deploy error: {e}")
+        
         return dashboard
 
 
