@@ -134,13 +134,13 @@
       "market": "Cagliari: Roman Andres Burruchaga vs And",
       "outcome": "Andrea Pellegrino",
       "entry_price": 0.1985,
-      "cur_price": 0.835,
+      "cur_price": 0.26,
       "bet_size": 50.0,
       "shares": 251.8892,
       "entry_date": "2026-04-30 17:10",
       "status": "open",
-      "pnl": -160.33,
-      "pnl_pct": -79.4
+      "pnl": -15.49,
+      "pnl_pct": -7.7
     },
     {
       "id": "bet_1777569625_16",
@@ -190,13 +190,13 @@
       "market": "Cagliari: Roman Andres Burruchaga vs And",
       "outcome": "Roman Andres Burruchaga",
       "entry_price": 0.4695,
-      "cur_price": 0.835,
+      "cur_price": 0.26,
       "bet_size": 50.0,
       "shares": 106.4963,
       "entry_date": "2026-04-30 18:10",
       "status": "open",
-      "pnl": -38.92,
-      "pnl_pct": -68.9
+      "pnl": 22.31,
+      "pnl_pct": 39.5
     }
   ],
   "resolved": [
@@ -287,7 +287,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 18:17 UTC",
+  "last_updated": "2026-04-30 18:23 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
