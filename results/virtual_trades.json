@@ -22,13 +22,13 @@
       "market": "Will Gavin Newsom win the 2028 Democrati",
       "outcome": "No",
       "entry_price": 0.7335,
-      "cur_price": 0.2665,
+      "cur_price": 0.7335,
       "bet_size": 50.0,
       "shares": 68.1663,
       "entry_date": "2026-04-30 07:32",
       "status": "open",
-      "pnl": 31.83,
-      "pnl_pct": 175.2
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     },
     {
       "id": "bet_1777550856_8",
@@ -78,13 +78,13 @@
       "market": "Madrid Open: Hailey Baptiste vs Mirra An",
       "outcome": "Hailey Baptiste",
       "entry_price": 0.193,
-      "cur_price": 0.193,
+      "cur_price": 0.0775,
       "bet_size": 50.0,
       "shares": 259.0674,
       "entry_date": "2026-04-30 15:49",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 29.922284700000013,
+      "pnl_pct": 14.31226765799256
     },
     {
       "id": "bet_1777564186_12",
@@ -92,13 +92,13 @@
       "market": "Madrid Open: Hailey Baptiste vs Mirra An",
       "outcome": "Mirra Andreeva",
       "entry_price": 0.807,
-      "cur_price": 0.193,
+      "cur_price": 0.9225,
       "bet_size": 50.0,
       "shares": 61.9579,
       "entry_date": "2026-04-30 15:49",
       "status": "open",
-      "pnl": 38.04,
-      "pnl_pct": 318.1
+      "pnl": -7.156137449999997,
+      "pnl_pct": -59.84455958549222
     }
   ],
   "resolved": [
@@ -189,7 +189,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 15:49 UTC",
+  "last_updated": "2026-04-30 15:51 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
