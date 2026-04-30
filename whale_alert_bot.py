@@ -70,21 +70,47 @@ async def tg_answer_callback(callback_id, text=""):
 
 # ===== COMMANDS =====
 
-async def cmd_start(chat_id):
-    text = """🐋 *NANO Polymarket Whale Tracker*
+async def cmd_start(chat_id, args=""):
+    """Handle /start command with optional deep link args."""
+    # Deep link handling: /start bet, /start deposit, /start close, /start topup
+    if args:
+        arg = args.lower().strip()
+        if arg == "bet":
+            await cmd_bet(chat_id)
+            return
+        if arg == "deposit":
+            await cmd_deposit(chat_id)
+            return
+        if arg == "close":
+            await cmd_close(chat_id)
+            return
+        if arg == "topup":
+            portfolio = load_portfolio()
+            portfolio["balance"] += 500
+            save_portfolio(portfolio)
+            await tg_send(f"\u2795 Депозит пополнен на $500!\nБаланс: ${portfolio['balance']:.2f}", chat_id)
+            return
+        # bet_whale_outcome_price format
+        if arg.startswith("bet_"):
+            parts = arg.split("_")
+            if len(parts) >= 3:
+                await tg_send(f"\U0001f3b0 Для ставки используйте /bet в боте", chat_id)
+                await cmd_bet(chat_id)
+                return
+    text = """\U0001f40b *NANO Polymarket Whale Tracker*
 
-Отслеживаю топ-10 китов Polymarket в реальном времени.
+\u041e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u044e \u0442\u043e\u043f-10 \u043a\u0438\u0442\u043e\u0432 Polymarket \u0432 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u043c \u0432\u0440\u0435\u043c\u0435\u043d\u0438.
 
-*Команды:*
-/whales — Список отслеживаемых китов
-/status — Статус бота и последняя активность
-/markets — Топ рынки Polymarket прямо сейчас
-/check — Проверить китов вручную
-/help — Помощь
+*\u041a\u043e\u043c\u0430\u043d\u0434\u044b:*
+/whales \u2014 \u0421\u043f\u0438\u0441\u043e\u043a \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u0435\u043c\u044b\u0445 \u043a\u0438\u0442\u043e\u0432
+/status \u2014 \u0421\u0442\u0430\u0442\u0443\u0441 \u0431\u043e\u0442\u0430 \u0438 \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u044f\u044f \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c
+/markets \u2014 \u0422\u043e\u043f \u0440\u044b\u043d\u043a\u0438 Polymarket \u043f\u0440\u044f\u043c\u043e \u0441\u0435\u0439\u0447\u0430\u0441
+/check \u2014 \u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043a\u0438\u0442\u043e\u0432 \u0432\u0440\u0443\u0447\u043d\u0443\u044e
+/help \u2014 \u041f\u043e\u043c\u043e\u0449\u044c
 
-Алерты прилетают автоматически когда киты торгуют 🐋"""
-    btns = [[{"text": "🐋 Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}],
-            [{"text": "📊 PolyMonit", "url": "https://polymonit.com/leaderboard/polymarket-whales"}, {"text": "🔍 PolyIntel", "url": "https://polyintel.io/"}]]
+\u0410\u043b\u0435\u0440\u0442\u044b \u043f\u0440\u0438\u043b\u0435\u0442\u0430\u044e\u0442 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438 \u043a\u043e\u0433\u0434\u0430 \u043a\u0438\u0442\u044b \u0442\u043e\u0440\u0433\u0443\u044e\u0442 \U0001f40b"""
+    btns = [[{"text": "\U0001f40b Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}],
+            [{"text": "\U0001f4ca PolyMonit", "url": "https://polymonit.com/leaderboard/polymarket-whales"}, {"text": "\U0001f50d PolyIntel", "url": "https://polyintel.io/"}]]
     await tg_send(text, btns, chat_id)
 
 async def cmd_help(chat_id):
