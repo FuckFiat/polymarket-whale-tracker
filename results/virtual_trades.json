@@ -134,13 +134,13 @@
       "market": "Cagliari: Roman Andres Burruchaga vs And",
       "outcome": "Andrea Pellegrino",
       "entry_price": 0.1985,
-      "cur_price": 0.4225,
+      "cur_price": 0.4355,
       "bet_size": 50.0,
       "shares": 251.8892,
       "entry_date": "2026-04-30 17:10",
       "status": "open",
-      "pnl": -56.42,
-      "pnl_pct": -27.9
+      "pnl": -59.7,
+      "pnl_pct": -29.6
     },
     {
       "id": "bet_1777569625_16",
@@ -148,13 +148,13 @@
       "market": "Saint-Malo: Celine Naef vs Anna Blinkova",
       "outcome": "Anna Blinkova",
       "entry_price": 0.465,
-      "cur_price": 0.91,
+      "cur_price": 0.995,
       "bet_size": 50.0,
       "shares": 107.5269,
       "entry_date": "2026-04-30 17:20",
       "status": "open",
-      "pnl": -47.85,
-      "pnl_pct": -83.2
+      "pnl": -56.99,
+      "pnl_pct": -99.1
     },
     {
       "id": "bet_1777570229_17",
@@ -162,13 +162,13 @@
       "market": "Saint-Malo: Celine Naef vs Anna Blinkova",
       "outcome": "Celine Naef",
       "entry_price": 0.28,
-      "cur_price": 0.91,
+      "cur_price": 0.995,
       "bet_size": 50.0,
       "shares": 178.5714,
       "entry_date": "2026-04-30 17:30",
       "status": "open",
-      "pnl": -112.5,
-      "pnl_pct": -87.5
+      "pnl": -127.68,
+      "pnl_pct": -99.3
     }
   ],
   "resolved": [
@@ -259,7 +259,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 17:39 UTC",
+  "last_updated": "2026-04-30 17:42 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
