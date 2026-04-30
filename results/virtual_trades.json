@@ -106,13 +106,13 @@
       "market": "Counter-Strike: FUT Esports vs Astralis ",
       "outcome": "FUT Esports",
       "entry_price": 0.225,
-      "cur_price": 0.005,
+      "cur_price": 0.0005,
       "bet_size": 50.0,
       "shares": 222.2222,
       "entry_date": "2026-04-30 16:10",
       "status": "open",
-      "pnl": 48.88888399999999,
-      "pnl_pct": 28.387096774193555
+      "pnl": 49.8888839,
+      "pnl_pct": 28.967741935483883
     },
     {
       "id": "bet_1777566011_14",
@@ -120,13 +120,13 @@
       "market": "Counter-Strike: FUT Esports vs Astralis ",
       "outcome": "Astralis",
       "entry_price": 0.705,
-      "cur_price": 0.055,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 70.922,
       "entry_date": "2026-04-30 16:20",
       "status": "open",
-      "pnl": 46.1,
-      "pnl_pct": 220.3
+      "pnl": -20.89,
+      "pnl_pct": -99.8
     }
   ],
   "resolved": [
@@ -217,7 +217,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 16:54 UTC",
+  "last_updated": "2026-04-30 16:57 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
