@@ -1,5 +1,5 @@
 {
-  "balance": 881.68,
+  "balance": 781.68,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -57,6 +57,34 @@
       "status": "open",
       "pnl": 0.0,
       "pnl_pct": 0.0
+    },
+    {
+      "id": "bet_1777550856_8",
+      "whale": "🐋 Кит #9 — RN1",
+      "market": "Madrid Open: Casper Ruud vs Alexander Bl",
+      "outcome": "Alexander Blockx",
+      "entry_price": 0.605,
+      "cur_price": 0.996,
+      "bet_size": 50.0,
+      "shares": 82.6446,
+      "entry_date": "2026-04-30 12:07",
+      "status": "open",
+      "pnl": -32.3140386,
+      "pnl_pct": -98.9873417721519
+    },
+    {
+      "id": "bet_1777553578_9",
+      "whale": "🐋 Кит #9 — RN1",
+      "market": "Aix en Provence: Kimmer Coppejans vs Val",
+      "outcome": "Kimmer Coppejans",
+      "entry_price": 0.615,
+      "cur_price": 0.995,
+      "bet_size": 50.0,
+      "shares": 81.3008,
+      "entry_date": "2026-04-30 12:52",
+      "status": "open",
+      "pnl": -30.89,
+      "pnl_pct": -98.7
     }
   ],
   "resolved": [
@@ -111,11 +139,11 @@
   ],
   "total_won": 81.68,
   "total_lost": 0,
-  "total_bets": 7,
+  "total_bets": 9,
   "win_count": 3,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 08:01 UTC",
+  "last_updated": "2026-04-30 13:04 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
