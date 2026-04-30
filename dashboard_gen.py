@@ -234,8 +234,8 @@ def generate_virtual_trading_html():
 def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
     """Generate dynamic HTML dashboard."""
     
-    # Virtual trading widget
-    virtual_trading_html = generate_virtual_trading_html()
+    # Virtual trading widget (generated below with real data)
+    # virtual_trading_html is built at line ~388 with current portfolio data
     
     # Calculate stats
     total_volume = sum(w.get("total_vol", 0) for w in whale_data.values())
@@ -385,6 +385,19 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
     roi_color = "#00ff88" if roi >= 0 else "#ff4444"
     total_pnl_color = "#00ff88" if total_pnl >= 0 else "#ff4444"
     
+    # Resolved bets section
+    resolved_positions = portfolio.get("resolved", [])
+    res_rows = ""
+    for r in resolved_positions[-5:]:
+        result_icon = "✅" if r.get("result") == "win" else "❌"
+        res_pnl = r.get("pnl", 0)
+        res_color = "#00ff88" if res_pnl >= 0 else "#ff4444"
+        res_rows += f'''
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #0a0a15;font-size:10px">
+      <span>{result_icon} <span style="color:#888">{r.get("whale","?")}: {r.get("outcome","?")} {r.get("market","?")[:20]}</span></span>
+      <span style="color:{res_color};font-weight:600">${res_pnl:+,.2f}</span>
+    </div>'''
+    
     virtual_trading_html = f'''
     <div class="section" style="margin-top:20px"><div class="section-title">🎰 ВИРТУАЛЬНЫЙ ДЕПОЗИТ <span class="badge">PAPER TRADING</span></div></div>
 
@@ -411,6 +424,8 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
       <div style="border-top:1px solid #1a1a3a;padding-top:12px;margin-top:8px">
         <div style="font-size:10px;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Открытые ставки</div>
         {pos_rows if pos_rows else '<div style="color:#333;text-align:center;padding:10px">Нет открытых ставок — /bet чтобы поставить</div>'}
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1a1a3a;font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1px">История ({len(resolved_positions)} закрыто)</div>
+        {res_rows if res_rows else '<div style="color:#333;text-align:center;padding:5px">Ещё нет закрытых ставок</div>'}
         <div style="margin-top:12px;padding-top:8px;border-top:1px solid #1a1a3a;font-size:10px;color:#666">
           💰 Депозит: ${initial_deposit:.0f} | 💵 Выиграно: ${total_won:.2f} | 💸 Проиграно: ${total_lost:.2f}<br>
           📊 P&L: <span style="color:{total_pnl_color}">${total_pnl:+,.2f}</span> | 📈 Старт: ${initial_deposit:.0f} | Сейчас: ${total_value:,.2f}
