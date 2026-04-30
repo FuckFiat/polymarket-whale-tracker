@@ -5,7 +5,7 @@ Interactive Telegram bot with commands + automatic whale monitoring.
 """
 import asyncio, aiohttp, json, time, os, sys
 from datetime import datetime, timezone
-from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats
+from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats, update_prices
 
 BOT_TOKEN = "8375563056:AAHqFtfsxK1zMfKrEBgMTa9d0QcIXVTlYGI"
 CHAT_ID = 730668
@@ -259,54 +259,118 @@ def get_trade_instructions(side, price, vol):
     return "\n".join(instr)
 
 async def check_and_alert(session):
+    """Monitor whale POSITIONS (not trades) and auto-bet on significant moves."""
     state = load_state()
     alerts = 0
-    all_trades = []
-
-    try:
-        async with session.get(f"{DATA_API}/trades?limit=500&order=desc") as r:
-            all_trades = await r.json()
-    except Exception as e:
-        print(f"Trades fetch error: {e}")
-
-    try:
-        async with session.get(f"{GAMMA_API}/markets?limit=20&order=volume24hr&ascending=false&closed=false") as r:
-            markets = await r.json()
-            for m in markets[:10]:
-                slug = m.get("slug", "")
-                if slug:
-                    try:
-                        async with session.get(f"{DATA_API}/trades?limit=100&order=desc&slug={slug}") as r2:
-                            all_trades.extend(await r2.json())
-                    except Exception:
-                        pass
-    except Exception:
-        pass
-
-    for t in all_trades:
-        addr = t.get("proxyWallet", "") or t.get("taker", "")
-        whale = match_whale(addr)
-        if not whale:
-            continue
-        ts = t.get("timestamp", "") or t.get("created_at", "")
-        key = f"{addr}:{ts}"
-        if key in state["last_trades"]:
-            continue
-        vol = float(t.get("size", 0) or 0) * float(t.get("price", 0) or 0)
-        if vol < 100:
-            continue
-        await send_whale_alert(whale, t)
-        state["last_trades"][key] = time.time()
-        state["alerts_sent"] += 1
-        state["last_activity"][addr[:10]] = f"${vol:,.0f} {t.get('side','?')} @ {datetime.now(timezone.utc).strftime('%H:%M')}"
-        alerts += 1
-
-    if len(state["last_trades"]) > 2000:
-        sorted_k = sorted(state["last_trades"].keys(), key=lambda k: state["last_trades"][k])
-        for k in sorted_k[:500]:
-            del state["last_trades"][k]
-
+    all_whale_positions = []
+    significant_moves = []
+    
+    # 1. Fetch positions for each whale
+    for addr, info in WHALES.items():
+        try:
+            async with session.get(f"{DATA_API}/positions?user={addr.lower()}", timeout=aiohttp.ClientTimeout(total=15)) as r:
+                if r.status == 200:
+                    positions = await r.json()
+                    if isinstance(positions, list):
+                        # Filter significant positions (>$500)
+                        sig_positions = [p for p in positions if float(p.get("currentValue", 0) or 0) > 500]
+                        total_val = sum(float(p.get("currentValue", 0) or 0) for p in positions)
+                        total_pnl = sum(float(p.get("cashPnl", 0) or 0) for p in positions)
+                        
+                        # Check for new or changed positions
+                        whale_key = addr[:10]
+                        prev_count = state.get("last_position_count", {}).get(whale_key, 0)
+                        curr_count = len(sig_positions)
+                        
+                        for p in sig_positions[:5]:  # Top 5 positions per whale
+                            title = p.get("title", "?")[:40]
+                            cur_val = float(p.get("currentValue", 0) or 0)
+                            pnl = float(p.get("cashPnl", 0) or 0)
+                            outcome = p.get("outcome", "?")
+                            price = float(p.get("curPrice", 0) or 0.5)
+                            
+                            # Check if this is a NEW significant position
+                            pos_key = f"{whale_key}:{title}:{outcome}"
+                            if pos_key not in state.get("seen_positions", {}):
+                                # New position found!
+                                significant_moves.append({
+                                    "whale": info["name"],
+                                    "whale_addr": addr,
+                                    "market": title,
+                                    "outcome": outcome,
+                                    "value": cur_val,
+                                    "pnl": pnl,
+                                    "price": price,
+                                    "pct_change": float(p.get("percentPnl", 0) or 0),
+                                })
+                                state.setdefault("seen_positions", {})[pos_key] = time.time()
+                            
+                            all_whale_positions.append(p)
+                        
+                        # Update whale state
+                        state.setdefault("last_position_count", {})[whale_key] = curr_count
+                        state.setdefault("last_activity", {})[whale_key] = f"${total_val:,.0f} | P&L: ${total_pnl:+,.0f} | {datetime.now(timezone.utc).strftime('%H:%M')}"
+                        
+                        # Alert on significant P&L changes
+                        if abs(total_pnl) > 100000:
+                            pnl_emoji = "🟢" if total_pnl > 0 else "🔴"
+                            await tg_send(f"*{info['name']}* — P&L: {pnl_emoji} ${total_pnl:+,.0f}\n📊 {len(sig_positions)} значимых позиций | ${total_val:,.0f} всего")
+                            alerts += 1
+        except Exception as e:
+            print(f"Whale {info['name']} error: {e}")
+    
+    # 2. Auto-bet on new whale positions
+    portfolio = load_portfolio()
+    if portfolio.get("auto_betting", True) and significant_moves:
+        for move in significant_moves[:3]:  # Max 3 new bets per cycle
+            if portfolio["balance"] < 50:
+                break
+            # Only bet on whales with >$1M volume
+            whale_vol_str = WHALES.get(move["whale_addr"], {}).get("vol", "$0")
+            whale_vol = float(whale_vol_str.replace("$", "").replace("M", "")) if "M" in whale_vol_str else 0
+            if whale_vol < 1:  # Skip dolphins
+                continue
+            price = move.get("price", 0.5)
+            if price <= 0.05 or price >= 0.98:  # Skip near-certain markets
+                continue
+            result = place_bet(portfolio, move["whale"], move["market"], move["outcome"], price, 50.0, price)
+            if "error" not in result:
+                await tg_send(f"🎰 *АВТО-СТАВКА*\n\n{move['whale']}: {move['outcome']} {move['market'][:30]}\n@ {price*100:.0f}¢ | $50\n💰 Баланс: ${portfolio['balance']:.2f}")
+                alerts += 1
+    
+    # 3. Update virtual trading prices
+    from virtual_trading import update_prices
+    update_prices(portfolio, all_whale_positions)
+    
+    # 4. Check for resolved markets
+    for pos in list(portfolio.get("positions", [])):
+        market_hint = pos["market"][:30]
+        try:
+            async with session.get(f"{GAMMA_API}/markets?limit=3&search={market_hint.replace(' ', '+')}", timeout=aiohttp.ClientTimeout(total=10)) as r:
+                if r.status == 200:
+                    markets = await r.json()
+                    for m in markets:
+                        if m.get("closed") and m.get("question", "").lower().startswith(market_hint.lower()):
+                            resolution = m.get("resolution", "")
+                            outcome = pos["outcome"].lower()
+                            if resolution.lower() == outcome or (resolution == "Yes" and outcome == "yes"):
+                                close_position(portfolio, pos["id"], "win")
+                                await tg_send(f"✅ *СТАВКА ВЫИГРАЛА!*\n\n{pos['whale']}: {outcome} {pos['market'][:30]}\n💰 +${pos['bet_size']:.0f}")
+                            else:
+                                close_position(portfolio, pos["id"], "loss")
+                                await tg_send(f"❌ *СТАВКА ПРОИГРАНА*\n\n{pos['whale']}: {outcome} {pos['market'][:30]}\n💸 -${pos['bet_size']:.0f}")
+                            break
+        except Exception:
+            pass
+    
+    # 5. Cleanup old seen positions (keep last 500)
+    if len(state.get("seen_positions", {})) > 500:
+        sorted_keys = sorted(state["seen_positions"].keys(), key=lambda k: state["seen_positions"][k])
+        for k in sorted_keys[:200]:
+            del state["seen_positions"][k]
+    
     state["last_check"] = time.time()
+    state["alerts_sent"] = state.get("alerts_sent", 0) + alerts
     save_state(state)
     return alerts
 
@@ -341,7 +405,7 @@ async def cmd_positions(chat_id):
                 total_pnl = sum(float(p.get("cashPnl", 0) or 0) for p in significant)
                 pnl_emoji = "🟢" if total_pnl >= 0 else "🔴"
                 
-                lines.append(f"{info['emoji']} *{info['name']}* — ${total_val:,.0f} | {pnl_emoji} ${total_pnl:+,.0f}")
+                lines.append(f"*{info['name']}* — ${total_val:,.0f} | {pnl_emoji} ${total_pnl:+,.0f}")
                 
                 for p in significant[:3]:
                     title = p.get("title", "?")[:35]
