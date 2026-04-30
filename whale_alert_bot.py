@@ -759,9 +759,14 @@ async def run_bot():
                         # Handle commands
                         if text and text.lower().split()[0] in [c.lower() for c in COMMANDS]:
                             cmd = text.lower().split()[0]
+                            parts = text.split(None, 1)  # Split into command + args
+                            args = parts[1] if len(parts) > 1 else ""
                             for cmd_key, handler in COMMANDS.items():
                                 if cmd_key.lower() == cmd:
-                                    await handler(chat_id)
+                                    if cmd_key == "/start" and args:
+                                        await handler(chat_id, args)
+                                    else:
+                                        await handler(chat_id)
                                     break
             except Exception as e:
                 print(f"Poll error: {e}")
