@@ -1,5 +1,5 @@
 {
-  "balance": 491.59,
+  "balance": 441.59,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -148,13 +148,13 @@
       "market": "Saint-Malo: Celine Naef vs Anna Blinkova",
       "outcome": "Anna Blinkova",
       "entry_price": 0.465,
-      "cur_price": 0.985,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 107.5269,
       "entry_date": "2026-04-30 17:20",
       "status": "open",
-      "pnl": -55.91,
-      "pnl_pct": -97.2
+      "pnl": -57.47,
+      "pnl_pct": -99.9
     },
     {
       "id": "bet_1777570229_17",
@@ -162,13 +162,27 @@
       "market": "Saint-Malo: Celine Naef vs Anna Blinkova",
       "outcome": "Celine Naef",
       "entry_price": 0.28,
-      "cur_price": 0.985,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 178.5714,
       "entry_date": "2026-04-30 17:30",
       "status": "open",
-      "pnl": -125.89,
-      "pnl_pct": -97.9
+      "pnl": -128.48,
+      "pnl_pct": -99.9
+    },
+    {
+      "id": "bet_1777571440_18",
+      "whale": "🐋 Кит #9 — RN1",
+      "market": "Counter-Strike: Vitality vs G2 - Map 1 W",
+      "outcome": "G2",
+      "entry_price": 0.595,
+      "cur_price": 0.595,
+      "bet_size": 50.0,
+      "shares": 84.0336,
+      "entry_date": "2026-04-30 17:50",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "resolved": [
@@ -255,11 +269,11 @@
   ],
   "total_won": 91.59,
   "total_lost": 0,
-  "total_bets": 17,
+  "total_bets": 18,
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 17:48 UTC",
+  "last_updated": "2026-04-30 17:51 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
