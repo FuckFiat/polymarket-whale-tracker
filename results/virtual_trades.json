@@ -1,5 +1,5 @@
 {
-  "balance": 141.59,
+  "balance": 91.59,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -176,13 +176,13 @@
       "market": "Counter-Strike: Vitality vs G2 - Map 1 W",
       "outcome": "G2",
       "entry_price": 0.595,
-      "cur_price": 0.995,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 84.0336,
       "entry_date": "2026-04-30 17:50",
       "status": "open",
-      "pnl": -33.61,
-      "pnl_pct": -98.8
+      "pnl": -33.99,
+      "pnl_pct": -99.9
     },
     {
       "id": "bet_1777572653_19",
@@ -204,13 +204,13 @@
       "market": "Counter-Strike: Vitality vs G2 - Map 2 W",
       "outcome": "Vitality",
       "entry_price": 0.825,
-      "cur_price": 0.995,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 60.6061,
       "entry_date": "2026-04-30 18:56",
       "status": "open",
-      "pnl": -10.3,
-      "pnl_pct": -97.1
+      "pnl": -10.58,
+      "pnl_pct": -99.7
     },
     {
       "id": "bet_1777575979_21",
@@ -232,13 +232,13 @@
       "market": "Will SC Braga win on 2026-04-30?",
       "outcome": "Yes",
       "entry_price": 0.405,
-      "cur_price": 0.375,
+      "cur_price": 0.335,
       "bet_size": 50.0,
       "shares": 123.4568,
       "entry_date": "2026-04-30 19:11",
       "status": "open",
-      "pnl": -3.703704000000003,
-      "pnl_pct": -7.407407407407418
+      "pnl": -8.641976000000001,
+      "pnl_pct": -17.28395061728395
     },
     {
       "id": "bet_1777576284_23",
@@ -246,13 +246,13 @@
       "market": "Will SC Braga win on 2026-04-30?",
       "outcome": "No",
       "entry_price": 0.595,
-      "cur_price": 0.395,
+      "cur_price": 0.375,
       "bet_size": 50.0,
       "shares": 84.0336,
       "entry_date": "2026-04-30 19:11",
       "status": "open",
-      "pnl": 16.81,
-      "pnl_pct": 49.4
+      "pnl": 18.49,
+      "pnl_pct": 54.3
     },
     {
       "id": "bet_1777576285_24",
@@ -260,13 +260,27 @@
       "market": "Nottingham Forest FC vs. Aston Villa FC:",
       "outcome": "No",
       "entry_price": 0.48,
-      "cur_price": 0.53,
+      "cur_price": 0.56,
       "bet_size": 50.0,
       "shares": 104.1667,
       "entry_date": "2026-04-30 19:11",
       "status": "open",
-      "pnl": -5.21,
-      "pnl_pct": -9.6
+      "pnl": -8.33,
+      "pnl_pct": -15.4
+    },
+    {
+      "id": "bet_1777577194_25",
+      "whale": "🐋 Кит #9 — RN1",
+      "market": "Will SC Freiburg win on 2026-04-30?",
+      "outcome": "No",
+      "entry_price": 0.735,
+      "cur_price": 0.735,
+      "bet_size": 50.0,
+      "shares": 68.0272,
+      "entry_date": "2026-04-30 19:26",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "resolved": [
@@ -353,11 +367,11 @@
   ],
   "total_won": 91.59,
   "total_lost": 0,
-  "total_bets": 24,
+  "total_bets": 25,
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 19:26 UTC",
+  "last_updated": "2026-04-30 19:29 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
