@@ -375,11 +375,14 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
         pnl = p.get("pnl", 0)
         pnl_color = "#00ff88" if pnl >= 0 else "#ff4444"
         entry = p.get("entry_price", 0)
+        pos_id = p.get("id", "")
+        pos_label = f'{p.get("whale","?")}: {p.get("outcome","?")} {p.get("market","?")[:20]}'
         pos_rows += f'''
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #111;font-size:10px">
-      <span style="color:#aaa;flex:1">{p.get("whale","?")}: {p.get("outcome","?")} {p.get("market","?")[:25]}</span>
-      <span style="color:#ffaa00;font-weight:600;margin:0 8px">${p.get("bet_size",50):.0f} @ {entry*100:.0f}¢</span>
-      <span style="color:{pnl_color};font-weight:700">{pnl:+,.2f}</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #111;font-size:10px;flex-wrap:wrap;gap:4px">
+      <span style="color:#aaa;flex:1;min-width:120px">{p.get("whale","?")}: {p.get("outcome","?")} {p.get("market","?")[:25]}</span>
+      <span style="color:#ffaa00;font-weight:600;margin:0 4px">${p.get("bet_size",50):.0f} @ {entry*100:.0f}¢</span>
+      <span style="color:{pnl_color};font-weight:700;margin-right:6px">{pnl:+,.2f}</span>
+      <button onclick="showClose('{pos_id}','{pos_label}')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:9px">✕</button>
     </div>'''
     
     roi_color = "#00ff88" if roi >= 0 else "#ff4444"
@@ -431,18 +434,159 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
           📊 P&L: <span style="color:{total_pnl_color}">${total_pnl:+,.2f}</span> | 📈 Старт: ${initial_deposit:.0f} | Сейчас: ${total_value:,.2f}
         </div>
       </div>
+
+      <!-- ACTION BUTTONS -->
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center">
+        <button onclick="loadSignals()" style="background:linear-gradient(135deg,#1a3a1a,#0a2a0a);border:1px solid #00ff8855;color:#00ff88;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s">🎰 Ставка</button>
+        <button onclick="topUp()" style="background:linear-gradient(135deg,#1a2a1a,#0a1a0a);border:1px solid #4488ff55;color:#4488ff;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s">➕ Пополнить</button>
+        <button onclick="refreshPortfolio()" style="background:linear-gradient(135deg,#1a1a2a,#0a0a1a);border:1px solid #aaa55;color:#aaa;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s">🔄 Обновить</button>
+      </div>
     </div>
+
+    <!-- SIGNAL MODAL -->
+    <div id="signalModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;overflow-y:auto">
+      <div style="max-width:500px;margin:40px auto;background:#0d0d1a;border:2px solid #00ff8833;border-radius:15px;padding:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+          <h2 style="color:#00ff88;font-size:14px;margin:0">🎰 СИГНАЛЫ КИТОВ</h2>
+          <button onclick="closeModal()" style="background:none;border:1px solid #333;color:#ff4444;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px">✕</button>
+        </div>
+        <div id="signalList" style="max-height:60vh;overflow-y:auto">
+          <div style="color:#666;text-align:center;padding:20px">Загрузка...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLOSE POSITION MODAL -->
+    <div id="closeModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000">
+      <div style="max-width:400px;margin:80px auto;background:#0d0d1a;border:2px solid #ffaa0033;border-radius:15px;padding:20px;text-align:center">
+        <h2 style="color:#ffaa00;font-size:14px;margin-bottom:15px">📋 ЗАКРЫТЬ СТАВКУ</h2>
+        <p id="closeInfo" style="color:#888;font-size:11px;margin-bottom:15px"></p>
+        <div style="display:flex;gap:10px;justify-content:center">
+          <button id="closeWinBtn" onclick="closePosition('win')" style="background:#0a2a0a;border:2px solid #00ff88;color:#00ff88;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">✅ WIN</button>
+          <button id="closeLossBtn" onclick="closePosition('loss')" style="background:#2a0a0a;border:2px solid #ff4444;color:#ff4444;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">❌ LOSS</button>
+        </div>
+        <button onclick="document.getElementById('closeModal').style.display='none'" style="background:none;border:1px solid #333;color:#888;padding:6px 16px;border-radius:5px;cursor:pointer;font-size:11px;margin-top:10px">Отмена</button>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a2a;border:1px solid #00ff88;color:#00ff88;padding:12px 24px;border-radius:10px;font-size:12px;z-index:2000;transition:opacity .3s"></div>
+
+    '''
+
+    _vt_js = '''
+    <script>
+    const API = 'http://localhost:8422';
+    let closingPosId = null;
+
+    function toast(msg, color='#00ff88') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.borderColor = color;
+      t.style.color = color;
+      t.style.display = 'block';
+      t.style.opacity = 1;
+      setTimeout(() => { t.style.opacity = 0; setTimeout(() => t.style.display = 'none', 300); }, 3000);
+    }
+
+    async function refreshPortfolio() {
+      try {
+        const r = await fetch(API + '/api/portfolio');
+        const d = await r.json();
+        toast('🔄 Портфель обновлён: $' + d.balance.toFixed(2));
+        setTimeout(() => location.reload(), 1500);
+      } catch(e) { toast('❌ Ошибка: ' + e.message, '#ff4444'); }
+    }
+
+    async function topUp() {
+      try {
+        const r = await fetch(API + '/api/topup', {method:'POST'});
+        const d = await r.json();
+        toast('➕ +$500! Баланс: $' + d.balance.toFixed(2));
+        setTimeout(() => location.reload(), 1500);
+      } catch(e) { toast('❌ Ошибка: ' + e.message, '#ff4444'); }
+    }
+
+    async function loadSignals() {
+      const modal = document.getElementById('signalModal');
+      const list = document.getElementById('signalList');
+      modal.style.display = 'block';
+      list.innerHTML = '<div style="color:#666;text-align:center;padding:20px">⏳ Загрузка сигналов...</div>';
+      try {
+        const r = await fetch(API + '/api/signals');
+        const d = await r.json();
+        if (!d.signals || d.signals.length === 0) {
+          list.innerHTML = '<div style="color:#666;text-align:center;padding:20px">🐋 Нет активных сигналов</div>';
+          return;
+        }
+        list.innerHTML = d.signals.map((s,i) => {
+          const pnlE = s.pnl >= 0 ? '🟢' : '🔴';
+          const priceC = (s.cur_price * 100).toFixed(0);
+          return `<div style="background:#111;border:1px solid #1a1a3a;border-radius:8px;padding:10px;margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="color:#fff;font-size:11px;font-weight:600">${pnlE} ${s.whale}: ${s.outcome} ${s.market.slice(0,35)}</div>
+                <div style="color:#888;font-size:10px;margin-top:3px">@ ${priceC}¢ | $${s.value.toFixed(0)} | P&L $${s.pnl.toFixed(0)}</div>
+              </div>
+              <button onclick="placeBet('${s.whale}','${s.market.replace(/'/g,"\\\\'")}','${s.outcome}',${s.cur_price})" style="background:linear-gradient(135deg,#1a3a1a,#0a2a0a);border:1px solid #00ff8855;color:#00ff88;padding:8px 14px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:700;white-space:nowrap">🎰 $50</button>
+            </div>
+          </div>`;
+        }).join('');
+      } catch(e) { list.innerHTML = '<div style="color:#ff4444;text-align:center;padding:20px">❌ ' + e.message + '</div>'; }
+    }
+
+    function closeModal() { document.getElementById('signalModal').style.display = 'none'; }
+
+    async function placeBet(whale, market, outcome, price) {
+      try {
+        const r = await fetch(API + '/api/bet', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({whale, market, outcome, price, bet_size: 50})
+        });
+        const d = await r.json();
+        if (d.error) { toast('❌ ' + d.error, '#ff4444'); return; }
+        toast('✅ Ставка $50 на ' + outcome + ' @ ' + (price*100).toFixed(0) + '¢!');
+        setTimeout(() => { closeModal(); location.reload(); }, 2000);
+      } catch(e) { toast('❌ Ошибка: ' + e.message, '#ff4444'); }
+    }
+
+    function showClose(posId, info) {
+      closingPosId = posId;
+      document.getElementById('closeInfo').textContent = info;
+      document.getElementById('closeModal').style.display = 'block';
+    }
+
+    async function closePosition(result) {
+      if (!closingPosId) return;
+      try {
+        const r = await fetch(API + '/api/close', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({position_id: closingPosId, result})
+        });
+        const d = await r.json();
+        if (d.error) { toast('❌ ' + d.error, '#ff4444'); return; }
+        const emoji = result === 'win' ? '✅ WIN!' : '❌ LOSS';
+        toast(emoji + ' Позиция закрыта');
+        document.getElementById('closeModal').style.display = 'none';
+        setTimeout(() => location.reload(), 1500);
+      } catch(e) { toast('❌ Ошибка: ' + e.message, '#ff4444'); }
+    }
+    </script>
 
     <div style="background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:15px;margin:10px 20px">
       <h3 style="color:#00ff88;font-size:12px;margin-bottom:10px">⚡ КАК ИСПОЛЬЗОВАТЬ</h3>
       <div style="font-size:10px;color:#999;line-height:1.8">
-        <div>1️⃣ <b style="color:#ffaa00">/deposit</b> — баланс, P&L, ROI, открытые ставки</div>
-        <div>2️⃣ <b style="color:#ffaa00">/bet</b> — сигналы китов + кнопки ставок по $50</div>
-        <div>3️⃣ <b style="color:#ffaa00">/close</b> — закрыть ставку (WIN ✅ или LOSS ❌)</div>
-        <div>4️⃣ ➕ Пополнить — +$500 к депозиту</div>
-        <div style="margin-top:8px;color:#ff4444">⚠️ Это симуляция. Реальные деньги НЕ используются.</div>
+        <div>1️⃣ <b style="color:#ffaa00">🎰 Ставка</b> — сигналы китов + кнопки ставок по $50</div>
+        <div>2️⃣ <b style="color:#ffaa00">❌ WIN/LOSS</b> — закрыть позицию прямо из дашборда</div>
+        <div>3️⃣ <b style="color:#ffaa00">➕ Пополнить</b> — +$500 к депозиту</div>
+        <div>4️⃣ <b style="color:#ffaa00">🔄 Обновить</b> — синхронизировать с ботом</div>
+        <div style="margin-top:8px;color:#ff4444">⚠️ Это симуляция. Реальные деньги НЕ используются. Синхронизировано с Telegram ботом.</div>
       </div>
     </div>'''
+
+    virtual_trading_html = virtual_trading_html + _vt_js
     
     # Build P&L floating numbers
     pnl_animations = ""
@@ -771,17 +915,22 @@ async def collect_data_and_generate():
             src = os.path.join(repo_dir, "dashboard.html")
             dst_dashboard = os.path.join(gh_dir, "dashboard.html")
             dst_index = os.path.join(gh_dir, "index.html")
+            dst_js = os.path.join(gh_dir, "dashboard.js")
             shutil.copy2(src, dst_dashboard)
             shutil.copy2(src, dst_index)  # index.html is what GitHub Pages actually serves
+            # Copy dashboard.js for interactive buttons
+            js_src = os.path.join(repo_dir, "dashboard.js")
+            if os.path.exists(js_src):
+                shutil.copy2(js_src, dst_js)
             # Copy virtual trades
             vt_src = os.path.join(repo_dir, "results", "virtual_trades.json")
             if os.path.exists(vt_src):
                 vt_dst = os.path.join(gh_dir, "results", "virtual_trades.json")
                 os.makedirs(os.path.dirname(vt_dst), exist_ok=True)
                 shutil.copy2(vt_src, vt_dst)
-                subprocess.run(["git", "add", "dashboard.html", "index.html", "results/virtual_trades.json"], cwd=gh_dir, capture_output=True, timeout=10)
+                subprocess.run(["git", "add", "dashboard.html", "index.html", "dashboard.js", "results/virtual_trades.json"], cwd=gh_dir, capture_output=True, timeout=10)
             else:
-                subprocess.run(["git", "add", "dashboard.html", "index.html"], cwd=gh_dir, capture_output=True, timeout=10)
+                subprocess.run(["git", "add", "dashboard.html", "index.html", "dashboard.js"], cwd=gh_dir, capture_output=True, timeout=10)
             subprocess.run(["git", "commit", "-m", "dashboard auto-refresh"], cwd=gh_dir, capture_output=True, timeout=10)
             subprocess.run(["git", "push", "origin", "gh-pages"], cwd=gh_dir, capture_output=True, timeout=30)
             print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Deployed to gh-pages")
