@@ -64,13 +64,13 @@
       "market": "Madrid Open: Casper Ruud vs Alexander Bl",
       "outcome": "Alexander Blockx",
       "entry_price": 0.605,
-      "cur_price": 0.996,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 82.6446,
       "entry_date": "2026-04-30 12:07",
       "status": "open",
-      "pnl": -32.3140386,
-      "pnl_pct": -98.9873417721519
+      "pnl": -32.603294700000006,
+      "pnl_pct": -99.873417721519
     },
     {
       "id": "bet_1777553578_9",
@@ -78,13 +78,13 @@
       "market": "Aix en Provence: Kimmer Coppejans vs Val",
       "outcome": "Kimmer Coppejans",
       "entry_price": 0.615,
-      "cur_price": 0.995,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 81.3008,
       "entry_date": "2026-04-30 12:52",
       "status": "open",
-      "pnl": -30.89,
-      "pnl_pct": -98.7
+      "pnl": -31.26,
+      "pnl_pct": -99.9
     }
   ],
   "resolved": [
@@ -143,7 +143,7 @@
   "win_count": 3,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 13:04 UTC",
+  "last_updated": "2026-04-30 13:09 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
