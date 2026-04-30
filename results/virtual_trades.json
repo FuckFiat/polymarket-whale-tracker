@@ -64,13 +64,13 @@
       "market": "Madrid Open: Casper Ruud vs Alexander Bl",
       "outcome": "Alexander Blockx",
       "entry_price": 0.605,
-      "cur_price": 0.9995,
+      "cur_price": 1.0,
       "bet_size": 50.0,
       "shares": 82.6446,
       "entry_date": "2026-04-30 12:07",
       "status": "open",
-      "pnl": -32.603294700000006,
-      "pnl_pct": -99.873417721519
+      "pnl": -32.644617000000004,
+      "pnl_pct": -100.0
     },
     {
       "id": "bet_1777553578_9",
@@ -157,7 +157,7 @@
   "win_count": 3,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 14:48 UTC",
+  "last_updated": "2026-04-30 15:09 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
