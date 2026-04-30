@@ -1,21 +1,7 @@
 {
-  "balance": 731.68,
+  "balance": 786.03,
   "initial_deposit": 1000.0,
   "positions": [
-    {
-      "id": "bet_1777533891_1",
-      "whale": "kcnyekchno",
-      "market": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
-      "outcome": "No",
-      "entry_price": 0.92,
-      "cur_price": 0.7335,
-      "bet_size": 50.0,
-      "shares": 54.3478,
-      "entry_date": "2026-04-30 07:24",
-      "status": "open",
-      "pnl": 10.135864699999999,
-      "pnl_pct": 233.1250000000001
-    },
     {
       "id": "bet_1777533891_5",
       "whale": "beachboy4",
@@ -149,15 +135,31 @@
       "pnl_pct": 42.9,
       "result": "win",
       "close_date": "2026-04-30 07:38"
+    },
+    {
+      "id": "bet_1777533891_1",
+      "whale": "kcnyekchno",
+      "market": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
+      "outcome": "No",
+      "entry_price": 0.92,
+      "cur_price": 0.2665,
+      "bet_size": 50.0,
+      "shares": 54.3478,
+      "entry_date": "2026-04-30 07:24",
+      "status": "resolved",
+      "pnl": 4.35,
+      "pnl_pct": 8.7,
+      "result": "win",
+      "close_date": "2026-04-30 15:24"
     }
   ],
-  "total_won": 81.68,
+  "total_won": 86.03,
   "total_lost": 0,
   "total_bets": 10,
-  "win_count": 3,
+  "win_count": 4,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 15:21 UTC",
+  "last_updated": "2026-04-30 15:27 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
