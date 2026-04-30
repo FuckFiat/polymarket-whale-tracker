@@ -560,7 +560,7 @@ async def cmd_bet(chat_id):
                     if cv > 500 and cur > 0:
                         signals.append({
                             "whale": info["name"],
-                            "emoji": info["emoji"],
+                            "emoji": info["name"][:2],  # Emoji is first chars of name
                             "market": p.get("title", "?"),
                             "outcome": p.get("outcome", "?"),
                             "cur_price": cur,
