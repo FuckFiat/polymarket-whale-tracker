@@ -22,13 +22,13 @@
       "market": "Will Gavin Newsom win the 2028 Democrati",
       "outcome": "No",
       "entry_price": 0.7335,
-      "cur_price": 0.2665,
+      "cur_price": 0.7335,
       "bet_size": 50.0,
       "shares": 68.1663,
       "entry_date": "2026-04-30 07:32",
       "status": "open",
-      "pnl": 31.83,
-      "pnl_pct": 175.2
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     },
     {
       "id": "bet_1777550856_8",
@@ -106,13 +106,13 @@
       "market": "Counter-Strike: FUT Esports vs Astralis ",
       "outcome": "FUT Esports",
       "entry_price": 0.225,
-      "cur_price": 0.9995,
+      "cur_price": 0.0005,
       "bet_size": 50.0,
       "shares": 222.2222,
       "entry_date": "2026-04-30 16:10",
       "status": "open",
-      "pnl": -172.11,
-      "pnl_pct": -99.9
+      "pnl": 49.8888839,
+      "pnl_pct": 28.967741935483883
     },
     {
       "id": "bet_1777566011_14",
@@ -134,13 +134,13 @@
       "market": "Cagliari: Roman Andres Burruchaga vs And",
       "outcome": "Andrea Pellegrino",
       "entry_price": 0.1985,
-      "cur_price": 0.9995,
+      "cur_price": 0.0005,
       "bet_size": 50.0,
       "shares": 251.8892,
       "entry_date": "2026-04-30 17:10",
       "status": "open",
-      "pnl": -201.76,
-      "pnl_pct": -99.9
+      "pnl": 49.87406160000001,
+      "pnl_pct": 24.70368059887711
     },
     {
       "id": "bet_1777569625_16",
@@ -153,8 +153,8 @@
       "shares": 107.5269,
       "entry_date": "2026-04-30 17:20",
       "status": "open",
-      "pnl": -57.47,
-      "pnl_pct": -99.9
+      "pnl": -57.47312804999999,
+      "pnl_pct": -99.90654205607477
     },
     {
       "id": "bet_1777570229_17",
@@ -301,7 +301,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 18:56 UTC",
+  "last_updated": "2026-04-30 18:57 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
