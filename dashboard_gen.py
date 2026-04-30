@@ -767,19 +767,21 @@ async def collect_data_and_generate():
                 subprocess.run(["git", "pull"], cwd=gh_dir, capture_output=True, timeout=15)
             else:
                 subprocess.run(["git", "clone", "-b", "gh-pages", "https://github.com/FuckFiat/polymarket-whale-tracker.git", gh_dir], capture_output=True, timeout=30)
-            # Copy dashboard
+            # Copy dashboard as BOTH dashboard.html AND index.html (GitHub Pages serves index.html)
             src = os.path.join(repo_dir, "dashboard.html")
-            dst = os.path.join(gh_dir, "dashboard.html")
-            shutil.copy2(src, dst)
+            dst_dashboard = os.path.join(gh_dir, "dashboard.html")
+            dst_index = os.path.join(gh_dir, "index.html")
+            shutil.copy2(src, dst_dashboard)
+            shutil.copy2(src, dst_index)  # index.html is what GitHub Pages actually serves
             # Copy virtual trades
             vt_src = os.path.join(repo_dir, "results", "virtual_trades.json")
             if os.path.exists(vt_src):
                 vt_dst = os.path.join(gh_dir, "results", "virtual_trades.json")
                 os.makedirs(os.path.dirname(vt_dst), exist_ok=True)
                 shutil.copy2(vt_src, vt_dst)
-                subprocess.run(["git", "add", "dashboard.html", "results/virtual_trades.json"], cwd=gh_dir, capture_output=True, timeout=10)
+                subprocess.run(["git", "add", "dashboard.html", "index.html", "results/virtual_trades.json"], cwd=gh_dir, capture_output=True, timeout=10)
             else:
-                subprocess.run(["git", "add", "dashboard.html"], cwd=gh_dir, capture_output=True, timeout=10)
+                subprocess.run(["git", "add", "dashboard.html", "index.html"], cwd=gh_dir, capture_output=True, timeout=10)
             subprocess.run(["git", "commit", "-m", "dashboard auto-refresh"], cwd=gh_dir, capture_output=True, timeout=10)
             subprocess.run(["git", "push", "origin", "gh-pages"], cwd=gh_dir, capture_output=True, timeout=30)
             print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Deployed to gh-pages")
