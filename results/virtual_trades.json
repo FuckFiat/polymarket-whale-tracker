@@ -1,5 +1,5 @@
 {
-  "balance": 650.0,
+  "balance": 881.68,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -8,55 +8,13 @@
       "market": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
       "outcome": "No",
       "entry_price": 0.92,
-      "cur_price": 0.2665,
+      "cur_price": 0.7335,
       "bet_size": 50.0,
       "shares": 54.3478,
       "entry_date": "2026-04-30 07:24",
       "status": "open",
-      "pnl": 35.52,
-      "pnl_pct": 816.9
-    },
-    {
-      "id": "bet_1777533891_2",
-      "whale": "RN1",
-      "market": "Rockets vs. Lakers",
-      "outcome": "Rockets",
-      "entry_price": 0.6,
-      "cur_price": 1.0,
-      "bet_size": 50.0,
-      "shares": 83.3333,
-      "entry_date": "2026-04-30 07:24",
-      "status": "open",
-      "pnl": -33.33,
-      "pnl_pct": -100.0
-    },
-    {
-      "id": "bet_1777533891_3",
-      "whale": "RN1",
-      "market": "Raptors vs. Cavaliers",
-      "outcome": "Cavaliers",
-      "entry_price": 0.65,
-      "cur_price": 1.0,
-      "bet_size": 50.0,
-      "shares": 76.9231,
-      "entry_date": "2026-04-30 07:24",
-      "status": "open",
-      "pnl": -26.92,
-      "pnl_pct": -100.0
-    },
-    {
-      "id": "bet_1777533891_4",
-      "whale": "April #1",
-      "market": "Utah vs. Golden Knights",
-      "outcome": "Golden Knights",
-      "entry_price": 0.7,
-      "cur_price": 1.0,
-      "bet_size": 50.0,
-      "shares": 71.4286,
-      "entry_date": "2026-04-30 07:24",
-      "status": "open",
-      "pnl": -21.43,
-      "pnl_pct": -100.0
+      "pnl": 10.135864699999999,
+      "pnl_pct": 233.1250000000001
     },
     {
       "id": "bet_1777533891_5",
@@ -69,8 +27,8 @@
       "shares": 55.5556,
       "entry_date": "2026-04-30 07:24",
       "status": "open",
-      "pnl": -48.86,
-      "pnl_pct": -97.7
+      "pnl": -48.861150200000004,
+      "pnl_pct": -97.72222222222223
     },
     {
       "id": "bet_1777534377_6",
@@ -92,23 +50,72 @@
       "market": "Will Gavin Newsom win the 2028 Democrati",
       "outcome": "No",
       "entry_price": 0.7335,
-      "cur_price": 0.2665,
+      "cur_price": 0.7335,
       "bet_size": 50.0,
       "shares": 68.1663,
       "entry_date": "2026-04-30 07:32",
       "status": "open",
-      "pnl": 31.83,
-      "pnl_pct": 175.2
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
-  "resolved": [],
-  "total_won": 0,
+  "resolved": [
+    {
+      "id": "bet_1777533891_2",
+      "whale": "RN1",
+      "market": "Rockets vs. Lakers",
+      "outcome": "Rockets",
+      "entry_price": 0.6,
+      "cur_price": 1.0,
+      "bet_size": 50.0,
+      "shares": 83.3333,
+      "entry_date": "2026-04-30 07:24",
+      "status": "resolved",
+      "pnl": 33.33,
+      "pnl_pct": 66.7,
+      "result": "win",
+      "close_date": "2026-04-30 07:38"
+    },
+    {
+      "id": "bet_1777533891_3",
+      "whale": "RN1",
+      "market": "Raptors vs. Cavaliers",
+      "outcome": "Cavaliers",
+      "entry_price": 0.65,
+      "cur_price": 1.0,
+      "bet_size": 50.0,
+      "shares": 76.9231,
+      "entry_date": "2026-04-30 07:24",
+      "status": "resolved",
+      "pnl": 26.92,
+      "pnl_pct": 53.8,
+      "result": "win",
+      "close_date": "2026-04-30 07:38"
+    },
+    {
+      "id": "bet_1777533891_4",
+      "whale": "April #1",
+      "market": "Utah vs. Golden Knights",
+      "outcome": "Golden Knights",
+      "entry_price": 0.7,
+      "cur_price": 1.0,
+      "bet_size": 50.0,
+      "shares": 71.4286,
+      "entry_date": "2026-04-30 07:24",
+      "status": "resolved",
+      "pnl": 21.43,
+      "pnl_pct": 42.9,
+      "result": "win",
+      "close_date": "2026-04-30 07:38"
+    }
+  ],
+  "total_won": 81.68,
   "total_lost": 0,
   "total_bets": 7,
-  "win_count": 0,
+  "win_count": 3,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 07:36 UTC",
+  "last_updated": "2026-04-30 07:38 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
