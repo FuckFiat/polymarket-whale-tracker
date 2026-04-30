@@ -22,13 +22,13 @@
       "market": "Will Gavin Newsom win the 2028 Democrati",
       "outcome": "No",
       "entry_price": 0.7335,
-      "cur_price": 0.7335,
+      "cur_price": 0.2665,
       "bet_size": 50.0,
       "shares": 68.1663,
       "entry_date": "2026-04-30 07:32",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 31.83,
+      "pnl_pct": 175.2
     },
     {
       "id": "bet_1777550856_8",
@@ -69,7 +69,7 @@
       "shares": 142.2475,
       "entry_date": "2026-04-30 14:33",
       "status": "open",
-      "pnl": -92.24750375,
+      "pnl": -92.25,
       "pnl_pct": -100.0
     },
     {
@@ -78,13 +78,13 @@
       "market": "Madrid Open: Hailey Baptiste vs Mirra An",
       "outcome": "Hailey Baptiste",
       "entry_price": 0.193,
-      "cur_price": 0.2249,
+      "cur_price": 1.0,
       "bet_size": 50.0,
       "shares": 259.0674,
       "entry_date": "2026-04-30 15:49",
       "status": "open",
-      "pnl": -8.264250059999982,
-      "pnl_pct": -3.9529120198265044
+      "pnl": -209.07,
+      "pnl_pct": -100.0
     },
     {
       "id": "bet_1777564186_12",
@@ -97,7 +97,7 @@
       "shares": 61.9579,
       "entry_date": "2026-04-30 15:49",
       "status": "open",
-      "pnl": -11.957874699999998,
+      "pnl": -11.96,
       "pnl_pct": -100.0
     },
     {
@@ -106,13 +106,13 @@
       "market": "Counter-Strike: FUT Esports vs Astralis ",
       "outcome": "FUT Esports",
       "entry_price": 0.225,
-      "cur_price": 0.0005,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 222.2222,
       "entry_date": "2026-04-30 16:10",
       "status": "open",
-      "pnl": 49.8888839,
-      "pnl_pct": 28.967741935483883
+      "pnl": -172.11,
+      "pnl_pct": -99.9
     },
     {
       "id": "bet_1777566011_14",
@@ -287,7 +287,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 18:47 UTC",
+  "last_updated": "2026-04-30 18:51 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
