@@ -1,5 +1,5 @@
 {
-  "balance": 391.59,
+  "balance": 341.59,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -134,13 +134,13 @@
       "market": "Cagliari: Roman Andres Burruchaga vs And",
       "outcome": "Andrea Pellegrino",
       "entry_price": 0.1985,
-      "cur_price": 0.9995,
+      "cur_price": 0.0005,
       "bet_size": 50.0,
       "shares": 251.8892,
       "entry_date": "2026-04-30 17:10",
       "status": "open",
-      "pnl": -201.76,
-      "pnl_pct": -99.9
+      "pnl": 49.87406160000001,
+      "pnl_pct": 24.70368059887711
     },
     {
       "id": "bet_1777569625_16",
@@ -153,8 +153,8 @@
       "shares": 107.5269,
       "entry_date": "2026-04-30 17:20",
       "status": "open",
-      "pnl": -57.47,
-      "pnl_pct": -99.9
+      "pnl": -57.47312804999999,
+      "pnl_pct": -99.90654205607477
     },
     {
       "id": "bet_1777570229_17",
@@ -176,13 +176,13 @@
       "market": "Counter-Strike: Vitality vs G2 - Map 1 W",
       "outcome": "G2",
       "entry_price": 0.595,
-      "cur_price": 0.0845,
+      "cur_price": 0.825,
       "bet_size": 50.0,
       "shares": 84.0336,
       "entry_date": "2026-04-30 17:50",
       "status": "open",
-      "pnl": 42.9,
-      "pnl_pct": 126.0
+      "pnl": -19.33,
+      "pnl_pct": -56.8
     },
     {
       "id": "bet_1777572653_19",
@@ -197,6 +197,20 @@
       "status": "open",
       "pnl": -56.44,
       "pnl_pct": -99.9
+    },
+    {
+      "id": "bet_1777575375_20",
+      "whale": "🐋 Кит #9 — RN1",
+      "market": "Counter-Strike: Vitality vs G2 - Map 2 W",
+      "outcome": "Vitality",
+      "entry_price": 0.825,
+      "cur_price": 0.825,
+      "bet_size": 50.0,
+      "shares": 60.6061,
+      "entry_date": "2026-04-30 18:56",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "resolved": [
@@ -283,11 +297,11 @@
   ],
   "total_won": 91.59,
   "total_lost": 0,
-  "total_bets": 19,
+  "total_bets": 20,
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 18:53 UTC",
+  "last_updated": "2026-04-30 18:57 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
