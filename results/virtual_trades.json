@@ -1,21 +1,7 @@
 {
-  "balance": 1700.0,
+  "balance": 1750.0,
   "initial_deposit": 1000.0,
   "positions": [
-    {
-      "id": "bet_1",
-      "whale": "kcnyekchno",
-      "market": "Will Arsenal FC win on 2026-04-29?",
-      "outcome": "No",
-      "entry_price": 0.9995,
-      "cur_price": 1.0,
-      "bet_size": 50.0,
-      "shares": 50.02501250625313,
-      "entry_date": "2026-04-29 22:07",
-      "status": "open",
-      "pnl": -0.025012506253123807,
-      "pnl_pct": -100.0
-    },
     {
       "id": "bet_2",
       "whale": "kcnyekchno",
@@ -25,20 +11,6 @@
       "cur_price": 0.0864,
       "bet_size": 50.0,
       "shares": 578.7037037037037,
-      "entry_date": "2026-04-29 22:07",
-      "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
-    },
-    {
-      "id": "bet_3",
-      "whale": "beachboy4",
-      "market": "Will Paris Saint-Germain FC win on 2026-",
-      "outcome": "Yes",
-      "entry_price": 1.0,
-      "cur_price": 1.0,
-      "bet_size": 50.0,
-      "shares": 50.0,
       "entry_date": "2026-04-29 22:07",
       "status": "open",
       "pnl": 0.0,
@@ -71,6 +43,24 @@
       "status": "open",
       "pnl": 0,
       "pnl_pct": 0
+    }
+  ],
+  "resolved": [
+    {
+      "id": "bet_1",
+      "whale": "kcnyekchno",
+      "market": "Will Arsenal FC win on 2026-04-29?",
+      "outcome": "No",
+      "entry_price": 0.9995,
+      "cur_price": 1.0,
+      "bet_size": 50.0,
+      "shares": 50.02501250625313,
+      "entry_date": "2026-04-29 22:07",
+      "status": "resolved",
+      "pnl": -50.0,
+      "pnl_pct": -100.0,
+      "result": "win",
+      "close_date": "2026-04-30 07:20"
     },
     {
       "id": "bet_6",
@@ -82,17 +72,34 @@
       "bet_size": 50.0,
       "shares": 50.02501250625313,
       "entry_date": "2026-04-29 22:07",
-      "status": "open",
-      "pnl": -0.025012506253123807,
-      "pnl_pct": -100.0
+      "status": "resolved",
+      "pnl": -50.0,
+      "pnl_pct": -100.0,
+      "result": "win",
+      "close_date": "2026-04-30 07:20"
+    },
+    {
+      "id": "bet_3",
+      "whale": "beachboy4",
+      "market": "Will Paris Saint-Germain FC win on 2026-",
+      "outcome": "Yes",
+      "entry_price": 1.0,
+      "cur_price": 1.0,
+      "bet_size": 50.0,
+      "shares": 50.0,
+      "entry_date": "2026-04-29 22:07",
+      "status": "resolved",
+      "pnl": 0.0,
+      "pnl_pct": 0.0,
+      "result": "win",
+      "close_date": "2026-04-30 07:20"
     }
   ],
-  "resolved": [],
-  "total_won": 0,
-  "total_lost": 0,
+  "total_won": 0.0,
+  "total_lost": 100.0,
   "total_bets": 6,
-  "win_count": 0,
-  "loss_count": 0,
+  "win_count": 1,
+  "loss_count": 2,
   "created_at": "2026-04-29 22:07 UTC",
-  "last_updated": "2026-04-30 07:17 UTC"
+  "last_updated": "2026-04-30 07:20 UTC"
 }
