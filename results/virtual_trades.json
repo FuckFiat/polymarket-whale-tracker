@@ -176,13 +176,13 @@
       "market": "Counter-Strike: Vitality vs G2 - Map 1 W",
       "outcome": "G2",
       "entry_price": 0.595,
-      "cur_price": 0.595,
+      "cur_price": 0.4245,
       "bet_size": 50.0,
       "shares": 84.0336,
       "entry_date": "2026-04-30 17:50",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 14.33,
+      "pnl_pct": 42.1
     }
   ],
   "resolved": [
@@ -273,7 +273,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 17:54 UTC",
+  "last_updated": "2026-04-30 17:57 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
