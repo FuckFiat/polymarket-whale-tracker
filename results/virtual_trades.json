@@ -50,13 +50,13 @@
       "market": "Aix en Provence: Kimmer Coppejans vs Val",
       "outcome": "Kimmer Coppejans",
       "entry_price": 0.615,
-      "cur_price": 0.9995,
+      "cur_price": 1.0,
       "bet_size": 50.0,
       "shares": 81.3008,
       "entry_date": "2026-04-30 12:52",
       "status": "open",
-      "pnl": -31.26,
-      "pnl_pct": -99.9
+      "pnl": -31.3,
+      "pnl_pct": -100.0
     },
     {
       "id": "bet_1777559617_10",
@@ -161,7 +161,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 15:40 UTC",
+  "last_updated": "2026-04-30 15:44 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
