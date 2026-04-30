@@ -1,5 +1,5 @@
 {
-  "balance": 750.0,
+  "balance": 650.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -8,13 +8,13 @@
       "market": "Will Gavin Newsom win the 2028 Democratic presidential nomination?",
       "outcome": "No",
       "entry_price": 0.92,
-      "cur_price": 0.7335,
+      "cur_price": 0.2665,
       "bet_size": 50.0,
       "shares": 54.3478,
       "entry_date": "2026-04-30 07:24",
       "status": "open",
-      "pnl": 10.135864699999999,
-      "pnl_pct": 233.1250000000001
+      "pnl": 35.52,
+      "pnl_pct": 816.9
     },
     {
       "id": "bet_1777533891_2",
@@ -27,7 +27,7 @@
       "shares": 83.3333,
       "entry_date": "2026-04-30 07:24",
       "status": "open",
-      "pnl": -33.33332,
+      "pnl": -33.33,
       "pnl_pct": -100.0
     },
     {
@@ -41,7 +41,7 @@
       "shares": 76.9231,
       "entry_date": "2026-04-30 07:24",
       "status": "open",
-      "pnl": -26.923085,
+      "pnl": -26.92,
       "pnl_pct": -100.0
     },
     {
@@ -55,7 +55,7 @@
       "shares": 71.4286,
       "entry_date": "2026-04-30 07:24",
       "status": "open",
-      "pnl": -21.428580000000004,
+      "pnl": -21.43,
       "pnl_pct": -100.0
     },
     {
@@ -69,18 +69,46 @@
       "shares": 55.5556,
       "entry_date": "2026-04-30 07:24",
       "status": "open",
-      "pnl": -48.861150200000004,
-      "pnl_pct": -97.72222222222223
+      "pnl": -48.86,
+      "pnl_pct": -97.7
+    },
+    {
+      "id": "bet_1777534377_6",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "Will Gavin Newsom win the 2028 Democrati",
+      "outcome": "Yes",
+      "entry_price": 0.2665,
+      "cur_price": 0.2665,
+      "bet_size": 50.0,
+      "shares": 187.6173,
+      "entry_date": "2026-04-30 07:32",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
+    },
+    {
+      "id": "bet_1777534378_7",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "Will Gavin Newsom win the 2028 Democrati",
+      "outcome": "No",
+      "entry_price": 0.7335,
+      "cur_price": 0.2665,
+      "bet_size": 50.0,
+      "shares": 68.1663,
+      "entry_date": "2026-04-30 07:32",
+      "status": "open",
+      "pnl": 31.83,
+      "pnl_pct": 175.2
     }
   ],
   "resolved": [],
   "total_won": 0,
   "total_lost": 0,
-  "total_bets": 5,
+  "total_bets": 7,
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 07:29 UTC",
+  "last_updated": "2026-04-30 07:32 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
