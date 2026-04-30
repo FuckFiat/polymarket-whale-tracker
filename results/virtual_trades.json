@@ -22,13 +22,13 @@
       "market": "Will Gavin Newsom win the 2028 Democrati",
       "outcome": "No",
       "entry_price": 0.7335,
-      "cur_price": 0.7335,
+      "cur_price": 0.2665,
       "bet_size": 50.0,
       "shares": 68.1663,
       "entry_date": "2026-04-30 07:32",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 31.83,
+      "pnl_pct": 175.2
     },
     {
       "id": "bet_1777550856_8",
@@ -176,13 +176,13 @@
       "market": "Counter-Strike: Vitality vs G2 - Map 1 W",
       "outcome": "G2",
       "entry_price": 0.595,
-      "cur_price": 0.825,
+      "cur_price": 0.615,
       "bet_size": 50.0,
       "shares": 84.0336,
       "entry_date": "2026-04-30 17:50",
       "status": "open",
-      "pnl": -19.33,
-      "pnl_pct": -56.8
+      "pnl": -1.68,
+      "pnl_pct": -4.9
     },
     {
       "id": "bet_1777572653_19",
@@ -204,13 +204,13 @@
       "market": "Counter-Strike: Vitality vs G2 - Map 2 W",
       "outcome": "Vitality",
       "entry_price": 0.825,
-      "cur_price": 0.825,
+      "cur_price": 0.615,
       "bet_size": 50.0,
       "shares": 60.6061,
       "entry_date": "2026-04-30 18:56",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 12.73,
+      "pnl_pct": 120.0
     }
   ],
   "resolved": [
@@ -301,7 +301,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 18:57 UTC",
+  "last_updated": "2026-04-30 19:01 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
