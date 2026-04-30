@@ -22,13 +22,13 @@
       "market": "Will Gavin Newsom win the 2028 Democrati",
       "outcome": "No",
       "entry_price": 0.7335,
-      "cur_price": 0.7335,
+      "cur_price": 0.2665,
       "bet_size": 50.0,
       "shares": 68.1663,
       "entry_date": "2026-04-30 07:32",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 31.83,
+      "pnl_pct": 175.2
     },
     {
       "id": "bet_1777550856_8",
@@ -69,8 +69,8 @@
       "shares": 142.2475,
       "entry_date": "2026-04-30 14:33",
       "status": "open",
-      "pnl": -92.17638000000002,
-      "pnl_pct": -99.92289899768699
+      "pnl": -92.18,
+      "pnl_pct": -99.9
     },
     {
       "id": "bet_1777564185_11",
@@ -78,13 +78,13 @@
       "market": "Madrid Open: Hailey Baptiste vs Mirra An",
       "outcome": "Hailey Baptiste",
       "entry_price": 0.193,
-      "cur_price": 0.0005,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 259.0674,
       "entry_date": "2026-04-30 15:49",
       "status": "open",
-      "pnl": 49.870474500000036,
-      "pnl_pct": 23.853779429987632
+      "pnl": -208.94,
+      "pnl_pct": -99.9
     },
     {
       "id": "bet_1777564186_12",
@@ -97,8 +97,8 @@
       "shares": 61.9579,
       "entry_date": "2026-04-30 15:49",
       "status": "open",
-      "pnl": -11.92689575,
-      "pnl_pct": -99.74093264248708
+      "pnl": -11.93,
+      "pnl_pct": -99.7
     },
     {
       "id": "bet_1777565401_13",
@@ -106,13 +106,13 @@
       "market": "Counter-Strike: FUT Esports vs Astralis ",
       "outcome": "FUT Esports",
       "entry_price": 0.225,
-      "cur_price": 0.425,
+      "cur_price": 0.47,
       "bet_size": 50.0,
       "shares": 222.2222,
       "entry_date": "2026-04-30 16:10",
       "status": "open",
-      "pnl": -44.44,
-      "pnl_pct": -25.8
+      "pnl": -54.44,
+      "pnl_pct": -31.6
     },
     {
       "id": "bet_1777566011_14",
@@ -120,13 +120,13 @@
       "market": "Counter-Strike: FUT Esports vs Astralis ",
       "outcome": "Astralis",
       "entry_price": 0.705,
-      "cur_price": 0.425,
+      "cur_price": 0.47,
       "bet_size": 50.0,
       "shares": 70.922,
       "entry_date": "2026-04-30 16:20",
       "status": "open",
-      "pnl": 19.86,
-      "pnl_pct": 94.9
+      "pnl": 16.67,
+      "pnl_pct": 79.7
     }
   ],
   "resolved": [
@@ -217,7 +217,7 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-04-30 06:30 UTC",
-  "last_updated": "2026-04-30 16:31 UTC",
+  "last_updated": "2026-04-30 16:35 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
