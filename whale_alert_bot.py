@@ -5,6 +5,7 @@ Interactive Telegram bot with commands + automatic whale monitoring.
 """
 import asyncio, aiohttp, json, time, os, sys
 from datetime import datetime, timezone
+from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats
 
 BOT_TOKEN = "8375563056:AAHqFtfsxK1zMfKrEBgMTa9d0QcIXVTlYGI"
 CHAT_ID = 730668
@@ -559,6 +560,10 @@ COMMANDS = {
     "/markets": cmd_markets,
     "/check": cmd_check,
     "/positions": cmd_positions,
+    "/deposit": cmd_deposit,
+    "/bet": cmd_bet,
+    "/close": cmd_close,
+    "/arbitrage": cmd_arbitrage,
 }
 
 async def run_bot():
@@ -588,6 +593,77 @@ async def run_bot():
                         # Handle callback buttons
                         if callback:
                             await tg_answer_callback(callback["id"], "✅")
+                            cb_data = callback.get("data", "")
+                            cb_chat = callback.get("from", {}).get("id", chat_id)
+                            
+                            # Virtual trading: bet on whale signal
+                            if cb_data.startswith("bet_") and not cb_data.startswith("bet_0x"):
+                                parts = cb_data.split("_", 3)
+                                if len(parts) >= 4:
+                                    whale = parts[1]
+                                    outcome = parts[2]
+                                    price_market = parts[3]
+                                    price_str = price_market.split("_")[0]
+                                    try:
+                                        price = float(price_str)
+                                        market = price_market.split("_", 1)[1] if "_" in price_market else whale
+                                        portfolio = load_portfolio()
+                                        pos = place_bet(portfolio, whale, market, outcome, price, 50.0, price)
+                                        if "error" in pos:
+                                            await tg_send(f"❌ {pos['error']}", cb_chat)
+                                        else:
+                                            await tg_send(f"🎰 *СТАВКА СДЕЛАНА!*\n\n{whale}: {outcome} {market[:30]}\n@ {price*100:.0f}¢ | $50\nБаланс: ${portfolio['balance']:.2f}", cb_chat)
+                                    except Exception as e:
+                                            await tg_send(f"❌ Ошибка: {e}", cb_chat)
+                                continue
+                            
+                            # Close position: WIN
+                            if cb_data.startswith("close_win_"):
+                                pos_id = cb_data.replace("close_win_", "")
+                                portfolio = load_portfolio()
+                                result = close_position(portfolio, pos_id, "win")
+                                if "error" in result:
+                                    await tg_send(f"❌ {result['error']}", cb_chat)
+                                else:
+                                    pnl_emoji = "✅" if result.get("pnl", 0) >= 0 else "💸"
+                                    await tg_send(f"{pnl_emoji} *Ставка закрыта WIN!*\n\n{result.get('whale','?')}: {result.get('outcome','?')} {result.get('market','?')[:30]}\nP&L: ${result.get('pnl',0):+.2f}\nБаланс: ${portfolio['balance']:.2f}", cb_chat)
+                                continue
+                            
+                            # Close position: LOSS
+                            if cb_data.startswith("close_loss_"):
+                                pos_id = cb_data.replace("close_loss_", "")
+                                portfolio = load_portfolio()
+                                result = close_position(portfolio, pos_id, "loss")
+                                if "error" in result:
+                                    await tg_send(f"❌ {result['error']}", cb_chat)
+                                else:
+                                    await tg_send(f"❌ *Ставка закрыта LOSS*\n\n{result.get('whale','?')}: {result.get('outcome','?')} {result.get('market','?')[:30]}\nP&L: ${result.get('pnl',0):+.2f}\nБаланс: ${portfolio['balance']:.2f}", cb_chat)
+                                continue
+                            
+                            # Virtual trading: bet menu
+                            if cb_data == "vt_bet":
+                                await cmd_bet(cb_chat)
+                                continue
+                            
+                            # Virtual trading: refresh
+                            if cb_data == "vt_refresh":
+                                await cmd_deposit(cb_chat)
+                                continue
+                            
+                            # Virtual trading: top up
+                            if cb_data == "vt_topup":
+                                portfolio = load_portfolio()
+                                portfolio["balance"] += 500
+                                save_portfolio(portfolio)
+                                stats = get_stats(portfolio)
+                                await tg_send(f"➕ Депозит пополнен на $500!\nБаланс: ${portfolio['balance']:.2f}", cb_chat)
+                                continue
+                            
+                            # Arbitrage
+                            if cb_data == "arbitrage":
+                                await cmd_arbitrage(cb_chat)
+                                continue
+                            
                             continue
 
                         # Handle commands

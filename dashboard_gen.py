@@ -771,6 +771,40 @@ async def collect_data_and_generate():
         except Exception as e:
             print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] gh-pages deploy error: {e}")
         
+        # Auto-bet: update virtual positions with current prices and auto-follow whale signals
+        try:
+            from virtual_trading import load_portfolio, save_portfolio
+            portfolio = load_portfolio()
+            updated = False
+            for pos in portfolio.get("positions", []):
+                # Update current price from whale data
+                for addr, w in whale_data.items():
+                    for p in w.get("positions", []):
+                        title = p.get("title", "?")
+                        outcome = p.get("outcome", "?")
+                        if pos.get("market", "") in title and pos.get("outcome", "") == outcome:
+                            cur = float(p.get("price", 0) or p.get("curPrice", 0) or 0)
+                            if cur > 0:
+                                pos["cur_price"] = cur
+                                # Recalculate P&L
+                                entry = pos.get("entry_price", 0)
+                                shares = pos.get("shares", 0)
+                                if entry > 0 and shares > 0:
+                                    if pos.get("outcome", "").lower() in ("yes", "y"):
+                                        pos["pnl"] = (cur - entry) * shares
+                                        pos["pnl_pct"] = ((cur / entry) - 1) * 100 if entry > 0 else 0
+                                    else:
+                                        entry_no = 1 - entry
+                                        cur_no = 1 - cur
+                                        pos["pnl"] = (cur_no - entry_no) * shares
+                                        pos["pnl_pct"] = ((cur_no / entry_no) - 1) * 100 if entry_no > 0 else 0
+                                updated = True
+            if updated:
+                save_portfolio(portfolio)
+                print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Virtual positions updated")
+        except Exception as e:
+            print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Auto-bet error: {e}")
+        
         return dashboard
 
 

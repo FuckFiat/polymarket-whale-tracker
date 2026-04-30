@@ -1,5 +1,5 @@
 {
-  "balance": 700.0,
+  "balance": 1700.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -13,8 +13,8 @@
       "shares": 50.02501250625313,
       "entry_date": "2026-04-29 22:07",
       "status": "open",
-      "pnl": 0,
-      "pnl_pct": 0
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     },
     {
       "id": "bet_2",
@@ -41,8 +41,8 @@
       "shares": 50.0,
       "entry_date": "2026-04-29 22:07",
       "status": "open",
-      "pnl": 0,
-      "pnl_pct": 0
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     },
     {
       "id": "bet_4",
@@ -55,8 +55,8 @@
       "shares": 2439.0243902439024,
       "entry_date": "2026-04-29 22:07",
       "status": "open",
-      "pnl": 0,
-      "pnl_pct": 0
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     },
     {
       "id": "bet_5",
@@ -83,8 +83,8 @@
       "shares": 50.02501250625313,
       "entry_date": "2026-04-29 22:07",
       "status": "open",
-      "pnl": 0,
-      "pnl_pct": 0
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "resolved": [],
@@ -94,5 +94,5 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-04-29 22:07 UTC",
-  "last_updated": "2026-04-29 22:07 UTC"
+  "last_updated": "2026-04-30 00:06 UTC"
 }
