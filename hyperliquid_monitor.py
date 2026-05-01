@@ -99,8 +99,8 @@ def format_position(coin, size, entry_px, unrealized_pnl, cur_px, leverage):
         "liq_estimate": liq_estimate,
     }
 
-async def scan_whale_positions(session, whales=None):
-    """Scan all whale positions on Hyperliquid"""
+async def scan_whale_positions(session, whales=None, coins=None):
+    """Scan all whale positions on Hyperliquid, optionally filtering by coins"""
     if whales is None:
         whales = HYPERLIQUID_WHALES
     
@@ -126,6 +126,11 @@ async def scan_whale_positions(session, whales=None):
         for pos in positions:
             position = pos.get("position", {})
             coin = position.get("coin", "?")
+            
+            # Filter by selected coins
+            if coins and coin not in coins:
+                continue
+            
             size = position.get("szi", "0")
             entry_px = position.get("entryPx", "0")
             unrealized_pnl = position.get("unrealizedPnl", "0")
