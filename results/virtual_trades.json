@@ -1,9 +1,33 @@
 {
-  "balance": 1000.0,
+  "balance": 950.0,
   "initial_deposit": 1000.0,
-  "positions": [],
+  "positions": [
+    {
+      "id": "bet_1777626626_1",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "Will England win the 2026 FIFA World Cup",
+      "outcome": "Yes",
+      "entry_price": 0.1105,
+      "cur_price": 0.1105,
+      "bet_size": 50.0,
+      "shares": 452.4887,
+      "entry_date": "2026-05-01 09:10",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
+    }
+  ],
   "trade_history": [],
   "reset_date": "2026-05-01",
   "reset_reason": "Dead positions cleanup + RN1 filter",
-  "auto_betting": true
+  "auto_betting": true,
+  "resolved": [],
+  "total_won": 0,
+  "total_lost": 0,
+  "total_bets": 1,
+  "win_count": 0,
+  "loss_count": 0,
+  "created_at": "2026-05-01 09:10 UTC",
+  "last_updated": "2026-05-01 09:12 UTC",
+  "max_bet_pct": 5
 }
