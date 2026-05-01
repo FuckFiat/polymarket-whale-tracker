@@ -1,5 +1,5 @@
 {
-  "balance": 850.0,
+  "balance": 800.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -29,6 +29,20 @@
       "status": "open",
       "pnl": -1.9047620000000018,
       "pnl_pct": -4.210526315789476
+    },
+    {
+      "id": "bet_1777676043_3",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Pistons (-4.5)",
+      "outcome": "Pistons",
+      "entry_price": 0.465,
+      "cur_price": 0.465,
+      "bet_size": 50.0,
+      "shares": 107.5269,
+      "entry_date": "2026-05-01 22:54",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "trade_history": [],
@@ -38,10 +52,10 @@
   "resolved": [],
   "total_won": 0,
   "total_lost": 0,
-  "total_bets": 3,
+  "total_bets": 4,
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-01 22:48 UTC",
+  "last_updated": "2026-05-01 22:54 UTC",
   "max_bet_pct": 5
 }
