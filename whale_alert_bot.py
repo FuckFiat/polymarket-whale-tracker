@@ -6,7 +6,7 @@ Interactive Telegram bot with commands + automatic whale monitoring.
 import asyncio, aiohttp, json, time, os, sys
 from datetime import datetime, timezone
 from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats, update_prices
-from hyperliquid_monitor import scan_whale_positions, format_alert as hl_format_alert, load_hl_state, HYPERLIQUID_WHALES
+from hyperliquid_monitor import scan_whale_positions, format_alert as hl_format_alert, load_hl_state, HYPERLIQUID_WHALES, HL_API, refresh_leaderboard, get_user_state, get_all_mids
 
 BOT_TOKEN = "8375563056:AAHqFtfsxK1zMfKrEBgMTa9d0QcIXVTlYGI"
 CHAT_ID = 730668
@@ -647,41 +647,117 @@ async def cmd_close(chat_id):
     
     await tg_send(text, btns, chat_id)
 
+# ===== TOP 10 COINS FOR HYPERLIQUID =====
+HL_TOP_COINS = ["BTC", "ETH", "SOL", "HYPE", "XRP", "DOGE", "LINK", "AVAX", "ARB", "SUI"]
+
+# User's selected coins (default: all top 10)
+HL_SELECTED_COINS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results", "hl_selected_coins.json")
+
+def load_hl_selected_coins():
+    if os.path.exists(HL_SELECTED_COINS_FILE):
+        try:
+            with open(HL_SELECTED_COINS_FILE) as f:
+                data = json.load(f)
+                return data if data else HL_TOP_COINS[:]
+        except:
+            return HL_TOP_COINS[:]
+    return HL_TOP_COINS[:]
+
+def save_hl_selected_coins(coins):
+    os.makedirs(os.path.dirname(HL_SELECTED_COINS_FILE), exist_ok=True)
+    with open(HL_SELECTED_COINS_FILE, "w") as f:
+        json.dump(coins, f)
+
 async def cmd_hlwhales(chat_id):
-    """Show Hyperliquid whale positions"""
-    text = "🔮 *Hyperliquid Whale Monitor*\n═══════════════════════════════════\n\n"
-    
+    """Show Hyperliquid whale positions + coin selection menu"""
+    selected = load_hl_selected_coins()
     hl_state = load_hl_state()
     whales = HYPERLIQUID_WHALES
     active_whales = {k: v for k, v in whales.items() if v.get("tier") != "placeholder"}
     
-    text += f"🐋 Tracked whales: {len(active_whales)}\n"
-    text += f"📊 Last check: {datetime.fromtimestamp(hl_state.get('last_check', 0), tz=timezone.utc).strftime('%H:%M UTC') if hl_state.get('last_check') else 'never'}\n\n"
+    text = "🔮 *Hyperliquid Whale Monitor*\n═══════════════════════════════════\n\n"
+    text += f"🐋 Отслеживается китов: {len(active_whales)}\n"
+    text += f"📊 Монеты: {', '.join(selected)}\n"
+    text += f"⏰ Последняя проверка: {datetime.fromtimestamp(hl_state.get('last_check', 0), tz=timezone.utc).strftime('%H:%M UTC') if hl_state.get('last_check') else 'никогда'}\n\n"
     
-    for addr, info in active_whales.items():
+    # Show whale account values
+    for addr, info in list(active_whales.items())[:5]:
         pnl_info = hl_state.get("whale_pnl", {}).get(addr[:10], {})
         if pnl_info:
             text += f"{info['name']}\n"
-            text += f"  💰 Account: ${pnl_info.get('account_value', 0):,.0f}\n"
-            text += f"  📊 Positions: {pnl_info.get('positions', 0)}\n\n"
-        else:
-            text += f"{info['name']}\n  ⏳ Not yet scanned\n\n"
+            text += f"  💰 ${pnl_info.get('account_value', 0):,.0f} | 📊 {pnl_info.get('positions', 0)} поз.\n"
+    text += "\n"
     
-    text += "\n💡 Используй /hlcheck для ручной проверки"
-    btns = [[{"text": "🔮 Hyperliquid", "url": "https://app.hyperliquid.xyz/trade"}]]
+    # Coin selection buttons (2 per row)
+    btns = []
+    for i in range(0, len(HL_TOP_COINS), 2):
+        row = []
+        for coin in HL_TOP_COINS[i:i+2]:
+            if coin in selected:
+                row.append({"text": f"✅ {coin}", "callback_data": f"hl_coin_off_{coin}"})
+            else:
+                row.append({"text": f"⬜ {coin}", "callback_data": f"hl_coin_on_{coin}"})
+        btns.append(row)
+    
+    btns.append([
+        {"text": "🔍 Сканировать", "callback_data": "hl_scan"},
+        {"text": "🔄 Все", "callback_data": "hl_coins_all"},
+    ])
+    btns.append([{"text": "🔮 Hyperliquid", "url": "https://app.hyperliquid.xyz/trade"}])
     await tg_send(text, btns, chat_id)
 
 async def cmd_hlcheck(chat_id):
-    """Manually check Hyperliquid whales"""
-    await tg_send("🔮 Сканирую Hyperliquid китов...", chat_id=chat_id)
+    """Manually check Hyperliquid whales (only selected coins)"""
+    selected = load_hl_selected_coins()
+    await tg_send(f"🔮 Сканирую HL китов по монетам: {', '.join(selected)}...", chat_id=chat_id)
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
         alerts = await scan_whale_positions(session)
-    if alerts:
-        for alert in alerts:
+    # Filter alerts to only selected coins
+    filtered = [a for a in alerts if a.get("coin", "") in selected] if selected else alerts
+    if filtered:
+        for alert in filtered:
             text = hl_format_alert(alert)
             await tg_send(text, chat_id=chat_id)
     else:
-        await tg_send("🔮 Киты спят — нет новых крупных позиций", chat_id=chat_id)
+        # Show all positions for selected coins from whales
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+            mids = await get_all_mids(session)
+            if mids:
+                text = "🔮 *HL Позиции китов*\n═══════════════════════════════════\n\n"
+                found = 0
+                for addr, info in HYPERLIQUID_WHALES.items():
+                    if info.get("tier") == "placeholder":
+                        continue
+                    state = await get_user_state(session, addr)
+                    if not state:
+                        continue
+                    positions = state.get("assetPositions", [])
+                    margin = state.get("marginSummary", {})
+                    account_value = float(margin.get("totalAccountValue", 0))
+                    for pos in positions:
+                        p = pos.get("position", {})
+                        coin = p.get("coin", "?")
+                        if coin not in selected:
+                            continue
+                        size = p.get("szi", "0")
+                        entry = p.get("entryPx", "0")
+                        pnl = p.get("unrealizedPnl", "0")
+                        lev = p.get("leverage", {}).get("value", "1") if isinstance(p.get("leverage"), dict) else "1"
+                        cur_px = mids.get(coin, "0")
+                        if cur_px and cur_px != "0" and float(size) != 0:
+                            notional = abs(float(size)) * float(cur_px)
+                            side = "🟢 LONG" if float(size) > 0 else "🔴 SHORT"
+                            pnl_str = f"+${float(pnl):,.0f}" if float(pnl) > 0 else f"-${abs(float(pnl)):,.0f}"
+                            text += f"{info['name']} | ${account_value/1e6:.1f}M\n"
+                            text += f"  {side} *{coin}* {abs(float(size)):,.4f}\n"
+                            text += f"  ${float(entry):,.0f} → ${float(cur_px):,.0f} | {pnl_str}\n"
+                            text += f"  Notional: ${notional:,.0f} | {float(lev):.0f}x\n\n"
+                            found += 1
+                if found == 0:
+                    text += "Киты отдыхают — нет позиций по выбранным монетам"
+                await tg_send(text, chat_id=chat_id)
+            else:
+                await tg_send("🔮 Не удалось получить цены. Попробуй позже.", chat_id=chat_id)
 
 COMMANDS = {
     "/start": cmd_start,
@@ -795,6 +871,42 @@ async def run_bot():
                             # Arbitrage
                             if cb_data == "arbitrage":
                                 await cmd_arbitrage(cb_chat)
+                                continue
+                            
+                            # ===== Hyperliquid coin selection callbacks =====
+                            if cb_data == "hl_scan":
+                                await cmd_hlcheck(cb_chat)
+                                continue
+                            
+                            if cb_data == "hl_coins_all":
+                                save_hl_selected_coins(HL_TOP_COINS[:])
+                                await cmd_hlwhales(cb_chat)
+                                continue
+                            
+                            if cb_data.startswith("hl_coin_on_"):
+                                coin = cb_data.replace("hl_coin_on_", "")
+                                selected = load_hl_selected_coins()
+                                if coin not in selected:
+                                    selected.append(coin)
+                                save_hl_selected_coins(selected)
+                                await cmd_hlwhales(cb_chat)
+                                continue
+                            
+                            if cb_data.startswith("hl_coin_off_"):
+                                coin = cb_data.replace("hl_coin_off_", "")
+                                selected = load_hl_selected_coins()
+                                if coin in selected:
+                                    selected.remove(coin)
+                                if not selected:
+                                    selected = HL_TOP_COINS[:]
+                                save_hl_selected_coins(selected)
+                                await cmd_hlwhales(cb_chat)
+                                continue
+                            
+                            # HL: show whale detail
+                            if cb_data.startswith("hl_whale_"):
+                                addr_short = cb_data.replace("hl_whale_", "")
+                                await tg_send(f"🔮 Детали кита {addr_short}...", cb_chat)
                                 continue
                             
                             continue
