@@ -6,6 +6,7 @@ Interactive Telegram bot with commands + automatic whale monitoring.
 import asyncio, aiohttp, json, time, os, sys
 from datetime import datetime, timezone
 from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats, update_prices
+from hyperliquid_monitor import scan_whale_positions, format_alert as hl_format_alert, load_hl_state, HYPERLIQUID_WHALES
 
 BOT_TOKEN = "8375563056:AAHqFtfsxK1zMfKrEBgMTa9d0QcIXVTlYGI"
 CHAT_ID = 730668
@@ -646,6 +647,42 @@ async def cmd_close(chat_id):
     
     await tg_send(text, btns, chat_id)
 
+async def cmd_hlwhales(chat_id):
+    """Show Hyperliquid whale positions"""
+    text = "🔮 *Hyperliquid Whale Monitor*\n═══════════════════════════════════\n\n"
+    
+    hl_state = load_hl_state()
+    whales = HYPERLIQUID_WHALES
+    active_whales = {k: v for k, v in whales.items() if v.get("tier") != "placeholder"}
+    
+    text += f"🐋 Tracked whales: {len(active_whales)}\n"
+    text += f"📊 Last check: {datetime.fromtimestamp(hl_state.get('last_check', 0), tz=timezone.utc).strftime('%H:%M UTC') if hl_state.get('last_check') else 'never'}\n\n"
+    
+    for addr, info in active_whales.items():
+        pnl_info = hl_state.get("whale_pnl", {}).get(addr[:10], {})
+        if pnl_info:
+            text += f"{info['name']}\n"
+            text += f"  💰 Account: ${pnl_info.get('account_value', 0):,.0f}\n"
+            text += f"  📊 Positions: {pnl_info.get('positions', 0)}\n\n"
+        else:
+            text += f"{info['name']}\n  ⏳ Not yet scanned\n\n"
+    
+    text += "\n💡 Используй /hlcheck для ручной проверки"
+    btns = [[{"text": "🔮 Hyperliquid", "url": "https://app.hyperliquid.xyz/trade"}]]
+    await tg_send(text, btns, chat_id)
+
+async def cmd_hlcheck(chat_id):
+    """Manually check Hyperliquid whales"""
+    await tg_send("🔮 Сканирую Hyperliquid китов...", chat_id=chat_id)
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+        alerts = await scan_whale_positions(session)
+    if alerts:
+        for alert in alerts:
+            text = hl_format_alert(alert)
+            await tg_send(text, chat_id=chat_id)
+    else:
+        await tg_send("🔮 Киты спят — нет новых крупных позиций", chat_id=chat_id)
+
 COMMANDS = {
     "/start": cmd_start,
     "/help": cmd_help,
@@ -658,6 +695,8 @@ COMMANDS = {
     "/bet": cmd_bet,
     "/close": cmd_close,
     "/arbitrage": cmd_arbitrage,
+    "/hlwhales": cmd_hlwhales,
+    "/hlcheck": cmd_hlcheck,
 }
 
 async def run_bot():
