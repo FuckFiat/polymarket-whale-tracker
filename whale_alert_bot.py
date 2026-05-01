@@ -352,7 +352,11 @@ async def check_and_alert(session):
             if portfolio["balance"] < 50:
                 break
             # Only bet on whales with >$1M volume
-            whale_vol_str = WHALES.get(move["whale_addr"], {}).get("vol", "$0")
+            whale_info = WHALES.get(move["whale_addr"], {})
+            # Skip watch_only whales (e.g. RN1 — consistent loser)
+            if whale_info.get("tier") == "watch_only":
+                continue
+            whale_vol_str = whale_info.get("vol", "$0")
             whale_vol = float(whale_vol_str.replace("$", "").replace("M", "")) if "M" in whale_vol_str else 0
             if whale_vol < 1:  # Skip dolphins
                 continue
