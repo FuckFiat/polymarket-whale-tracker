@@ -707,55 +707,182 @@ async def cmd_hlwhales(chat_id):
 async def cmd_hlcheck(chat_id):
     """Manually check Hyperliquid whales (only selected coins)"""
     selected = load_hl_selected_coins()
-    await tg_send(f"🔮 Сканирую HL китов по монетам: {', '.join(selected)}...", chat_id=chat_id)
+    await tg_send(f"🔮 Сканирую HL китов...\nМонеты: {', '.join(selected)}", chat_id=chat_id)
+    
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
-        alerts = await scan_whale_positions(session)
-    # Filter alerts to only selected coins
-    filtered = [a for a in alerts if a.get("coin", "") in selected] if selected else alerts
-    if filtered:
-        for alert in filtered:
-            text = hl_format_alert(alert)
-            await tg_send(text, chat_id=chat_id)
-    else:
-        # Show all positions for selected coins from whales
-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
-            mids = await get_all_mids(session)
-            if mids:
-                text = "🔮 *HL Позиции китов*\n═══════════════════════════════════\n\n"
-                found = 0
-                for addr, info in HYPERLIQUID_WHALES.items():
-                    if info.get("tier") == "placeholder":
-                        continue
-                    state = await get_user_state(session, addr)
-                    if not state:
-                        continue
-                    positions = state.get("assetPositions", [])
-                    margin = state.get("marginSummary", {})
-                    account_value = float(margin.get("totalAccountValue", 0))
-                    for pos in positions:
-                        p = pos.get("position", {})
-                        coin = p.get("coin", "?")
-                        if coin not in selected:
-                            continue
-                        size = p.get("szi", "0")
-                        entry = p.get("entryPx", "0")
-                        pnl = p.get("unrealizedPnl", "0")
-                        lev = p.get("leverage", {}).get("value", "1") if isinstance(p.get("leverage"), dict) else "1"
-                        cur_px = mids.get(coin, "0")
-                        if cur_px and cur_px != "0" and float(size) != 0:
-                            notional = abs(float(size)) * float(cur_px)
-                            side = "🟢 LONG" if float(size) > 0 else "🔴 SHORT"
-                            pnl_str = f"+${float(pnl):,.0f}" if float(pnl) > 0 else f"-${abs(float(pnl)):,.0f}"
-                            text += f"{info['name']} | ${account_value/1e6:.1f}M\n"
-                            text += f"  {side} *{coin}* {abs(float(size)):,.4f}\n"
-                            text += f"  ${float(entry):,.0f} → ${float(cur_px):,.0f} | {pnl_str}\n"
-                            text += f"  Notional: ${notional:,.0f} | {float(lev):.0f}x\n\n"
-                            found += 1
-                if found == 0:
-                    text += "Киты отдыхают — нет позиций по выбранным монетам"
-                await tg_send(text, chat_id=chat_id)
+        mids = await get_all_mids(session)
+        if not mids:
+            await tg_send("❌ Не удалось подключиться к Hyperliquid", chat_id=chat_id)
+            return
+        
+        # Fetch leaderboard for active traders
+        import urllib.request
+        try:
+            req = urllib.request.Request("https://stats-data.hyperliquid.xyz/Mainnet/leaderboard", headers={"User-Agent": "Mozilla/5.0"})
+            resp = urllib.request.urlopen(req, timeout=15)
+            lb_data = json.loads(resp.read())
+            rows = lb_data.get("leaderboardRows", [])
+            # Sort by account value, skip mega-vaults
+            candidates = sorted(
+                [r for r in rows if float(r.get("accountValue", 0)) < 5_000_000_000],
+                key=lambda x: float(x.get("accountValue", 0)), reverse=True
+            )
+        except:
+            candidates = []
+        
+        # Check both pre-configured whales AND leaderboard top traders
+        all_addresses = {}
+        for addr, info in HYPERLIQUID_WHALES.items():
+            if info.get("tier") != "placeholder":
+                all_addresses[addr] = info
+        
+        # Add top leaderboard traders
+        for entry in candidates[:30]:
+            addr = entry.get("ethAddress", "")
+            if addr not in all_addresses:
+                av = float(entry.get("accountValue", 0))
+                all_pnl = 0
+                for w, perf in entry.get("windowPerformances", []):
+                    if w == "allTime":
+                        all_pnl = float(perf.get("pnl", 0))
+                name = entry.get("displayName") or f"${av/1e6:.0f}M"
+                all_addresses[addr] = {
+                    "name": f"🐋 {name}",
+                    "vol": "$0",
+                    "strat": f"PnL ${all_pnl/1e6:.1f}M",
+                    "tier": "whale" if av > 1_000_000 else "dolphin",
+                }
+        
+        messages = []
+        total_found = 0
+        
+        for addr, info in all_addresses.items():
+            try:
+                state = await get_user_state(session, addr)
+            except:
+                continue
+            if not state:
+                continue
+            
+            positions = state.get("assetPositions", [])
+            margin = state.get("marginSummary", {})
+            account_value = float(margin.get("totalAccountValue", 0))
+            
+            if account_value < 100_000:  # Skip small accounts
+                continue
+            
+            whale_positions = []
+            for pos in positions:
+                p = pos.get("position", {})
+                coin = p.get("coin", "?")
+                if selected and coin not in selected:
+                    continue
+                szi = p.get("szi", "0")
+                if float(szi) == 0:
+                    continue
+                entry_px = p.get("entryPx", "0")
+                pnl = p.get("unrealizedPnl", "0")
+                lev = p.get("leverage", {})
+                lev_val = float(lev.get("value", 1)) if isinstance(lev, dict) else 1.0
+                liq_px = p.get("liquidationPx", None)
+                margin_used = p.get("marginUsed", "0")
+                cur_px = mids.get(coin, "0")
+                
+                if not cur_px or float(cur_px) == 0:
+                    continue
+                
+                from hyperliquid_monitor import format_position
+                fmt = format_position(coin, szi, entry_px, pnl, cur_px, lev_val, liq_px, margin_used)
+                
+                if fmt["notional"] < 10000:  # Skip tiny
+                    continue
+                
+                whale_positions.append(fmt)
+            
+            if not whale_positions:
+                continue
+            
+            # Sort by notional (biggest first)
+            whale_positions.sort(key=lambda x: x["notional"], reverse=True)
+            
+            # Format this whale's positions
+            if account_value >= 1_000_000:
+                av_str = f"${account_value/1e6:.1f}M"
             else:
-                await tg_send("🔮 Не удалось получить цены. Попробуй позже.", chat_id=chat_id)
+                av_str = f"${account_value:,.0f}"
+            
+            for fmt in whale_positions[:5]:
+                side_icon = "🟢" if fmt["side"] == "LONG" else "🔴"
+                pnl_icon = "📈" if fmt["pnl"] > 0 else "📉"
+                pnl_str = f"+${fmt['pnl']:,.0f}" if fmt['pnl'] > 0 else f"-${abs(fmt['pnl']):,.0f}"
+                
+                # Notional
+                n = fmt["notional"]
+                notional_str = f"${n/1e6:.1f}M" if n >= 1e6 else f"${n:,.0f}"
+                
+                # Entry/Current formatting
+                e, c = fmt["entry"], fmt["current"]
+                if e >= 1000:
+                    e_str, c_str = f"${e:,.0f}", f"${c:,.0f}"
+                elif e >= 1:
+                    e_str, c_str = f"${e:,.2f}", f"${c:,.2f}"
+                else:
+                    e_str, c_str = f"${e:,.4f}", f"${c:,.4f}"
+                
+                # ROI
+                if e > 0 and fmt["side"] == "LONG":
+                    roi = (c - e) / e * 100
+                elif e > 0 and fmt["side"] == "SHORT":
+                    roi = (e - c) / e * 100
+                else:
+                    roi = 0
+                roi_str = f"+{roi:.1f}%" if roi > 0 else f"{roi:.1f}%"
+                
+                # Liquidation
+                liq = fmt.get("liq_price")
+                if liq and liq > 0:
+                    if liq >= 1000:
+                        liq_str = f"${liq:,.0f}"
+                    elif liq >= 1:
+                        liq_str = f"${liq:,.2f}"
+                    else:
+                        liq_str = f"${liq:,.4f}"
+                else:
+                    liq_str = "—"
+                
+                # Liq distance
+                ld = fmt.get("liq_distance")
+                if ld is not None:
+                    if ld < 10:
+                        dist_str = f"🔴 {ld:.1f}%"
+                    elif ld < 25:
+                        dist_str = f"🟡 {ld:.1f}%"
+                    else:
+                        dist_str = f"🟢 {ld:.1f}%"
+                else:
+                    dist_str = "—"
+                
+                text = f"""{side_icon} {fmt['side']} *{fmt['coin']}* · {notional_str}
+{info['name']} · {av_str}
+
+📍 {e_str} → {c_str} ({roi_str})
+{pnl_icon} {pnl_str} · ⚡ {fmt['leverage']:.0f}x
+💀 Liq: {liq_str} ({dist_str})
+💰 Margin: ${fmt['margin_used']:,.0f}"""
+                messages.append(text)
+                total_found += 1
+                
+                if total_found >= 15:  # Max 15 positions
+                    break
+            
+            if total_found >= 15:
+                break
+        
+        if messages:
+            for msg in messages:
+                await tg_send(msg, chat_id=chat_id)
+        else:
+            await tg_send(f"🔮 Нет крупных позиций по {', '.join(selected)}\nПопробуй другие монеты через /hlwhales", chat_id=chat_id)
 
 COMMANDS = {
     "/start": cmd_start,

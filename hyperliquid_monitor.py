@@ -77,15 +77,37 @@ async def get_candles(session, coin, interval="1h"):
     payload = {"type": "candleSnapshot", "coin": coin, "interval": interval}
     return await hl_post(session, payload)
 
-def format_position(coin, size, entry_px, unrealized_pnl, cur_px, leverage):
-    """Format a position for display"""
-    side = "🟢 LONG" if float(size) > 0 else "🔴 SHORT"
+def format_position(coin, size, entry_px, unrealized_pnl, cur_px, leverage, liquidation_px=None, margin_used=0):
+    """Format a position for display — includes liquidation price and margin"""
+    side = "LONG" if float(size) > 0 else "SHORT"
     abs_size = abs(float(size))
     notional = abs_size * float(cur_px)
     pnl = float(unrealized_pnl)
-    pnl_emoji = "📈" if pnl > 0 else "📉"
     entry = float(entry_px)
-    liq_estimate = entry * (1 - 1/(float(leverage) * 2)) if float(size) > 0 else entry * (1 + 1/(float(leverage) * 2))
+    
+    # Liquidation price from API, or estimate
+    if liquidation_px and liquidation_px != "None" and liquidation_px != "N/A":
+        try:
+            liq_price = float(liquidation_px)
+        except (ValueError, TypeError):
+            liq_price = None
+    else:
+        liq_price = None
+    
+    # Estimate liq price if not provided
+    if liq_price is None and float(leverage) > 0:
+        if float(size) > 0:
+            liq_price = entry * (1 - 1/(float(leverage) * 2))
+        else:
+            liq_price = entry * (1 + 1/(float(leverage) * 2))
+    
+    # Distance to liquidation (%)
+    liq_distance = None
+    if liq_price and float(cur_px) > 0:
+        if float(size) > 0:
+            liq_distance = (float(cur_px) - liq_price) / float(cur_px) * 100
+        else:
+            liq_distance = (liq_price - float(cur_px)) / float(cur_px) * 100
     
     return {
         "coin": coin,
@@ -96,7 +118,9 @@ def format_position(coin, size, entry_px, unrealized_pnl, cur_px, leverage):
         "pnl": pnl,
         "notional": notional,
         "leverage": float(leverage),
-        "liq_estimate": liq_estimate,
+        "liq_price": liq_price,
+        "liq_distance": liq_distance,
+        "margin_used": float(margin_used) if margin_used else 0,
     }
 
 async def scan_whale_positions(session, whales=None, coins=None):
@@ -135,12 +159,14 @@ async def scan_whale_positions(session, whales=None, coins=None):
             entry_px = position.get("entryPx", "0")
             unrealized_pnl = position.get("unrealizedPnl", "0")
             leverage = position.get("leverage", {}).get("value", "1") if isinstance(position.get("leverage"), dict) else "1"
+            liq_px = position.get("liquidationPx", None)
+            margin_used = position.get("marginUsed", "0")
             cur_px = mids.get(coin, "0")
             
             if not cur_px or cur_px == "0":
                 continue
             
-            formatted = format_position(coin, size, entry_px, unrealized_pnl, cur_px, leverage)
+            formatted = format_position(coin, size, entry_px, unrealized_pnl, cur_px, leverage, liq_px, margin_used)
             
             # Check if this is a new or changed position
             pos_key = f"{addr[:10]}:{coin}:{'long' if float(size) > 0 else 'short'}"
@@ -221,7 +247,7 @@ async def scan_top_positions(session, min_notional=500000):
     return sorted(large_oi, key=lambda x: x["bid_depth"] + x["ask_depth"], reverse=True)
 
 def format_alert(alert):
-    """Format an alert for Telegram — compact, beautiful for iPhone notifications"""
+    """Format an alert for Telegram — positions, entry, liquidation, margin"""
     if alert["type"] == "new_position":
         icon = "🆕"
         title = "NEW"
@@ -237,7 +263,10 @@ def format_alert(alert):
     
     pnl = alert["pnl"]
     pnl_str = f"+${pnl:,.0f}" if pnl > 0 else f"-${abs(pnl):,.0f}"
-    pnl_emoji = "📈" if pnl > 0 else "📉"
+    pnl_icon = "📈" if pnl > 0 else "📉"
+    
+    side = alert["side"]
+    side_icon = "🟢" if side == "LONG" else "🔴"
     
     # Compact notional
     notional = alert["notional"]
@@ -253,10 +282,61 @@ def format_alert(alert):
     else:
         av_str = f"${av:,.0f}"
     
-    text = f"""{icon} {title} · {alert['side']} {alert['coin']}
+    # Liquidation info
+    liq = alert.get("liq_price")
+    liq_dist = alert.get("liq_distance")
+    margin = alert.get("margin_used", 0)
+    
+    # Format liq price
+    if liq and liq > 0:
+        if liq >= 1000:
+            liq_str = f"${liq:,.0f}"
+        else:
+            liq_str = f"${liq:,.2f}"
+    else:
+        liq_str = "N/A"
+    
+    # Format liq distance
+    if liq_dist is not None:
+        if liq_dist < 10:
+            dist_icon = "🔴"  # DANGER
+        elif liq_dist < 25:
+            dist_icon = "🟡"  # WARNING
+        else:
+            dist_icon = "🟢"  # SAFE
+        dist_str = f"{dist_icon} {liq_dist:.1f}%"
+    else:
+        dist_str = "—"
+    
+    # Format entry/current
+    entry = alert["entry"]
+    current = alert["current"]
+    if entry >= 1000:
+        entry_str = f"${entry:,.0f}"
+        cur_str = f"${current:,.0f}"
+    elif entry >= 1:
+        entry_str = f"${entry:,.2f}"
+        cur_str = f"${current:,.2f}"
+    else:
+        entry_str = f"${entry:,.4f}"
+        cur_str = f"${current:,.4f}"
+    
+    # ROI from entry
+    if entry > 0 and side == "LONG":
+        roi = (current - entry) / entry * 100
+    elif entry > 0 and side == "SHORT":
+        roi = (entry - current) / entry * 100
+    else:
+        roi = 0
+    roi_str = f"+{roi:.1f}%" if roi > 0 else f"{roi:.1f}%"
+    
+    text = f"""{icon} {side_icon} {side} {alert['coin']} · {notional_str}
 {alert['whale']} · {av_str}
-{pnl_emoji} {pnl_str} · {alert['leverage']:.0f}x · {notional_str}
-${alert['entry']:,.0f} → ${alert['current']:,.0f}
+
+📍 Entry: {entry_str} → {cur_str} ({roi_str})
+{pnl_icon} PnL: {pnl_str} · ⚡ {alert['leverage']:.0f}x
+💀 Liq: {liq_str} ({dist_str})
+💰 Margin: ${margin:,.0f}
 ⏰ {datetime.now(timezone.utc).strftime('%H:%M UTC')}"""
     
     return text
