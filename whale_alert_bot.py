@@ -22,7 +22,7 @@ WHALES = {
     "0xefbc5fec8d7b0acdc8911bdd9a98d6964308f9a2": {"name": "🐋 Кит #6 — reachingthesky", "vol": "$3.7M", "strat": "Спорт", "tier": "whale"},
     "0xc2e7800b5af46e6093872b177b7a5e7f0563be51": {"name": "🐋 Кит #7 — beachboy4", "vol": "$12.4M", "strat": "Спорт, футбол", "tier": "whale"},
     "0xde17f7144fbd0eddb2679132c10ff5e74b120988": {"name": "🐈 Кит #8 — Crypto Leader", "vol": "$727K", "strat": "Крипто, DeFi", "tier": "dolphin"},
-    "0x2005d16a84ceefa912d4e380cd32e7ff827875ea": {"name": "🐋 Кит #9 — RN1", "vol": "$50.9M", "strat": "Хай-волюм ротация", "tier": "whale"},
+    "0x2005d16a84ceefa912d4e380cd32e7ff827875ea": {"name": "⚠️ Кит #9 — RN1", "vol": "$50.9M", "strat": "Хай-волюм ротация (СЛИВАЕТ)", "tier": "watch_only"},
     "0xbddf61af533ff524d27154e589d2d7a81510c684": {"name": "🐋 Кит #10 — Countryside", "vol": "$14.9M", "strat": "Спорт, турниры", "tier": "whale"},
 }
 
