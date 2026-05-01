@@ -4,5 +4,6 @@
   "positions": [],
   "trade_history": [],
   "reset_date": "2026-05-01",
-  "reset_reason": "Dead positions cleanup + RN1 filter"
+  "reset_reason": "Dead positions cleanup + RN1 filter",
+  "auto_betting": true
 }

@@ -348,7 +348,7 @@ async def check_and_alert(session):
     # 2. Auto-bet on new whale positions
     portfolio = load_portfolio()
     if portfolio.get("auto_betting", True) and significant_moves:
-        for move in significant_moves[:3]:  # Max 3 new bets per cycle
+        for move in significant_moves[:15]:  # Max 15 new bets per cycle
             if portfolio["balance"] < 50:
                 break
             # Only bet on whales with >$1M volume
