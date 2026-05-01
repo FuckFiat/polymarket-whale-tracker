@@ -221,29 +221,42 @@ async def scan_top_positions(session, min_notional=500000):
     return sorted(large_oi, key=lambda x: x["bid_depth"] + x["ask_depth"], reverse=True)
 
 def format_alert(alert):
-    """Format an alert for Telegram"""
+    """Format an alert for Telegram — compact, beautiful for iPhone notifications"""
     if alert["type"] == "new_position":
-        title = "🆕 НОВАЯ ПОЗИЦИЯ"
+        icon = "🆕"
+        title = "NEW"
     elif alert["type"] == "size_change":
-        title = "🔄 ИЗМЕНЕНИЕ РАЗМЕРА"
+        icon = "🔄"
+        title = "SIZE Δ"
     elif alert["type"] == "liquidation_risk":
-        title = "⚠️ РИСК ЛИКВИДАЦИИ"
+        icon = "⚠️"
+        title = "LIQ RISK"
     else:
-        title = "📊 ОБНОВЛЕНИЕ"
+        icon = "📊"
+        title = "UPDATE"
     
-    pnl_str = f"+${alert['pnl']:,.0f}" if alert['pnl'] > 0 else f"-${abs(alert['pnl']):,.0f}"
+    pnl = alert["pnl"]
+    pnl_str = f"+${pnl:,.0f}" if pnl > 0 else f"-${abs(pnl):,.0f}"
+    pnl_emoji = "📈" if pnl > 0 else "📉"
     
-    text = f"""🐋 *{title}*
-═══════════════════════════════════
-
-{alert['whale']}
-💰 Account: ${alert['account_value']:,.0f}
-
-{alert['side']} *{alert['coin']}*
-📊 Size: {alert['size']:,.4f} (${alert['notional']:,.0f})
-📈 Entry: ${alert['entry']:,.2f} → ${alert['current']:,.2f}
-{pnl_str} unrealized PnL
-⚡ Leverage: {alert['leverage']:.1f}x
+    # Compact notional
+    notional = alert["notional"]
+    if notional >= 1_000_000:
+        notional_str = f"${notional/1_000_000:.1f}M"
+    else:
+        notional_str = f"${notional:,.0f}"
+    
+    # Account value
+    av = alert["account_value"]
+    if av >= 1_000_000:
+        av_str = f"${av/1_000_000:.1f}M"
+    else:
+        av_str = f"${av:,.0f}"
+    
+    text = f"""{icon} {title} · {alert['side']} {alert['coin']}
+{alert['whale']} · {av_str}
+{pnl_emoji} {pnl_str} · {alert['leverage']:.0f}x · {notional_str}
+${alert['entry']:,.0f} → ${alert['current']:,.0f}
 ⏰ {datetime.now(timezone.utc).strftime('%H:%M UTC')}"""
     
     return text
