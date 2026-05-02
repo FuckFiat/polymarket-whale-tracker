@@ -27,7 +27,7 @@
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -45.2380975,
+      "pnl": -45.24,
       "pnl_pct": -100.0
     },
     {
@@ -41,7 +41,7 @@
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": -57.52689149999999,
+      "pnl": -57.53,
       "pnl_pct": -100.0
     },
     {
@@ -55,7 +55,7 @@
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -86.9863005,
+      "pnl": -86.99,
       "pnl_pct": -100.0
     },
     {
@@ -92,13 +92,13 @@
       "market": "Golden Knights vs. Utah",
       "outcome": "Golden Knights",
       "entry_price": 0.525,
-      "cur_price": 0.955,
+      "cur_price": 0.965,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:58",
       "status": "open",
-      "pnl": -40.952383,
-      "pnl_pct": -90.52631578947367
+      "pnl": -41.9,
+      "pnl_pct": -92.6
     }
   ],
   "trade_history": [],
@@ -112,6 +112,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 04:46 UTC",
+  "last_updated": "2026-05-02 04:50 UTC",
   "max_bet_pct": 5
 }
