@@ -22,13 +22,13 @@
       "market": "Sabres vs. Bruins",
       "outcome": "Sabres",
       "entry_price": 0.525,
-      "cur_price": 0.825,
+      "cur_price": 0.835,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -28.571429999999996,
-      "pnl_pct": -63.1578947368421
+      "pnl": -29.523810999999995,
+      "pnl_pct": -65.26315789473684
     },
     {
       "id": "bet_1777676043_3",
@@ -36,13 +36,13 @@
       "market": "Spread: Pistons (-4.5)",
       "outcome": "Pistons",
       "entry_price": 0.465,
-      "cur_price": 0.05,
+      "cur_price": 0.045,
       "bet_size": 50.0,
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": 44.623663500000006,
-      "pnl_pct": 77.57009345794394
+      "pnl": 45.161298,
+      "pnl_pct": 78.50467289719627
     },
     {
       "id": "bet_1777676959_4",
@@ -50,13 +50,13 @@
       "market": "Cavaliers vs. Raptors",
       "outcome": "Raptors",
       "entry_price": 0.365,
-      "cur_price": 0.305,
+      "cur_price": 0.3449,
       "bet_size": 50.0,
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": 8.219178000000007,
-      "pnl_pct": 9.4488188976378
+      "pnl": 2.753424630000001,
+      "pnl_pct": 3.1653543307086585
     }
   ],
   "trade_history": [],
@@ -70,6 +70,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 00:09 UTC",
+  "last_updated": "2026-05-02 00:12 UTC",
   "max_bet_pct": 5
 }
