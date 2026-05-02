@@ -13,8 +13,8 @@
       "shares": 72.9927,
       "entry_date": "2026-05-01 18:49",
       "status": "open",
-      "pnl": 22.96,
-      "pnl_pct": 45.9
+      "pnl": 22.95620415,
+      "pnl_pct": 45.91240875912408
     },
     {
       "id": "bet_1777675431_2",
@@ -27,8 +27,8 @@
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -29.52,
-      "pnl_pct": -65.3
+      "pnl": -29.523810999999995,
+      "pnl_pct": -65.26315789473684
     },
     {
       "id": "bet_1777676043_3",
@@ -36,13 +36,13 @@
       "market": "Spread: Pistons (-4.5)",
       "outcome": "Pistons",
       "entry_price": 0.465,
-      "cur_price": 0.035,
+      "cur_price": 0.0405,
       "bet_size": 50.0,
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": 46.24,
-      "pnl_pct": 80.4
+      "pnl": 45.64516905000001,
+      "pnl_pct": 79.3457943925234
     },
     {
       "id": "bet_1777676959_4",
@@ -55,8 +55,8 @@
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -9.59,
-      "pnl_pct": -11.0
+      "pnl": -9.589041000000009,
+      "pnl_pct": -11.023622047244109
     }
   ],
   "trade_history": [],
@@ -70,6 +70,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 00:20 UTC",
+  "last_updated": "2026-05-02 00:21 UTC",
   "max_bet_pct": 5
 }
