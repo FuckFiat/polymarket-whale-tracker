@@ -27,7 +27,7 @@
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -45.24,
+      "pnl": -45.2380975,
       "pnl_pct": -100.0
     },
     {
@@ -41,7 +41,7 @@
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": -57.53,
+      "pnl": -57.52689149999999,
       "pnl_pct": -100.0
     },
     {
@@ -55,8 +55,8 @@
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -86.92,
-      "pnl_pct": -99.9
+      "pnl": -86.91780735,
+      "pnl_pct": -99.92125984251969
     },
     {
       "id": "bet_1777683760_5",
@@ -69,8 +69,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 48.54,
-      "pnl_pct": 95.1
+      "pnl": 48.53535305,
+      "pnl_pct": 95.14851485148515
     },
     {
       "id": "bet_1777683761_6",
@@ -78,13 +78,13 @@
       "market": "Spread: Rockets (-3.5)",
       "outcome": "Rockets",
       "entry_price": 0.525,
-      "cur_price": 0.0285,
+      "cur_price": 0.0225,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 47.285716650000005,
-      "pnl_pct": 104.52631578947371
+      "pnl": 47.85714525000001,
+      "pnl_pct": 105.78947368421052
     },
     {
       "id": "bet_1777687124_7",
@@ -92,13 +92,13 @@
       "market": "Golden Knights vs. Utah",
       "outcome": "Golden Knights",
       "entry_price": 0.525,
-      "cur_price": 0.685,
+      "cur_price": 0.6949,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:58",
       "status": "open",
-      "pnl": -15.24,
-      "pnl_pct": -33.7
+      "pnl": -16.180953189999993,
+      "pnl_pct": -35.768421052631574
     }
   ],
   "trade_history": [],
@@ -112,6 +112,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 03:34 UTC",
+  "last_updated": "2026-05-02 03:36 UTC",
   "max_bet_pct": 5
 }
