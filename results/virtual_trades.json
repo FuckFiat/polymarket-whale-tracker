@@ -64,13 +64,13 @@
       "market": "Spread: Rockets (-4.5)",
       "outcome": "Rockets",
       "entry_price": 0.495,
-      "cur_price": 0.0025,
+      "cur_price": 0.0005,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 49.74747425,
-      "pnl_pct": 97.52475247524752
+      "pnl": 49.94949445,
+      "pnl_pct": 97.92079207920791
     },
     {
       "id": "bet_1777683761_6",
@@ -92,13 +92,13 @@
       "market": "Golden Knights vs. Utah",
       "outcome": "Golden Knights",
       "entry_price": 0.525,
-      "cur_price": 0.735,
+      "cur_price": 0.725,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:58",
       "status": "open",
-      "pnl": -20.000000999999997,
-      "pnl_pct": -44.210526315789465
+      "pnl": -19.047619999999995,
+      "pnl_pct": -42.10526315789473
     }
   ],
   "trade_history": [],
@@ -112,6 +112,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 03:58 UTC",
+  "last_updated": "2026-05-02 04:01 UTC",
   "max_bet_pct": 5
 }
