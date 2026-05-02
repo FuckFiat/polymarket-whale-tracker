@@ -16,8 +16,8 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
 /* Floating P&L numbers */
 .float-container{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:100;overflow:hidden}
-.float-number{position:absolute;font-size:32px;font-weight:700;text-shadow:0 0 20px currentColor;opacity:0;animation:floatUp 3s ease-out infinite}
-@keyframes floatUp{0%{opacity:0;transform:translateY(100vh) scale(0.5)}15%{opacity:1;transform:translateY(70vh) scale(1.2)}30%{opacity:0.9;transform:translateY(50vh) scale(1)}100%{opacity:0;transform:translateY(-10vh) scale(0.3)}}
+.float-number{position:absolute;font-size:52px;font-weight:900;text-shadow:0 0 30px currentColor,0 0 60px currentColor;opacity:0;animation:floatUp 4s ease-out infinite}
+@keyframes floatUp{0%{opacity:0;transform:translateY(100vh) scale(0.3)}10%{opacity:1;transform:translateY(80vh) scale(1.5)}25%{opacity:0.95;transform:translateY(55vh) scale(1.2)}50%{opacity:0.6;transform:translateY(30vh) scale(0.9)}100%{opacity:0;transform:translateY(-5vh) scale(0.2)}}
 
 .header{background:linear-gradient(135deg,#0a0a1f 0%,#1a0a2e 50%,#0a1a1f 100%);border-bottom:1px solid #00ff8833;padding:25px 20px;text-align:center;position:relative;overflow:hidden}
 .header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,#00ff8808,transparent,#00ff8808,transparent);animation:rotateBg 20s linear infinite}
@@ -38,13 +38,14 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 .stat-card .value.red{color:#ff4444}.stat-card .value.blue{color:#4488ff}.stat-card .value.yellow{color:#ffaa00}.stat-card .value.purple{color:#aa66ff}
 
 /* P&L counter */
-.pnl-hero{background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:2px solid #00ff8833;border-radius:15px;padding:20px;margin:10px 20px;text-align:center;position:relative;overflow:hidden}
-.pnl-hero .pnl-label{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px}
-.pnl-hero .pnl-value{font-size:48px;font-weight:700;margin-top:5px;transition:all .5s}
-.pnl-hero .pnl-value.positive{color:#00ff88;text-shadow:0 0 30px #00ff8844}
-.pnl-hero .pnl-value.negative{color:#ff4444;text-shadow:0 0 30px #ff444444}
-.pnl-hero .pnl-details{font-size:11px;color:#666;margin-top:8px}
-.pnl-hero .pnl-details span{margin:0 8px}
+.pnl-hero{background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:3px solid #00ff8855;border-radius:20px;padding:30px;margin:10px 20px;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 60px #00ff8815,inset 0 0 40px #00ff8805}
+.pnl-hero .pnl-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:3px;margin-bottom:4px}
+.pnl-hero .pnl-value{font-size:72px;font-weight:700;margin-top:8px;transition:all .8s cubic-bezier(.2,1,.3,1);animation:pnlGlow 2s ease-in-out infinite alternate}
+.pnl-hero .pnl-value.positive{color:#00ff88;text-shadow:0 0 40px #00ff8866,0 0 80px #00ff8833}
+.pnl-hero .pnl-value.negative{color:#ff4444;text-shadow:0 0 40px #ff444466,0 0 80px #ff444433}
+.pnl-hero .pnl-details{font-size:13px;color:#888;margin-top:12px;letter-spacing:1px}
+.pnl-hero .pnl-details span{margin:0 12px}
+@keyframes pnlGlow{0%{filter:brightness(1)}100%{filter:brightness(1.2)}}
 
 /* Signals */
 .section{padding:8px 20px}
@@ -100,7 +101,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
 <div class="header">
   <h1>🐋 NANO POLYMARKET WHALE TRACKER v3.0</h1>
-  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">02.05.2026 11:46</span></div>
+  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">02.05.2026 11:49</span></div>
 </div>
 
 <div class="stats-row fade-in">
@@ -109,7 +110,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
   <div class="stat-card"><div class="label">Signals</div><div class="value yellow">3</div></div>
   <div class="stat-card"><div class="label">Win Rate</div><div class="value red">0%</div></div>
   <div class="stat-card"><div class="label">ETH</div><div class="value purple">$2,305</div></div>
-  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$78,303</div></div>
+  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$78,298</div></div>
 </div>
 
 <!-- P&L Hero -->
@@ -564,28 +565,28 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
     <div class="section" style="margin-top:20px"><div class="section-title">🎰 ВИРТУАЛЬНЫЙ ДЕПОЗИТ <span class="badge">PAPER TRADING</span></div></div>
 
-    <div style="background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:2px solid #00ff8833;border-radius:15px;padding:20px;margin:10px 20px">
-      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
-        <div style="text-align:center;flex:1;min-width:100px">
-          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">Баланс</div>
-          <div style="font-size:28px;font-weight:700;color:#00ff88">$600.00</div>
+    <div style="background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:3px solid #00ff8855;border-radius:20px;padding:25px;margin:10px 20px;box-shadow:0 0 40px #00ff8815,inset 0 0 60px #00ff8805">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px">
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#0d1a0d,#0a120a);border-radius:12px;border:1px solid #00ff8822">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">💰 Баланс</div>
+          <div id="counter-balance" style="font-size:42px;font-weight:700;color:#00ff88;text-shadow:0 0 20px #00ff8844;animation:glow 2s ease-in-out infinite alternate">$600</div>
         </div>
-        <div style="text-align:center;flex:1;min-width:100px">
-          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">Ставок</div>
-          <div style="font-size:28px;font-weight:700;color:#4488ff">7</div>
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#0d0d1a,#0a0a15);border-radius:12px;border:1px solid #4488ff22">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">📊 Ставок</div>
+          <div style="font-size:42px;font-weight:700;color:#4488ff;text-shadow:0 0 15px #4488ff33">7</div>
         </div>
-        <div style="text-align:center;flex:1;min-width:100px">
-          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">Win Rate</div>
-          <div style="font-size:28px;font-weight:700;color:#ffaa00">0%</div>
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#1a1a0a,#15150a);border-radius:12px;border:1px solid #ffaa0022">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">🏆 Win Rate</div>
+          <div style="font-size:42px;font-weight:700;color:#ffaa00;text-shadow:0 0 15px #ffaa0033">0%</div>
         </div>
-        <div style="text-align:center;flex:1;min-width:100px">
-          <div style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:1px">ROI</div>
-          <div style="font-size:28px;font-weight:700;color:#00ff88">+20.9%</div>
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#0a1a0a,#0a150a);border-radius:12px;border:1px solid #00ff8833">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">📈 ROI</div>
+          <div style="font-size:42px;font-weight:700;color:#00ff88;text-shadow:0 0 20px #00ff8844">+20.9%</div>
         </div>
-      </div>
+      </div>'
 
-      <div style="border-top:1px solid #1a1a3a;padding-top:12px;margin-top:8px">
-        <div style="font-size:10px;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Открытые ставки</div>
+      <div style="border-top:2px solid #1a1a3a;padding-top:16px;margin-top:12px">
+        <div style="font-size:11px;color:#ffaa00;margin-bottom:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700">⚡ Открытые ставки (7)</div>
         
     <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #111;font-size:10px;flex-wrap:wrap;gap:4px">
       <span style="color:#aaa;flex:1;min-width:120px">🐋 Кит #1 — kcnyekchno: Yes Will Leeds United FC win </span>
@@ -629,11 +630,11 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
       <span style="color:#ff4444;font-weight:700;margin-right:6px">-45.24</span>
       <button onclick="showClose('bet_1777687124_7','🏆 Кит #5 — April #1: Golden Knights Golden Knights vs. U')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:9px">✕</button>
     </div>
-        <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1a1a3a;font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1px">История (0 закрыто)</div>
+        <div style="margin-top:12px;padding-top:10px;border-top:2px solid #1a1a3a;font-size:11px;color:#ffaa00;text-transform:uppercase;letter-spacing:2px;font-weight:700">📜 История (0 закрыто)</div>
         <div style="color:#333;text-align:center;padding:5px">Ещё нет закрытых ставок</div>
-        <div style="margin-top:12px;padding-top:8px;border-top:1px solid #1a1a3a;font-size:10px;color:#666">
-          💰 Депозит: $1000 | 💵 Выиграно: $0.00 | 💸 Проиграно: $0.00<br>
-          📊 P&L: <span style="color:#ff4444">$-213.34</span> | 📈 Старт: $1000 | Сейчас: $1,209.32
+        <div style="margin-top:16px;padding-top:12px;border-top:2px solid #1a1a3a;font-size:11px;color:#888;line-height:2">
+          💰 Депозит: <span style="color:#00ff88;font-weight:700">$1000</span> | 💵 Выиграно: <span style="color:#00ff88;font-weight:700">$0.00</span> | 💸 Проиграно: <span style="color:#ff4444;font-weight:700">$0.00</span><br>
+          📊 P&L: <span style="color:#ff4444;font-size:14px;font-weight:700">$-213.34</span> | 📈 Старт: $1000 | Сейчас: <span style="color:#00ff88;font-weight:700">$1,209.32</span>
         </div>
       </div>
 
@@ -703,7 +704,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 <div class="refresh-bar">
   <span class="status"><span class="spinner"></span> LIVE • Auto-refresh <span id="countdown">120</span>s</span>
   <span style="color:#444">NANO Whale Tracker v3.0 • Polymarket API</span>
-  <span style="color:#555" id="update-time">02.05.2026 11:46</span>
+  <span style="color:#555" id="update-time">02.05.2026 11:49</span>
 </div>
 
 <script>
