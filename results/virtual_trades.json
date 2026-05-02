@@ -50,13 +50,13 @@
       "market": "Cavaliers vs. Raptors",
       "outcome": "Raptors",
       "entry_price": 0.365,
-      "cur_price": 0.405,
+      "cur_price": 0.335,
       "bet_size": 50.0,
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -5.479452000000005,
-      "pnl_pct": -6.299212598425208
+      "pnl": 4.109589000000003,
+      "pnl_pct": 4.7244094488189115
     },
     {
       "id": "bet_1777683760_5",
@@ -64,13 +64,13 @@
       "market": "Spread: Rockets (-4.5)",
       "outcome": "Rockets",
       "entry_price": 0.495,
-      "cur_price": 0.185,
+      "cur_price": 0.165,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 31.31313099999999,
-      "pnl_pct": 61.38613861386138
+      "pnl": 33.333332999999996,
+      "pnl_pct": 65.34653465346534
     },
     {
       "id": "bet_1777683761_6",
@@ -78,13 +78,13 @@
       "market": "Spread: Rockets (-3.5)",
       "outcome": "Rockets",
       "entry_price": 0.525,
-      "cur_price": 0.3,
+      "cur_price": 0.205,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 21.428572499999998,
-      "pnl_pct": 47.36842105263157
+      "pnl": 30.476192000000008,
+      "pnl_pct": 67.36842105263159
     },
     {
       "id": "bet_1777687124_7",
@@ -112,6 +112,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 02:26 UTC",
+  "last_updated": "2026-05-02 02:29 UTC",
   "max_bet_pct": 5
 }
