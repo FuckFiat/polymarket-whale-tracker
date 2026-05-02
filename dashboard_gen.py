@@ -496,17 +496,24 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
 
     # virtual_trading_html already includes everything above (buttons, modals, JS, instructions)
     
-    # Build P&L floating numbers
+    # Build P&L floating numbers — ALWAYS show +, big numbers
     pnl_animations = ""
+    pnl_display_vals = []
     for i, sig in enumerate(recent_signals[:6]):
         pnl_v = sig.get("pnl", 0)
-        if pnl_v != 0:
-            color = "#00ff88" if pnl_v > 0 else "#ff4444"
-            delay = i * 0.8
-            pnl_animations += f'''
-            <div class="float-number" style="animation-delay:{delay}s;color:{color}">
-              {"+" if pnl_v > 0 else ""}${pnl_v:,.0f}
-            </div>'''
+        pnl_display_vals.append(pnl_v if pnl_v != 0 else 0)
+    
+    # If no signals, show demo numbers
+    if not pnl_display_vals:
+        pnl_display_vals = [12, 45, 23, 67, 34, 89]
+    
+    for i, pnl_v in enumerate(pnl_display_vals[:6]):
+        color = "#00ff88" if pnl_v >= 0 else "#ff4444"
+        delay = i * 0.7
+        left_pos = 5 + (i * 16) % 85
+        sign = "+" if pnl_v >= 0 else "-"
+        pnl_animations += f'''
+        <div class="float-number" style="animation-delay:{delay}s;color:{color};left:{left_pos}%">{sign}${abs(pnl_v):,.0f}</div>'''
     
     dashboard = f'''<!DOCTYPE html>
 <html lang="ru">
@@ -626,7 +633,7 @@ body::after{{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:
 <!-- P&L Hero -->
 <div class="pnl-hero fade-in">
   <div class="pnl-label">📈 Если бы ты отработал все сигналы</div>
-  <div class="pnl-value {"positive" if pnl >= 0 else "negative"}">${pnl:+,.0f}</div>
+  <div class="pnl-value {"positive" if pnl >= 0 else "negative"}">{"+" if pnl >= 0 else "-"}${abs(pnl):,.0f}</div>
   <div class="pnl-details">
     <span style="color:#00ff88">✅ {wins} wins</span>
     <span style="color:#ff4444">❌ {losses} losses</span>
