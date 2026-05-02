@@ -7,6 +7,7 @@ import asyncio, aiohttp, json, time, os, sys
 from datetime import datetime, timezone
 from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats, update_prices
 from hyperliquid_monitor import scan_whale_positions, format_alert as hl_format_alert, load_hl_state, HYPERLIQUID_WHALES, HL_API, refresh_leaderboard, get_user_state, get_all_mids
+from eth_whale_monitor import fetch_all_eth_data, format_eth_summary, format_eth_compact, load_eth_state, save_eth_state
 
 BOT_TOKEN = "8375563056:AAH0vHARkJW6cstYsIhkczZHxfYRp7v3PLw"
 CHAT_ID = 730668
@@ -70,6 +71,10 @@ async def tg_answer_callback(callback_id, text=""):
         return False
 
 # ===== COMMANDS =====
+
+async def cmd_help_orig(chat_id):
+    """Deprecated — replaced by new cmd_help"""
+    pass
 
 async def cmd_start(chat_id, args=""):
     """Handle /start command with optional deep link args."""
@@ -884,6 +889,44 @@ async def cmd_hlcheck(chat_id):
         else:
             await tg_send(f"🔮 Нет крупных позиций по {', '.join(selected)}\nПопробуй другие монеты через /hlwhales", chat_id=chat_id)
 
+async def cmd_eth(chat_id):
+    """Show ETH whale positions across all exchanges"""
+    await tg_send("🔮 Собираю данные ETH со всех бирж...", chat_id=chat_id)
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+        data = await fetch_all_eth_data(session)
+    
+    if not data.get("exchanges"):
+        await tg_send("❌ Не удалось получить данные ETH", chat_id=chat_id)
+        return
+    
+    text = format_eth_summary(data)
+    
+    # Save to state
+    eth_state = load_eth_state()
+    eth_state["last_check"] = int(time.time())
+    eth_state["last_data"] = data
+    # Keep history of last 24 entries (4h at 10min intervals)
+    eth_state.setdefault("history", []).append({
+        "time": data["timestamp"],
+        "ls_ratios": data.get("ls_ratios", []),
+        "funding_rates": data.get("funding_rates", []),
+        "eth_price": data.get("eth_price", 0),
+        "total_oi_usd": data.get("total_oi_usd", 0),
+    })
+    eth_state["history"] = eth_state["history"][-24:]
+    save_eth_state(eth_state)
+    
+    # Buttons
+    btns = [
+        [{"text": "🔄 Обновить", "callback_data": "eth_refresh"},
+         {"text": "📊 История", "callback_data": "eth_history"}],
+        [{"text": "🔮 Hyperliquid", "callback_data": "hl_scan"},
+         {"text": "🐋 Polymarket", "callback_data": "vt_refresh"}],
+    ]
+    await tg_send(text, btns, chat_id)
+
+
 COMMANDS = {
     "/start": cmd_start,
     "/help": cmd_help,
@@ -898,6 +941,8 @@ COMMANDS = {
     "/arbitrage": cmd_arbitrage,
     "/hlwhales": cmd_hlwhales,
     "/hlcheck": cmd_hlcheck,
+    "/eth": cmd_eth,
+    "/ethmonitor": cmd_eth,
 }
 
 async def run_bot():
@@ -1034,6 +1079,29 @@ async def run_bot():
                                 await tg_send(f"🔮 Детали кита {addr_short}...", cb_chat)
                                 continue
                             
+                            # ===== ETH Monitor callbacks =====
+                            if cb_data == "eth_refresh":
+                                await cmd_eth(cb_chat)
+                                continue
+                            
+                            if cb_data == "eth_history":
+                                eth_state = load_eth_state()
+                                history = eth_state.get("history", [])
+                                if not history:
+                                    await tg_send("📊 История пуста. Нажми /eth сначала.", cb_chat)
+                                    continue
+                                
+                                lines = ["📊 *ETH L/S История (4ч)*", "═══════════════════════════════════"]
+                                for h in history[-12:]:  # Last 12 entries
+                                    t = datetime.fromtimestamp(h["time"], tz=timezone.utc).strftime("%H:%M")
+                                    price = h.get("eth_price", 0)
+                                    ls = h.get("ls_ratios", [])
+                                    ls_str = " | ".join([f"{n}:{r:.3f}" for n, r in ls[:2]])
+                                    lines.append(f"{t} ${price:,.0f} | {ls_str}")
+                                
+                                await tg_send("\n".join(lines), cb_chat)
+                                continue
+                            
                             continue
 
                         # Handle commands
@@ -1061,6 +1129,53 @@ async def run_bot():
                 except Exception as e:
                     print(f"Whale check error: {e}")
                 last_whale_check = now
+            
+            # 3. ETH monitor every 10 minutes
+            if not hasattr(run_bot, '_last_eth_check'):
+                run_bot._last_eth_check = 0
+            if now - run_bot._last_eth_check >= 600:
+                try:
+                    eth_data = await fetch_all_eth_data(session)
+                    eth_state = load_eth_state()
+                    eth_state["last_check"] = int(time.time())
+                    eth_state["last_data"] = eth_data
+                    eth_state.setdefault("history", []).append({
+                        "time": eth_data["timestamp"],
+                        "ls_ratios": eth_data.get("ls_ratios", []),
+                        "funding_rates": eth_data.get("funding_rates", []),
+                        "eth_price": eth_data.get("eth_price", 0),
+                        "total_oi_usd": eth_data.get("total_oi_usd", 0),
+                    })
+                    eth_state["history"] = eth_state["history"][-24:]
+                    save_eth_state(eth_state)
+                    
+                    # Alert on significant L/S shifts
+                    prev_ls = eth_state.get("prev_avg_ls", 0)
+                    avg_ls = 0
+                    non_pc = [r for n, r in eth_data.get("ls_ratios", []) if "P/C" not in n]
+                    if non_pc:
+                        avg_ls = sum(non_pc) / len(non_pc)
+                    
+                    # Alert if L/S ratio changed by >0.1
+                    if prev_ls > 0 and abs(avg_ls - prev_ls) > 0.1:
+                        direction = "🟢 БЫЧИЙ сдвиг" if avg_ls > prev_ls else "🔴 МЕДВЕЖИЙ сдвиг"
+                        alert = f"⚠️ ETH L/S Shift: {prev_ls:.3f} → {avg_ls:.3f}\n{direction}\n{format_eth_compact(eth_data)}"
+                        await tg_send(alert)
+                    
+                    # Alert on extreme funding rates
+                    for name, rate in eth_data.get("funding_rates", []):
+                        if abs(rate) > 0.05:  # >0.05% = extreme
+                            emoji = "🔥" if rate > 0 else "🥶"
+                            await tg_send(f"{emoji} ETH Funding Alert: {name} = {rate:+.4f}%")
+                    
+                    eth_state["prev_avg_ls"] = avg_ls
+                    save_eth_state(eth_state)
+                    
+                    ts = datetime.now(timezone.utc).strftime("%H:%M:%S UTC")
+                    print(f"[{ts}] ETH monitor: L/S={avg_ls:.4f} Price=${eth_data.get('eth_price', 0):,.0f}")
+                except Exception as e:
+                    print(f"ETH monitor error: {e}")
+                run_bot._last_eth_check = now
 
             await asyncio.sleep(3)
     finally:

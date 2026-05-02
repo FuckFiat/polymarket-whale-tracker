@@ -1,5 +1,5 @@
 {
-  "balance": 750.0,
+  "balance": 650.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -8,13 +8,13 @@
       "market": "Will Leeds United FC win on 2026-05-01?",
       "outcome": "Yes",
       "entry_price": 0.685,
-      "cur_price": 0.9995,
+      "cur_price": 1.0,
       "bet_size": 50.0,
       "shares": 72.9927,
       "entry_date": "2026-05-01 18:49",
       "status": "open",
-      "pnl": 22.95620415,
-      "pnl_pct": 45.91240875912408
+      "pnl": 22.99,
+      "pnl_pct": 46.0
     },
     {
       "id": "bet_1777675431_2",
@@ -22,13 +22,13 @@
       "market": "Sabres vs. Bruins",
       "outcome": "Sabres",
       "entry_price": 0.525,
-      "cur_price": 0.715,
+      "cur_price": 0.775,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -18.095238999999996,
-      "pnl_pct": -39.99999999999999
+      "pnl": -23.809525,
+      "pnl_pct": -52.63157894736843
     },
     {
       "id": "bet_1777676043_3",
@@ -36,13 +36,13 @@
       "market": "Spread: Pistons (-4.5)",
       "outcome": "Pistons",
       "entry_price": 0.465,
-      "cur_price": 0.0505,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": 44.56990005000001,
-      "pnl_pct": 77.47663551401871
+      "pnl": -57.47312804999999,
+      "pnl_pct": -99.90654205607477
     },
     {
       "id": "bet_1777676959_4",
@@ -50,13 +50,41 @@
       "market": "Cavaliers vs. Raptors",
       "outcome": "Raptors",
       "entry_price": 0.365,
-      "cur_price": 0.665,
+      "cur_price": 0.785,
       "bet_size": 50.0,
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -41.095890000000004,
-      "pnl_pct": -47.24409448818898
+      "pnl": -57.534246,
+      "pnl_pct": -66.14173228346458
+    },
+    {
+      "id": "bet_1777683760_5",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Rockets (-4.5)",
+      "outcome": "Rockets",
+      "entry_price": 0.495,
+      "cur_price": 0.505,
+      "bet_size": 50.0,
+      "shares": 101.0101,
+      "entry_date": "2026-05-02 01:02",
+      "status": "open",
+      "pnl": -1.0101010000000008,
+      "pnl_pct": -1.980198019801982
+    },
+    {
+      "id": "bet_1777683761_6",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Rockets (-3.5)",
+      "outcome": "Rockets",
+      "entry_price": 0.525,
+      "cur_price": 0.545,
+      "bet_size": 50.0,
+      "shares": 95.2381,
+      "entry_date": "2026-05-02 01:02",
+      "status": "open",
+      "pnl": -1.9047620000000018,
+      "pnl_pct": -4.210526315789476
     }
   ],
   "trade_history": [],
@@ -66,10 +94,10 @@
   "resolved": [],
   "total_won": 0,
   "total_lost": 0,
-  "total_bets": 5,
+  "total_bets": 7,
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 00:51 UTC",
+  "last_updated": "2026-05-02 01:42 UTC",
   "max_bet_pct": 5
 }
