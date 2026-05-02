@@ -6,7 +6,7 @@ Interactive Telegram bot with commands + automatic whale monitoring.
 import asyncio, aiohttp, json, time, os, sys
 from datetime import datetime, timezone
 from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats, update_prices
-from hyperliquid_monitor import scan_whale_positions, format_alert as hl_format_alert, load_hl_state, HYPERLIQUID_WHALES, HL_API, refresh_leaderboard, get_user_state, get_all_mids
+from hyperliquid_monitor import scan_whale_positions, format_alert as hl_format_alert, load_hl_state, save_hl_state, HYPERLIQUID_WHALES, HL_API, refresh_leaderboard, get_user_state, get_all_mids
 from eth_whale_monitor import fetch_all_eth_data, format_eth_summary, format_eth_compact, load_eth_state, save_eth_state
 
 BOT_TOKEN = "8375563056:AAH0vHARkJW6cstYsIhkczZHxfYRp7v3PLw"
@@ -113,6 +113,8 @@ async def cmd_start(chat_id, args=""):
 /markets — Топ рынки
 /check — Проверить китов
 /positions — Позиции и P&L
+/eth — ETH анализ (L/S, OI, funding)
+/ethwhales — ETH позиции китов на HL
 
  Алерты прилетают автоматически 🐋"""
     btns = [[{"text": "\U0001f40b Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}],
@@ -959,6 +961,66 @@ async def cmd_eth(chat_id):
     await tg_send(text, btns, chat_id)
 
 
+
+async def cmd_ethwhales(chat_id):
+    """Show ETH whale positions from Hyperliquid"""
+    await tg_send("🔮 Сканирую ETH позиции китов на Hyperliquid...", chat_id=chat_id)
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+        alerts = await scan_whale_positions(session, coins=["ETH"])
+    
+    if not alerts:
+        # Check current positions manually
+        mids = await get_all_mids(aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)))
+        lines = ["🐋 ETH позиции китов на HL", "═══════════════════════════════"]
+        found = False
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+            for addr, info in HYPERLIQUID_WHALES.items():
+                user_state = await get_user_state(session, addr)
+                if not user_state:
+                    continue
+                positions = user_state.get("assetPositions", [])
+                for pos in positions:
+                    p = pos.get("position", {})
+                    if p.get("coin") == "ETH":
+                        found = True
+                        size = float(p.get("szi", "0"))
+                        side = "LONG" if size > 0 else "SHORT"
+                        entry = float(p.get("entryPx", "0"))
+                        pnl = float(p.get("unrealizedPnl", "0"))
+                        lev = p.get("leverage", {}).get("value", "1") if isinstance(p.get("leverage"), dict) else "1"
+                        liq = p.get("liquidationPx", "?")
+                        notional = abs(size) * (float(mids.get("ETH", "0")) if mids else 0)
+                        pnl_s = "+" if pnl >= 0 else ""
+                        emoji = "🟢" if side == "LONG" else "🔴"
+                        lines.append(f"{emoji} {info['name']}")
+                        lines.append(f"  {side} {abs(size):,.2f} ETH (${notional:,.0f})")
+                        lines.append(f"  Вход: ${entry:,.2f} | PnL: {pnl_s}${pnl:,.0f}")
+                        lines.append(f"  Плечо: {lev}x | Ликв: ${liq}")
+                        lines.append("───────────────────")
+        
+        if not found:
+            lines.append("😴 Нет открытых ETH позиций у китов")
+        
+        await tg_send("\n".join(lines), chat_id)
+    else:
+        for alert in alerts:
+            whale = alert.get("whale", "?")
+            side = alert.get("side", "?")
+            size = alert.get("size", 0)
+            notional = alert.get("notional", 0)
+            entry = alert.get("entry", 0)
+            pnl = alert.get("pnl", 0)
+            leverage = alert.get("leverage", 1)
+            emoji = "🟢" if side == "LONG" else "🔴"
+            pnl_s = "+" if pnl >= 0 else ""
+            msg = (
+                f"{emoji} {whale}\n"
+                f"{side} {size:,.2f} ETH (${notional:,.0f})\n"
+                f"Вход: ${entry:,.2f} | PnL: {pnl_s}${pnl:,.0f} | {leverage:.1f}x"
+            )
+            await tg_send(msg, chat_id)
+
 COMMANDS = {
     "/start": cmd_start,
     "/help": cmd_help,
@@ -975,6 +1037,7 @@ COMMANDS = {
     "/hlcheck": cmd_hlcheck,
     "/eth": cmd_eth,
     "/ethmonitor": cmd_eth,
+    "/ethwhales": cmd_ethwhales,
 }
 
 async def run_bot():
@@ -1162,7 +1225,111 @@ async def run_bot():
                     print(f"Whale check error: {e}")
                 last_whale_check = now
             
-            # 3. ETH monitor every 10 minutes
+            # 3. ETH whale position monitor every 3 minutes
+            # Track when HL whales enter/exit ETH positions
+            if not hasattr(run_bot, '_last_eth_whale_check'):
+                run_bot._last_eth_whale_check = 0
+            if now - run_bot._last_eth_whale_check >= 180:
+                try:
+                    eth_alerts = await scan_whale_positions(session, coins=["ETH"])
+                    for alert in eth_alerts:
+                        a_type = alert.get("type", "")
+                        whale_name = alert.get("whale", "?")
+                        side = alert.get("side", "?")
+                        size = alert.get("size", 0)
+                        entry = alert.get("entry", 0)
+                        notional = alert.get("notional", 0)
+                        pnl = alert.get("pnl", 0)
+                        leverage = alert.get("leverage", 1)
+                        liq_price = alert.get("liq_price")
+                        liq_dist = alert.get("liq_distance")
+                        account_val = alert.get("account_value", 0)
+                        
+                        if a_type == "new_position":
+                            # New ETH position opened!
+                            emoji = "🟢" if side == "LONG" else "🔴"
+                            liq_info = ""
+                            if liq_dist is not None:
+                                liq_emoji = "🔴" if liq_dist < 10 else "🟡" if liq_dist < 25 else "🟢"
+                                liq_info = f"\n💀 Ликв.: ${liq_price:,.0f} ({liq_emoji} {liq_dist:.1f}%)"
+                            
+                            msg = (
+                                f"⚡️ ETH КИТ ВХОДИТ В ПОЗИЦИЮ!\n"
+                                f"═══════════════════════════════\n"
+                                f"{emoji} {whale_name}\n"
+                                f"📈 {side} ETH\n"
+                                f"💰 Размер: {size:,.2f} ETH (${notional:,.0f})\n"
+                                f"🎯 Вход: ${entry:,.2f}\n"
+                                f"⚡ Плечо: {leverage:.1f}x\n"
+                                f"💎 Аккаунт: ${account_val:,.0f}"
+                                f"{liq_info}"
+                            )
+                            await tg_send(msg)
+                            
+                        elif a_type == "size_change":
+                            # Position size changed >10%
+                            emoji = "🟢" if side == "LONG" else "🔴"
+                            pnl_sign = "+" if pnl >= 0 else ""
+                            msg = (
+                                f"📊 ETH КИТ УВЕЛИЧИВАЕТ ПОЗИЦИЮ\n"
+                                f"═══════════════════════════════\n"
+                                f"{emoji} {whale_name}\n"
+                                f"📈 {side} ETH → {size:,.2f} ETH\n"
+                                f"💰 ${notional:,.0f}\n"
+                                f"📊 PnL: {pnl_sign}${pnl:,.0f}\n"
+                                f"⚡ {leverage:.1f}x"
+                            )
+                            await tg_send(msg)
+                    
+                    # Also check for closed positions (whales that had ETH before but not now)
+                    hl_state = load_hl_state()
+                    seen = hl_state.get("seen_positions", {})
+                    eth_positions_before = {k: v for k, v in seen.items() if ":ETH:" in k}
+                    
+                    # Re-scan to find closed positions
+                    for pos_key, pos_data in list(eth_positions_before.items()):
+                        addr_prefix = pos_key.split(":")[0]
+                        # Find the full address
+                        full_addr = None
+                        for a in HYPERLIQUID_WHALES:
+                            if a.startswith(addr_prefix):
+                                full_addr = a
+                                break
+                        
+                        if full_addr:
+                            user_state = await get_user_state(session, full_addr)
+                            if user_state:
+                                positions = user_state.get("assetPositions", [])
+                                has_eth = any(p.get("position", {}).get("coin") == "ETH" for p in positions)
+                                if not has_eth:
+                                    # Whale closed ETH position!
+                                    whale_name = HYPERLIQUID_WHALES[full_addr]["name"]
+                                    old_side = "LONG" if "long" in pos_key else "SHORT"
+                                    old_size = pos_data.get("size", 0)
+                                    old_entry = pos_data.get("entry", 0)
+                                    old_notional = pos_data.get("notional", 0)
+                                    emoji = "🟢" if old_side == "SHORT" else "🔴"  # closing short = bullish, closing long = bearish signal
+                                    msg = (
+                                        f"🏁 ETH КИТ ЗАКРЫВАЕТ ПОЗИЦИЮ!\n"
+                                        f"═══════════════════════════════\n"
+                                        f"{emoji} {whale_name}\n"
+                                        f"❌ Закрыт {old_side} {old_size:,.2f} ETH\n"
+                                        f"💰 Было: ${old_notional:,.0f}\n"
+                                        f"🎯 Вход был: ${old_entry:,.2f}"
+                                    )
+                                    await tg_send(msg)
+                                    # Remove from seen positions
+                                    del seen[pos_key]
+                                    save_hl_state(hl_state)
+                    
+                    ts = datetime.now(timezone.utc).strftime("%H:%M:%S UTC")
+                    n_alerts = len(eth_alerts)
+                    print(f"[{ts}] ETH whale monitor: {n_alerts} alert(s)")
+                except Exception as e:
+                    print(f"ETH whale monitor error: {e}")
+                run_bot._last_eth_whale_check = now
+
+            # 4. ETH market monitor every 10 minutes
             if not hasattr(run_bot, '_last_eth_check'):
                 run_bot._last_eth_check = 0
             if now - run_bot._last_eth_check >= 600:
