@@ -1,5 +1,5 @@
 {
-  "balance": 1007.99,
+  "balance": 957.99,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -36,13 +36,13 @@
       "market": "76ers vs. Celtics",
       "outcome": "76ers",
       "entry_price": 0.395,
-      "cur_price": 0.395,
+      "cur_price": 0.485,
       "bet_size": 50.0,
       "shares": 126.5823,
       "entry_date": "2026-05-02 23:37",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 11.39,
+      "pnl_pct": 22.8
     },
     {
       "id": "bet_1777765078_9",
@@ -50,10 +50,24 @@
       "market": "Spread: Hurricanes (-1.5)",
       "outcome": "Hurricanes",
       "entry_price": 0.445,
-      "cur_price": 0.445,
+      "cur_price": 0.455,
       "bet_size": 50.0,
       "shares": 112.3596,
       "entry_date": "2026-05-02 23:37",
+      "status": "open",
+      "pnl": 1.12,
+      "pnl_pct": 2.2
+    },
+    {
+      "id": "bet_1777765385_10",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Flyers vs. Hurricanes",
+      "outcome": "Hurricanes",
+      "entry_price": 0.685,
+      "cur_price": 0.685,
+      "bet_size": 50.0,
+      "shares": 72.9927,
+      "entry_date": "2026-05-02 23:43",
       "status": "open",
       "pnl": 0.0,
       "pnl_pct": 0.0
@@ -147,10 +161,10 @@
   ],
   "total_won": 257.99,
   "total_lost": 0,
-  "total_bets": 10,
+  "total_bets": 11,
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 23:38 UTC",
+  "last_updated": "2026-05-02 23:43 UTC",
   "max_bet_pct": 5
 }
