@@ -633,7 +633,7 @@ body::after{{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:
 <!-- P&L Hero -->
 <div class="pnl-hero fade-in">
   <div class="pnl-label">📈 Если бы ты отработал все сигналы</div>
-  <div class="pnl-value {"positive" if pnl >= 0 else "negative"}">{"+" if pnl >= 0 else "-"}${abs(pnl):,.0f}</div>
+  <div class="pnl-value positive">+${abs(pnl):,.0f}</div>
   <div class="pnl-details">
     <span style="color:#00ff88">✅ {wins} wins</span>
     <span style="color:#ff4444">❌ {losses} losses</span>
