@@ -27,8 +27,8 @@
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -45.19047845000001,
-      "pnl_pct": -99.89473684210527
+      "pnl": -45.19,
+      "pnl_pct": -99.9
     },
     {
       "id": "bet_1777676043_3",
@@ -41,8 +41,8 @@
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": -57.47312804999999,
-      "pnl_pct": -99.90654205607477
+      "pnl": -57.47,
+      "pnl_pct": -99.9
     },
     {
       "id": "bet_1777676959_4",
@@ -50,13 +50,13 @@
       "market": "Cavaliers vs. Raptors",
       "outcome": "Raptors",
       "entry_price": 0.365,
-      "cur_price": 0.725,
+      "cur_price": 0.72,
       "bet_size": 50.0,
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -49.315068,
-      "pnl_pct": -56.69291338582677
+      "pnl": -48.63,
+      "pnl_pct": -55.9
     },
     {
       "id": "bet_1777683760_5",
@@ -69,8 +69,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 13.131313,
-      "pnl_pct": 25.742574257425744
+      "pnl": 13.13,
+      "pnl_pct": 25.7
     },
     {
       "id": "bet_1777683761_6",
@@ -97,8 +97,8 @@
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:58",
       "status": "open",
-      "pnl": -0.9523810000000009,
-      "pnl_pct": -2.1052631578947434
+      "pnl": -0.95,
+      "pnl_pct": -2.1
     }
   ],
   "trade_history": [],
@@ -112,6 +112,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 02:11 UTC",
+  "last_updated": "2026-05-02 02:14 UTC",
   "max_bet_pct": 5
 }
