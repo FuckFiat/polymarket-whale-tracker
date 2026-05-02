@@ -13,8 +13,8 @@
       "shares": 72.9927,
       "entry_date": "2026-05-01 18:49",
       "status": "open",
-      "pnl": 22.992700499999994,
-      "pnl_pct": 45.98540145985402
+      "pnl": 22.99,
+      "pnl_pct": 46.0
     },
     {
       "id": "bet_1777675431_2",
@@ -27,8 +27,8 @@
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -21.904763,
-      "pnl_pct": -48.421052631578945
+      "pnl": -21.9,
+      "pnl_pct": -48.4
     },
     {
       "id": "bet_1777676043_3",
@@ -36,13 +36,13 @@
       "market": "Spread: Pistons (-4.5)",
       "outcome": "Pistons",
       "entry_price": 0.465,
-      "cur_price": 0.7275,
+      "cur_price": 0.595,
       "bet_size": 50.0,
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": -28.225811249999996,
-      "pnl_pct": -49.06542056074766
+      "pnl": -13.98,
+      "pnl_pct": -24.3
     },
     {
       "id": "bet_1777676959_4",
@@ -50,13 +50,13 @@
       "market": "Cavaliers vs. Raptors",
       "outcome": "Raptors",
       "entry_price": 0.365,
-      "cur_price": 0.805,
+      "cur_price": 0.765,
       "bet_size": 50.0,
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -60.27397200000001,
-      "pnl_pct": -69.29133858267717
+      "pnl": -54.79,
+      "pnl_pct": -63.0
     },
     {
       "id": "bet_1777683760_5",
@@ -69,8 +69,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": -2.0202020000000016,
-      "pnl_pct": -3.960396039603964
+      "pnl": -2.02,
+      "pnl_pct": -4.0
     },
     {
       "id": "bet_1777683761_6",
@@ -83,8 +83,8 @@
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": -2.8571430000000024,
-      "pnl_pct": -6.3157894736842195
+      "pnl": -2.86,
+      "pnl_pct": -6.3
     }
   ],
   "trade_history": [],
@@ -98,6 +98,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 01:23 UTC",
+  "last_updated": "2026-05-02 01:28 UTC",
   "max_bet_pct": 5
 }
