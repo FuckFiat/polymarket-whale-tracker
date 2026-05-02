@@ -244,10 +244,15 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
     total_positions = sum(len(w.get("positions", [])) for w in whale_data.values())
     
     # P&L data
-    pnl = tracker.get("total_pnl", 0)
-    wins = tracker.get("wins", 0)
-    losses = tracker.get("losses", 0)
-    pending = tracker.get("pending", 0)
+    # Use VIRTUAL PORTFOLIO PnL (real numbers, not signal tracker zeros)
+    from virtual_trading import load_portfolio as _lp, get_stats as _gs
+    _port = _lp()
+    _st = _gs(_port)
+    pnl = _st["total_pnl"]
+    wins = _st["wins"]
+    losses = _st["losses"]
+    pending = _st["open_positions"]
+    total_value = _st["total_value"]
     win_rate = (wins / (wins + losses) * 100) if (wins + losses) > 0 else 0
     
     # Build signal cards HTML
@@ -496,16 +501,48 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
 
     # virtual_trading_html already includes everything above (buttons, modals, JS, instructions)
     
-    # Build P&L floating numbers — ALWAYS show +, big numbers
+    # Build P&L floating numbers from VIRTUAL PORTFOLIO (real PnL, not signal tracker)
+    from virtual_trading import load_portfolio, get_stats as _get_stats
+    _portfolio = load_portfolio()
+    _stats = _get_stats(_portfolio)
+    _real_pnl = _stats["total_pnl"]
+    _real_wins = _stats["wins"]
+    _real_losses = _stats["losses"]
+    _real_value = _stats["total_value"]
+    
+    # Override tracker PnL with real portfolio PnL
+    pnl = _real_pnl
+    wins = _real_wins
+    losses = _real_losses
+    
+    # Floating numbers: resolved bet PnLs + current open PnLs (REAL numbers)
     pnl_animations = ""
     pnl_display_vals = []
-    for i, sig in enumerate(recent_signals[:6]):
-        pnl_v = sig.get("pnl", 0)
-        pnl_display_vals.append(pnl_v if pnl_v != 0 else 0)
     
-    # If no signals, show demo numbers
+    # Resolved bet PnLs (these are the real wins)
+    for r in _portfolio.get("resolved", []):
+        pnl_display_vals.append(r.get("pnl", 0))
+    
+    # Open position PnLs
+    for pos in _portfolio.get("positions", []):
+        if not pos.get("closed") and pos.get("pnl", 0) != 0:
+            pnl_display_vals.append(pos["pnl"])
+    
+    # Dedup and take top 6
+    seen = set()
+    unique = []
+    for v in pnl_display_vals:
+        if round(v, 2) not in seen:
+            seen.add(round(v, 2))
+            unique.append(v)
+    pnl_display_vals = unique[:6]
+    
     if not pnl_display_vals:
-        pnl_display_vals = [12, 45, 23, 67, 34, 89]
+        # Show total PnL broken into parts
+        if _real_pnl > 0:
+            pnl_display_vals = [_real_pnl * 0.4, _real_pnl * 0.25, _real_pnl * 0.15, _real_pnl * 0.1, _real_pnl * 0.05, _real_pnl * 0.05]
+        else:
+            pnl_display_vals = [_real_pnl]
     
     for i, pnl_v in enumerate(pnl_display_vals[:6]):
         color = "#00ff88" if pnl_v >= 0 else "#ff4444"
