@@ -967,59 +967,40 @@ async def cmd_ethwhales(chat_id):
     await tg_send("🔮 Сканирую ETH позиции китов на Hyperliquid...", chat_id=chat_id)
     
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
-        alerts = await scan_whale_positions(session, coins=["ETH"])
-    
-    if not alerts:
-        # Check current positions manually
-        mids = await get_all_mids(aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=10)))
+        mids = await get_all_mids(session)
         lines = ["🐋 ETH позиции китов на HL", "═══════════════════════════════"]
         found = False
-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
-            for addr, info in HYPERLIQUID_WHALES.items():
-                user_state = await get_user_state(session, addr)
-                if not user_state:
-                    continue
-                positions = user_state.get("assetPositions", [])
-                for pos in positions:
-                    p = pos.get("position", {})
-                    if p.get("coin") == "ETH":
-                        found = True
-                        size = float(p.get("szi", "0"))
-                        side = "LONG" if size > 0 else "SHORT"
-                        entry = float(p.get("entryPx", "0"))
-                        pnl = float(p.get("unrealizedPnl", "0"))
-                        lev = p.get("leverage", {}).get("value", "1") if isinstance(p.get("leverage"), dict) else "1"
-                        liq = p.get("liquidationPx", "?")
-                        notional = abs(size) * (float(mids.get("ETH", "0")) if mids else 0)
-                        pnl_s = "+" if pnl >= 0 else ""
-                        emoji = "🟢" if side == "LONG" else "🔴"
-                        lines.append(f"{emoji} {info['name']}")
-                        lines.append(f"  {side} {abs(size):,.2f} ETH (${notional:,.0f})")
-                        lines.append(f"  Вход: ${entry:,.2f} | PnL: {pnl_s}${pnl:,.0f}")
-                        lines.append(f"  Плечо: {lev}x | Ликв: ${liq}")
-                        lines.append("───────────────────")
+        
+        for addr, info in HYPERLIQUID_WHALES.items():
+            user_state = await get_user_state(session, addr)
+            if not user_state:
+                continue
+            positions = user_state.get("assetPositions", [])
+            for pos in positions:
+                p = pos.get("position", {})
+                if p.get("coin") == "ETH":
+                    found = True
+                    size = float(p.get("szi", "0"))
+                    side = "LONG" if size > 0 else "SHORT"
+                    entry = float(p.get("entryPx", "0"))
+                    pnl = float(p.get("unrealizedPnl", "0"))
+                    lev = p.get("leverage", {}).get("value", "1") if isinstance(p.get("leverage"), dict) else "1"
+                    liq = p.get("liquidationPx", "?")
+                    eth_price = float(mids.get("ETH", "0")) if mids else 0
+                    notional = abs(size) * eth_price
+                    pnl_s = "+" if pnl >= 0 else ""
+                    emoji = "🟢" if side == "LONG" else "🔴"
+                    lines.append(f"{emoji} {info['name']}")
+                    lines.append(f"  {side} {abs(size):,.2f} ETH (${notional:,.0f})")
+                    lines.append(f"  Вход: ${entry:,.2f} | PnL: {pnl_s}${pnl:,.0f}")
+                    lines.append(f"  Плечо: {lev}x | Ликв: ${liq}")
+                    lines.append("───────────────────")
         
         if not found:
             lines.append("😴 Нет открытых ETH позиций у китов")
+        lines.append(f"\n💎 ETH: ${eth_price:,.2f}")
         
         await tg_send("\n".join(lines), chat_id)
-    else:
-        for alert in alerts:
-            whale = alert.get("whale", "?")
-            side = alert.get("side", "?")
-            size = alert.get("size", 0)
-            notional = alert.get("notional", 0)
-            entry = alert.get("entry", 0)
-            pnl = alert.get("pnl", 0)
-            leverage = alert.get("leverage", 1)
-            emoji = "🟢" if side == "LONG" else "🔴"
-            pnl_s = "+" if pnl >= 0 else ""
-            msg = (
-                f"{emoji} {whale}\n"
-                f"{side} {size:,.2f} ETH (${notional:,.0f})\n"
-                f"Вход: ${entry:,.2f} | PnL: {pnl_s}${pnl:,.0f} | {leverage:.1f}x"
-            )
-            await tg_send(msg, chat_id)
 
 COMMANDS = {
     "/start": cmd_start,
