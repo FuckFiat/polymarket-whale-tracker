@@ -143,28 +143,34 @@ def close_position(portfolio, position_id, result="loss"):
     return {"error": "Position not found"}
 
 def update_prices(portfolio, whale_positions=None):
-    """Update cur_price for open positions from API data."""
+    """Update cur_price for open positions from API data.
+    
+    P&L calculation for Polymarket:
+    - All outcomes on Polymarket are YES shares (you buy YES for a specific outcome)
+    - curPrice = current price of YES for that outcome
+    - P&L = (curPrice - entryPrice) * shares  (always, regardless of outcome name)
+    - When curPrice = 1.0 → resolved YES → full profit
+    - When curPrice = 0.0 → resolved NO → total loss
+    """
     updated = 0
     for pos in portfolio["positions"]:
-        market_hint = pos["market"].lower()[:30]
+        market_hint = pos["market"].lower()[:50]
         
         # Try to find matching market in whale positions data
         if whale_positions:
             for wp in whale_positions:
                 title = wp.get("title", "").lower()
-                if market_hint in title or title[:30] in market_hint:
+                if market_hint in title or title[:50] in market_hint:
                     price = float(wp.get("curPrice", 0) or wp.get("price", 0) or 0)
                     if price > 0:
                         pos["cur_price"] = round(price, 6)
-                        # Recalculate P&L
-                        if pos["outcome"].lower() in ("yes", "y"):
-                            pos["pnl"] = round((price - pos["entry_price"]) * pos["shares"], 2)
-                            pos["pnl_pct"] = round(((price / pos["entry_price"]) - 1) * 100, 1) if pos["entry_price"] > 0 else 0
-                        else:
-                            cur_no = 1 - price
-                            entry_no = 1 - pos["entry_price"]
-                            pos["pnl"] = round((cur_no - entry_no) * pos["shares"], 2)
-                            pos["pnl_pct"] = round(((cur_no / entry_no) - 1) * 100, 1) if entry_no > 0 else 0
+                        # All Polymarket outcomes are YES shares
+                        # P&L = (curPrice - entryPrice) * shares
+                        entry = pos["entry_price"]
+                        shares = pos["shares"]
+                        if entry > 0 and shares > 0:
+                            pos["pnl"] = round((price - entry) * shares, 2)
+                            pos["pnl_pct"] = round(((price / entry) - 1) * 100, 1) if entry > 0 else 0
                         updated += 1
                         break
     
