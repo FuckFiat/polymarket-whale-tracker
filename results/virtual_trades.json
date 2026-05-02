@@ -13,8 +13,8 @@
       "shares": 72.9927,
       "entry_date": "2026-05-01 18:49",
       "status": "open",
-      "pnl": 22.99,
-      "pnl_pct": 46.0
+      "pnl": 22.992700499999994,
+      "pnl_pct": 45.98540145985402
     },
     {
       "id": "bet_1777675431_2",
@@ -27,8 +27,8 @@
       "shares": 95.2381,
       "entry_date": "2026-05-01 22:43",
       "status": "open",
-      "pnl": -20.0,
-      "pnl_pct": -44.2
+      "pnl": -20.000000999999997,
+      "pnl_pct": -44.210526315789465
     },
     {
       "id": "bet_1777676043_3",
@@ -41,8 +41,8 @@
       "shares": 107.5269,
       "entry_date": "2026-05-01 22:54",
       "status": "open",
-      "pnl": 22.63,
-      "pnl_pct": 39.3
+      "pnl": 22.634412450000013,
+      "pnl_pct": 39.345794392523395
     },
     {
       "id": "bet_1777676959_4",
@@ -55,8 +55,8 @@
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -46.58,
-      "pnl_pct": -53.5
+      "pnl": -46.575342,
+      "pnl_pct": -53.54330708661416
     },
     {
       "id": "bet_1777683760_5",
@@ -64,13 +64,13 @@
       "market": "Spread: Rockets (-4.5)",
       "outcome": "Rockets",
       "entry_price": 0.495,
-      "cur_price": 0.505,
+      "cur_price": 0.515,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": -1.01,
-      "pnl_pct": -2.0
+      "pnl": -2.0202020000000016,
+      "pnl_pct": -3.960396039603964
     },
     {
       "id": "bet_1777683761_6",
@@ -83,8 +83,8 @@
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": -1.9,
-      "pnl_pct": -4.2
+      "pnl": -1.9047620000000018,
+      "pnl_pct": -4.210526315789476
     }
   ],
   "trade_history": [],
@@ -98,6 +98,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 01:12 UTC",
+  "last_updated": "2026-05-02 01:14 UTC",
   "max_bet_pct": 5
 }
