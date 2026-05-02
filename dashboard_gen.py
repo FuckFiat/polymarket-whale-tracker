@@ -520,7 +520,7 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐋 NANO Polymarket Whale Tracker v3.0</title>
+<title>🐋 NANO Polymarket Whale Tracker v3.2</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
 *{{margin:0;padding:0;box-sizing:border-box}}
