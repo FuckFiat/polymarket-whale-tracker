@@ -50,13 +50,13 @@
       "market": "Cavaliers vs. Raptors",
       "outcome": "Raptors",
       "entry_price": 0.365,
-      "cur_price": 0.535,
+      "cur_price": 0.475,
       "bet_size": 50.0,
       "shares": 136.9863,
       "entry_date": "2026-05-01 23:09",
       "status": "open",
-      "pnl": -23.287671000000007,
-      "pnl_pct": -26.771653543307096
+      "pnl": -15.068492999999998,
+      "pnl_pct": -17.322834645669293
     }
   ],
   "trade_history": [],
@@ -70,6 +70,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 00:36 UTC",
+  "last_updated": "2026-05-02 00:39 UTC",
   "max_bet_pct": 5
 }
