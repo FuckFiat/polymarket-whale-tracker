@@ -92,13 +92,13 @@
       "market": "Golden Knights vs. Utah",
       "outcome": "Golden Knights",
       "entry_price": 0.525,
-      "cur_price": 0.805,
+      "cur_price": 0.955,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:58",
       "status": "open",
-      "pnl": -26.666668000000005,
-      "pnl_pct": -58.94736842105264
+      "pnl": -40.952383,
+      "pnl_pct": -90.52631578947367
     }
   ],
   "trade_history": [],
@@ -112,6 +112,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 04:36 UTC",
+  "last_updated": "2026-05-02 04:43 UTC",
   "max_bet_pct": 5
 }
