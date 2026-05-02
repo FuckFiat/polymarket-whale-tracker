@@ -64,13 +64,13 @@
       "market": "Spread: Rockets (-4.5)",
       "outcome": "Rockets",
       "entry_price": 0.495,
-      "cur_price": 0.0485,
+      "cur_price": 0.05,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 45.1,
-      "pnl_pct": 88.4
+      "pnl": 44.95,
+      "pnl_pct": 88.1
     },
     {
       "id": "bet_1777683761_6",
@@ -78,13 +78,13 @@
       "market": "Spread: Rockets (-3.5)",
       "outcome": "Rockets",
       "entry_price": 0.525,
-      "cur_price": 0.016,
+      "cur_price": 0.0165,
       "bet_size": 50.0,
       "shares": 95.2381,
       "entry_date": "2026-05-02 01:02",
       "status": "open",
-      "pnl": 48.4761929,
-      "pnl_pct": 107.15789473684212
+      "pnl": 48.42857385000001,
+      "pnl_pct": 107.05263157894737
     },
     {
       "id": "bet_1777687124_7",
@@ -112,6 +112,6 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-02 03:40 UTC",
+  "last_updated": "2026-05-02 03:45 UTC",
   "max_bet_pct": 5
 }
