@@ -376,25 +376,57 @@ async def check_and_alert(session):
     from virtual_trading import update_prices
     update_prices(portfolio, all_whale_positions)
     
-    # 4. Check for resolved markets
+    # 4. Check for resolved markets (improved matching)
     for pos in list(portfolio.get("positions", [])):
-        market_hint = pos["market"][:30]
+        market_hint = pos["market"][:50].lower().strip()
+        # Extract key words for fuzzy matching
+        market_words = [w.lower() for w in market_hint.split() if len(w) > 2]
         try:
-            async with session.get(f"{GAMMA_API}/markets?limit=3&search={market_hint.replace(' ', '+')}", timeout=aiohttp.ClientTimeout(total=10)) as r:
+            async with session.get(f"{GAMMA_API}/markets?limit=10&search={'+'.join(market_words[:5])}", timeout=aiohttp.ClientTimeout(total=10)) as r:
                 if r.status == 200:
                     markets = await r.json()
                     for m in markets:
-                        if m.get("closed") and m.get("question", "").lower().startswith(market_hint.lower()):
-                            resolution = m.get("resolution", "")
+                        question = m.get("question", "").lower()
+                        # Fuzzy match: at least 3 key words match OR question contains the market hint
+                        matches = sum(1 for w in market_words if w in question)
+                        is_match = (matches >= 2 and len(market_words) <= 3) or (matches >= 3) or question.startswith(market_hint) or market_hint in question
+                        if m.get("closed") and is_match:
+                            resolution = m.get("resolution", "").lower()
                             outcome = pos["outcome"].lower()
-                            if resolution.lower() == outcome or (resolution == "Yes" and outcome == "yes"):
-                                close_position(portfolio, pos["id"], "win")
-                                await tg_send(f"✅ *СТАВКА ВЫИГРАЛА!*\n\n{pos['whale']}: {outcome} {pos['market'][:30]}\n💰 +${pos['bet_size']:.0f}")
+                            # Determine win/loss
+                            if outcome in ("yes", "y") and resolution == "yes":
+                                won = True
+                            elif outcome in ("no", "n") and resolution == "no":
+                                won = True
+                            elif resolution == outcome:
+                                won = True
                             else:
-                                close_position(portfolio, pos["id"], "loss")
-                                await tg_send(f"❌ *СТАВКА ПРОИГРАНА*\n\n{pos['whale']}: {outcome} {pos['market'][:30]}\n💸 -${pos['bet_size']:.0f}")
+                                # For sport markets: check if outcome matches the winner
+                                won = outcome in resolution or resolution in outcome
+                            
+                            close_position(portfolio, pos["id"], "win" if won else "loss")
+                            result_emoji = "✅" if won else "❌"
+                            result_text = "ВЫИГРАЛА" if won else "ПРОИГРАНА"
+                            await tg_send(f"{result_emoji} *СТАВКА {result_text}!*\n\n{pos['whale']}: {outcome} {pos['market'][:40]}\n💰 {'+' + str(pos['bet_size']) if won else '-' + str(pos['bet_size'])}\n📊 Разрешение: {resolution}")
                             break
-        except Exception:
+        except Exception as e:
+            print(f"[check_resolved] Error checking {market_hint}: {e}")
+    
+    # 4b. Auto-close dead positions (> 48h open with no price update, likely resolved)
+    now = time.time()
+    for pos in list(portfolio.get("positions", [])):
+        entry_ts = pos.get("id", "").split("_")
+        try:
+            entry_time = int(entry_ts[1]) if len(entry_ts) > 1 else 0
+            hours_open = (now - entry_time) / 3600
+            cur = pos.get("cur_price", 0)
+            # If open > 48h and price stuck at 1.0 or 0.0, likely resolved
+            if hours_open > 48 and cur in (1.0, 0.0):
+                # Check if cur_price hasn't changed from entry
+                if cur == pos.get("entry_price", -1):
+                    # Likely a dead position — don't auto-close, but flag it
+                    pos["status"] = "stale"
+        except (ValueError, IndexError):
             pass
     
     # 5. Cleanup old seen positions (keep last 500)

@@ -378,12 +378,13 @@ def generate_dashboard(whale_data, markets, prices, tracker, recent_signals):
         entry = p.get("entry_price", 0)
         pos_id = p.get("id", "")
         pos_label = f'{p.get("whale","?")}: {p.get("outcome","?")} {p.get("market","?")[:20]}'
+        pnl_size = "font-size:16px" if abs(pnl) > 10 else "font-size:13px"
         pos_rows += f'''
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #111;font-size:10px;flex-wrap:wrap;gap:4px">
-      <span style="color:#aaa;flex:1;min-width:120px">{p.get("whale","?")}: {p.get("outcome","?")} {p.get("market","?")[:25]}</span>
-      <span style="color:#ffaa00;font-weight:600;margin:0 4px">${p.get("bet_size",50):.0f} @ {entry*100:.0f}¢</span>
-      <span style="color:{pnl_color};font-weight:700;margin-right:6px">{pnl:+,.2f}</span>
-      <button onclick="showClose('{pos_id}','{pos_label}')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:9px">✕</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #1a1a3a;font-size:11px;flex-wrap:wrap;gap:4px;background:linear-gradient(90deg,#0a0f0a,#0d0d1a);border-radius:6px;margin:2px 0">
+      <span style="color:#ccc;flex:1;min-width:100px;font-size:10px">{p.get("whale","?")}: <span style="color:#00ff88;font-weight:600">{p.get("outcome","?")}</span> {p.get("market","?")[:25]}</span>
+      <span style="color:#ffaa00;font-weight:700;margin:0 6px;font-size:12px">${p.get("bet_size",50):.0f} @ {entry*100:.0f}¢</span>
+      <span style="color:{pnl_color};font-weight:900;margin-right:8px;{pnl_size};text-shadow:0 0 10px {pnl_color}66">{pnl:+,.2f}</span>
+      <button onclick="showClose('{pos_id}','{pos_label}')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600;transition:all .2s">✕</button>
     </div>'''
     
     roi_color = "#00ff88" if roi >= 0 else "#ff4444"
