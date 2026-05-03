@@ -36,13 +36,13 @@
       "market": "76ers vs. Celtics",
       "outcome": "76ers",
       "entry_price": 0.395,
-      "cur_price": 0.9995,
+      "cur_price": 1.0,
       "bet_size": 50.0,
       "shares": 126.5823,
       "entry_date": "2026-05-02 23:37",
       "status": "open",
-      "pnl": -76.51900035000001,
-      "pnl_pct": -99.91735537190084
+      "pnl": -76.5822915,
+      "pnl_pct": -100.0
     },
     {
       "id": "bet_1777765078_9",
@@ -165,6 +165,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 09:46 UTC",
+  "last_updated": "2026-05-03 09:55 UTC",
   "max_bet_pct": 5
 }
