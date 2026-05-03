@@ -50,13 +50,13 @@
       "market": "Spread: Hurricanes (-1.5)",
       "outcome": "Hurricanes",
       "entry_price": 0.445,
-      "cur_price": 0.88,
+      "cur_price": 0.915,
       "bet_size": 50.0,
       "shares": 112.3596,
       "entry_date": "2026-05-02 23:37",
       "status": "open",
-      "pnl": -48.876425999999995,
-      "pnl_pct": -78.37837837837837
+      "pnl": -52.809011999999996,
+      "pnl_pct": -84.68468468468468
     },
     {
       "id": "bet_1777765385_10",
@@ -64,13 +64,13 @@
       "market": "Flyers vs. Hurricanes",
       "outcome": "Hurricanes",
       "entry_price": 0.685,
-      "cur_price": 0.9895,
+      "cur_price": 0.986,
       "bet_size": 50.0,
       "shares": 72.9927,
       "entry_date": "2026-05-02 23:43",
       "status": "open",
-      "pnl": -22.226277149999998,
-      "pnl_pct": -96.66666666666669
+      "pnl": -21.970802699999997,
+      "pnl_pct": -95.55555555555554
     }
   ],
   "trade_history": [],
@@ -165,6 +165,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 02:19 UTC",
+  "last_updated": "2026-05-03 02:23 UTC",
   "max_bet_pct": 5
 }
