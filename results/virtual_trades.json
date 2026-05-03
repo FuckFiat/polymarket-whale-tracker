@@ -78,13 +78,13 @@
       "market": "Will Aston Villa FC win on 2026-05-03?",
       "outcome": "Yes",
       "entry_price": 0.425,
-      "cur_price": 0.0065,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 117.6471,
       "entry_date": "2026-05-03 18:04",
       "status": "open",
-      "pnl": -49.235311349999996,
-      "pnl_pct": -98.47058823529412
+      "pnl": 67.59,
+      "pnl_pct": 135.2
     },
     {
       "id": "bet_1777834839_12",
@@ -106,13 +106,13 @@
       "market": "Spread: Pistons (-9.5)",
       "outcome": "Pistons",
       "entry_price": 0.455,
-      "cur_price": 0.455,
+      "cur_price": 0.47,
       "bet_size": 50.0,
       "shares": 109.8901,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 1.65,
+      "pnl_pct": 3.3
     }
   ],
   "trade_history": [],
@@ -207,6 +207,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 19:42 UTC",
+  "last_updated": "2026-05-03 19:46 UTC",
   "max_bet_pct": 5
 }
