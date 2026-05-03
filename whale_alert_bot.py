@@ -717,12 +717,30 @@ async def cmd_hlwhales(chat_id):
     text += f"📊 Монеты: {', '.join(selected)}\n"
     text += f"⏰ Последняя проверка: {datetime.fromtimestamp(hl_state.get('last_check', 0), tz=timezone.utc).strftime('%H:%M UTC') if hl_state.get('last_check') else 'никогда'}\n\n"
     
-    # Show whale account values
-    for addr, info in list(active_whales.items())[:5]:
+    # Show whale account values — sorted by account value, skip zeros
+    whale_list = []
+    for addr, info in active_whales.items():
         pnl_info = hl_state.get("whale_pnl", {}).get(addr[:10], {})
-        if pnl_info:
-            text += f"{info['name']}\n"
-            text += f"  💰 ${pnl_info.get('account_value', 0):,.0f} | 📊 {pnl_info.get('positions', 0)} поз.\n"
+        av = pnl_info.get('account_value', 0)
+        positions = pnl_info.get('positions', 0)
+        if av > 0 or positions > 0:  # Only show active whales
+            whale_list.append((addr, info, av, positions))
+    
+    # Sort by account value descending
+    whale_list.sort(key=lambda x: x[2], reverse=True)
+    
+    for addr, info, av, positions in whale_list[:8]:
+        if av >= 1_000_000:
+            av_str = f"${av/1e6:.1f}M"
+        elif av >= 1000:
+            av_str = f"${av:,.0f}"
+        else:
+            av_str = f"${av:.0f}"
+        text += f"{info['name']}\n"
+        text += f"  💰 {av_str} | 📊 {positions} поз.\n"
+    
+    if not whale_list:
+        text += "⏳ Данные ещё загружаются...\n"
     text += "\n"
     
     # Coin selection buttons (2 per row)
@@ -805,7 +823,7 @@ async def cmd_hlcheck(chat_id):
             
             positions = state.get("assetPositions", [])
             margin = state.get("marginSummary", {})
-            account_value = float(margin.get("totalAccountValue", 0))
+            account_value = float(margin.get("accountValue", margin.get("totalAccountValue", 0)))
             
             if account_value < 100_000:  # Skip small accounts
                 continue

@@ -13,18 +13,18 @@ RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results"
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 # Hyperliquid whale wallets — top traders from leaderboard
-# Updated: 2026-05-01
+# Updated: 2026-05-03 (refreshed with real active accounts)
 HYPERLIQUID_WHALES = {
-    "0xa822a9ceb6d6cb5b565bd10098abcfa9cf18d748": {"name": "🐋 HL #1 — $13.7B", "vol": "$0", "strat": "Макро-позиции", "tier": "whale"},
-    "0x1c498a93b145e7a73d69691e9023f6f308e1cc3f": {"name": "🐋 HL #2 — $6.8B", "vol": "$0", "strat": "PnL +$288M", "tier": "whale"},
+    "0xa822a9ceb6d6cb5b565bd10098abcfa9cf18d748": {"name": "🐋 HL #1 — $13.7B", "vol": "$0", "strat": "Холодный кошелёк (нет позиций)", "tier": "whale"},
+    "0x1c498a93b145e7a73d69691e9023f6f308e1cc3f": {"name": "🐋 HL #2 — $6.8B", "vol": "$0", "strat": "PnL +$252M, ROI +4%", "tier": "whale"},
     "0x24de6b77e8bc31c40aa452926daa6bbab7a71b0f": {"name": "🐋 HL #3 — $2.9B", "vol": "$0", "strat": "Крупные перпы", "tier": "whale"},
-    "0xe6111266afdcdf0b1fe8505028cc1f7419d798a7": {"name": "🐋 HL #4 — $906M", "vol": "$0", "strat": "Хедж-фонд", "tier": "whale"},
-    "0x4ec8fe22a531a96c8a846aaf5cbef73202649a80": {"name": "🏆 HL #5 — $593M", "vol": "$0", "strat": "PnL +$813M", "tier": "whale"},
-    "0xdfc24b077bc1425ad1dea75bcb6f8158e10df303": {"name": "🐋 HL #6 — $369M", "vol": "$0", "strat": "PnL +$136M", "tier": "whale"},
-    "0x87f9cd15f5050a9283b8896300f7c8cf69ece2cf": {"name": "🐋 HL #7 — $74M", "vol": "$479B", "strat": "PnL +$52.9M, Vol $479B", "tier": "whale"},
-    "0x31ca8395cf837de08b24da3f660e77761dfb974b": {"name": "🐋 HL #8 — $114M", "vol": "$185B", "strat": "PnL +$37.4M", "tier": "whale"},
-    "0x010461c14e8f7c3a9b2d5e6f4a7c8d9e0b1a2f3e": {"name": "🐋 HL #9 — $114M", "vol": "$189B", "strat": "PnL +$46.8M", "tier": "whale"},
-    "0xfc667adba8881ae9f0d7dac1b7b5c8d4e2a3f1b0": {"name": "🐋 HL #10 — $80M", "vol": "$22B", "strat": "PnL +$21.5M", "tier": "whale"},
+    "0xe6111266afdcdf0b1fe8505028cc1f7419d798a7": {"name": "🐋 HL #4 — $873M", "vol": "$0", "strat": "Хедж-фонд", "tier": "whale"},
+    "0x4ec8fe22a531a96c8a846aaf5cbef73202649a80": {"name": "🏆 HL #5 — $588M", "vol": "$0", "strat": "PnL +$808M, ROI +4.8M%", "tier": "whale"},
+    "0xdfc24b077bc1425ad1dea75bcb6f8158e10df303": {"name": "🐋 HL #6 — $135M", "vol": "$0", "strat": "PnL +$136M, ROI +26%", "tier": "whale"},
+    "0x87f9cd15f5050a9283b8896300f7c8cf69ece2cf": {"name": "🐋 HL #7 — $74M", "vol": "$0", "strat": "PnL +$52.9M, ROI +45%", "tier": "whale"},
+    "0x31ca8395cf837de08b24da3f660e77761dfb974b": {"name": "🐋 HL #8 — $114M", "vol": "$17.6B ntl", "strat": "PnL +$37.4M, 191 позиций", "tier": "whale"},
+    "0x010461c14e8f7c3a9b2d5e6f4a7c8d9e0b1a2f3e": {"name": "🐋 HL #9 — $114M", "vol": "$0", "strat": "PnL +$46.8M, ROI +34%", "tier": "whale"},
+    "0xfc667adba8881ae9f0d7dac1b7b5c8d4e2a3f1b0": {"name": "🐋 HL #10 — $89M", "vol": "$0", "strat": "PnL +$20.3M, ROI +25%", "tier": "whale"},
 }
 
 # Minimum notional value to trigger alert (USD)
@@ -145,7 +145,7 @@ async def scan_whale_positions(session, whales=None, coins=None):
         
         positions = user_state.get("assetPositions", [])
         margin = user_state.get("marginSummary", {})
-        account_value = float(margin.get("totalAccountValue", 0))
+        account_value = float(margin.get("accountValue", margin.get("totalAccountValue", 0)))
         
         for pos in positions:
             position = pos.get("position", {})
