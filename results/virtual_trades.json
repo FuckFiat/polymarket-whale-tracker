@@ -1,5 +1,5 @@
 {
-  "balance": 757.99,
+  "balance": 707.99,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -78,13 +78,13 @@
       "market": "Will Aston Villa FC win on 2026-05-03?",
       "outcome": "Yes",
       "entry_price": 0.425,
-      "cur_price": 0.0005,
+      "cur_price": 0.42,
       "bet_size": 50.0,
       "shares": 117.6471,
       "entry_date": "2026-05-03 18:04",
       "status": "open",
-      "pnl": -49.94119395,
-      "pnl_pct": -99.88235294117646
+      "pnl": -0.5882355000000005,
+      "pnl_pct": -1.17647058823529
     },
     {
       "id": "bet_1777834839_12",
@@ -97,8 +97,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": -50.95959545,
-      "pnl_pct": -99.90099009900992
+      "pnl": 50.96,
+      "pnl_pct": 101.9
     },
     {
       "id": "bet_1777834842_13",
@@ -111,8 +111,8 @@
       "shares": 109.8901,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": -59.83515945,
-      "pnl_pct": -99.90825688073396
+      "pnl": 59.84,
+      "pnl_pct": 119.7
     },
     {
       "id": "bet_1777843983_14",
@@ -125,8 +125,22 @@
       "shares": 52.9381,
       "entry_date": "2026-05-03 21:33",
       "status": "open",
-      "pnl": -0.026469049999997083,
-      "pnl_pct": -0.9009009009008029
+      "pnl": 0.03,
+      "pnl_pct": 0.1
+    },
+    {
+      "id": "bet_1777847976_15",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Cavaliers (-8.5)",
+      "outcome": "Raptors",
+      "entry_price": 0.495,
+      "cur_price": 0.495,
+      "bet_size": 50.0,
+      "shares": 101.0101,
+      "entry_date": "2026-05-03 22:39",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "trade_history": [],
@@ -217,10 +231,10 @@
   ],
   "total_won": 257.99,
   "total_lost": 0,
-  "total_bets": 15,
+  "total_bets": 16,
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 22:36 UTC",
+  "last_updated": "2026-05-03 22:39 UTC",
   "max_bet_pct": 5
 }
