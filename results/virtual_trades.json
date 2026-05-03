@@ -36,13 +36,13 @@
       "market": "76ers vs. Celtics",
       "outcome": "76ers",
       "entry_price": 0.395,
-      "cur_price": 0.645,
+      "cur_price": 0.675,
       "bet_size": 50.0,
       "shares": 126.5823,
       "entry_date": "2026-05-02 23:37",
       "status": "open",
-      "pnl": -31.645575,
-      "pnl_pct": -41.32231404958679
+      "pnl": -35.44304400000001,
+      "pnl_pct": -46.28099173553719
     },
     {
       "id": "bet_1777765078_9",
@@ -50,13 +50,13 @@
       "market": "Spread: Hurricanes (-1.5)",
       "outcome": "Hurricanes",
       "entry_price": 0.445,
-      "cur_price": 0.455,
+      "cur_price": 0.465,
       "bet_size": 50.0,
       "shares": 112.3596,
       "entry_date": "2026-05-02 23:37",
       "status": "open",
-      "pnl": -1.123596000000001,
-      "pnl_pct": -1.8018018018018056
+      "pnl": -2.247192000000002,
+      "pnl_pct": -3.603603603603611
     },
     {
       "id": "bet_1777765385_10",
@@ -64,13 +64,13 @@
       "market": "Flyers vs. Hurricanes",
       "outcome": "Hurricanes",
       "entry_price": 0.685,
-      "cur_price": 0.685,
+      "cur_price": 0.6949,
       "bet_size": 50.0,
       "shares": 72.9927,
       "entry_date": "2026-05-02 23:43",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": -0.7226277299999934,
+      "pnl_pct": -3.142857142857114
     }
   ],
   "trade_history": [],
@@ -165,6 +165,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 00:04 UTC",
+  "last_updated": "2026-05-03 00:10 UTC",
   "max_bet_pct": 5
 }
