@@ -36,13 +36,13 @@
       "market": "76ers vs. Celtics",
       "outcome": "76ers",
       "entry_price": 0.395,
-      "cur_price": 0.625,
+      "cur_price": 0.59,
       "bet_size": 50.0,
       "shares": 126.5823,
       "entry_date": "2026-05-02 23:37",
       "status": "open",
-      "pnl": 29.11,
-      "pnl_pct": 58.2
+      "pnl": 24.68,
+      "pnl_pct": 49.4
     },
     {
       "id": "bet_1777765078_9",
@@ -64,13 +64,13 @@
       "market": "Flyers vs. Hurricanes",
       "outcome": "Hurricanes",
       "entry_price": 0.685,
-      "cur_price": 0.979,
+      "cur_price": 0.9785,
       "bet_size": 50.0,
       "shares": 72.9927,
       "entry_date": "2026-05-02 23:43",
       "status": "open",
-      "pnl": 21.46,
-      "pnl_pct": 42.9
+      "pnl": 21.42,
+      "pnl_pct": 42.8
     }
   ],
   "trade_history": [],
@@ -165,6 +165,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 01:55 UTC",
+  "last_updated": "2026-05-03 02:00 UTC",
   "max_bet_pct": 5
 }
