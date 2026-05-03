@@ -92,13 +92,13 @@
       "market": "Spread: Pistons (-8.5)",
       "outcome": "Pistons",
       "entry_price": 0.495,
-      "cur_price": 0.44,
+      "cur_price": 0.395,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": 5.555555500000005,
-      "pnl_pct": 10.8910891089109
+      "pnl": 10.101009999999997,
+      "pnl_pct": 19.8019801980198
     },
     {
       "id": "bet_1777834842_13",
@@ -207,6 +207,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 20:08 UTC",
+  "last_updated": "2026-05-03 20:11 UTC",
   "max_bet_pct": 5
 }
