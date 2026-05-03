@@ -1,5 +1,5 @@
 {
-  "balance": 807.99,
+  "balance": 757.99,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -92,13 +92,13 @@
       "market": "Spread: Pistons (-8.5)",
       "outcome": "Pistons",
       "entry_price": 0.495,
-      "cur_price": 0.895,
+      "cur_price": 0.855,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": -40.40404,
-      "pnl_pct": -79.20792079207921
+      "pnl": -36.363636,
+      "pnl_pct": -71.28712871287128
     },
     {
       "id": "bet_1777834842_13",
@@ -106,13 +106,27 @@
       "market": "Spread: Pistons (-9.5)",
       "outcome": "Pistons",
       "entry_price": 0.455,
-      "cur_price": 0.85,
+      "cur_price": 0.78,
       "bet_size": 50.0,
       "shares": 109.8901,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": -43.40658949999999,
-      "pnl_pct": -72.47706422018348
+      "pnl": -35.714282499999996,
+      "pnl_pct": -59.63302752293578
+    },
+    {
+      "id": "bet_1777843983_14",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "Will the Detroit Pistons win the 2026 NB",
+      "outcome": "No",
+      "entry_price": 0.9445,
+      "cur_price": 0.939,
+      "bet_size": 50.0,
+      "shares": 52.9381,
+      "entry_date": "2026-05-03 21:33",
+      "status": "open",
+      "pnl": 0.2911595500000032,
+      "pnl_pct": 9.90990990991003
     }
   ],
   "trade_history": [],
@@ -203,10 +217,10 @@
   ],
   "total_won": 257.99,
   "total_lost": 0,
-  "total_bets": 14,
+  "total_bets": 15,
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 21:31 UTC",
+  "last_updated": "2026-05-03 21:34 UTC",
   "max_bet_pct": 5
 }
