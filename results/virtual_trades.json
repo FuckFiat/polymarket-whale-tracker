@@ -97,8 +97,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": 12.12,
-      "pnl_pct": 24.2
+      "pnl": -12.121211999999998,
+      "pnl_pct": -23.762376237623762
     },
     {
       "id": "bet_1777834842_13",
@@ -111,8 +111,8 @@
       "shares": 109.8901,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": 14.29,
-      "pnl_pct": 28.6
+      "pnl": -14.285712999999989,
+      "pnl_pct": -23.85321100917429
     }
   ],
   "trade_history": [],
@@ -207,6 +207,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 20:57 UTC",
+  "last_updated": "2026-05-03 21:00 UTC",
   "max_bet_pct": 5
 }
