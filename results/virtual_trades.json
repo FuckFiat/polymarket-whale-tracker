@@ -78,13 +78,13 @@
       "market": "Will Aston Villa FC win on 2026-05-03?",
       "outcome": "Yes",
       "entry_price": 0.425,
-      "cur_price": 0.9995,
+      "cur_price": 0.0005,
       "bet_size": 50.0,
       "shares": 117.6471,
       "entry_date": "2026-05-03 18:04",
       "status": "open",
-      "pnl": 67.59,
-      "pnl_pct": 135.2
+      "pnl": -49.94119395,
+      "pnl_pct": -99.88235294117646
     },
     {
       "id": "bet_1777834839_12",
@@ -97,8 +97,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": 5.56,
-      "pnl_pct": 11.1
+      "pnl": -5.555555500000005,
+      "pnl_pct": -10.8910891089109
     },
     {
       "id": "bet_1777834842_13",
@@ -111,8 +111,8 @@
       "shares": 109.8901,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": -1.1,
-      "pnl_pct": -2.2
+      "pnl": 1.098901000000001,
+      "pnl_pct": 1.8348623853211121
     }
   ],
   "trade_history": [],
