@@ -50,13 +50,13 @@
       "market": "Spread: Hurricanes (-1.5)",
       "outcome": "Hurricanes",
       "entry_price": 0.445,
-      "cur_price": 0.9855,
+      "cur_price": 0.9805,
       "bet_size": 50.0,
       "shares": 112.3596,
       "entry_date": "2026-05-02 23:37",
       "status": "open",
-      "pnl": -60.7303638,
-      "pnl_pct": -97.38738738738739
+      "pnl": -60.168565799999996,
+      "pnl_pct": -96.48648648648648
     },
     {
       "id": "bet_1777765385_10",
@@ -165,6 +165,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-03 02:56 UTC",
+  "last_updated": "2026-05-03 02:59 UTC",
   "max_bet_pct": 5
 }
