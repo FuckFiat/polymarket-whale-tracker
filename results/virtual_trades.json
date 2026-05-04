@@ -120,13 +120,13 @@
       "market": "Will the Detroit Pistons win the 2026 NB",
       "outcome": "No",
       "entry_price": 0.9445,
-      "cur_price": 0.9375,
+      "cur_price": 0.9365,
       "bet_size": 50.0,
       "shares": 52.9381,
       "entry_date": "2026-05-03 21:33",
       "status": "open",
-      "pnl": -0.37,
-      "pnl_pct": -0.7
+      "pnl": 0.42350480000000035,
+      "pnl_pct": 14.414414414414424
     },
     {
       "id": "bet_1777847976_15",
