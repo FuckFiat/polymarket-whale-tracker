@@ -134,13 +134,13 @@
       "market": "Spread: Cavaliers (-8.5)",
       "outcome": "Raptors",
       "entry_price": 0.495,
-      "cur_price": 0.78,
+      "cur_price": 0.72,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-03 22:39",
       "status": "open",
-      "pnl": -28.7878785,
-      "pnl_pct": -56.43564356435644
+      "pnl": -22.727272499999998,
+      "pnl_pct": -44.55445544554455
     }
   ],
   "trade_history": [],
@@ -235,6 +235,6 @@
   "win_count": 5,
   "loss_count": 0,
   "created_at": "2026-05-01 09:10 UTC",
-  "last_updated": "2026-05-04 00:30 UTC",
+  "last_updated": "2026-05-04 00:40 UTC",
   "max_bet_pct": 5
 }
