@@ -97,8 +97,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": 51.01,
-      "pnl_pct": 102.0
+      "pnl": -51.0101005,
+      "pnl_pct": -100.0
     },
     {
       "id": "bet_1777834842_13",
@@ -111,8 +111,8 @@
       "shares": 109.8901,
       "entry_date": "2026-05-03 19:00",
       "status": "open",
-      "pnl": 59.89,
-      "pnl_pct": 119.8
+      "pnl": -59.89010449999999,
+      "pnl_pct": -100.0
     },
     {
       "id": "bet_1777843983_14",
@@ -125,8 +125,8 @@
       "shares": 52.9381,
       "entry_date": "2026-05-03 21:33",
       "status": "open",
-      "pnl": 0.13,
-      "pnl_pct": 0.3
+      "pnl": -0.13234524999999717,
+      "pnl_pct": -4.504504504504414
     },
     {
       "id": "bet_1777847976_15",
@@ -134,13 +134,13 @@
       "market": "Spread: Cavaliers (-8.5)",
       "outcome": "Raptors",
       "entry_price": 0.495,
-      "cur_price": 1.0,
+      "cur_price": 0.5,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-03 22:39",
       "status": "open",
-      "pnl": 51.01,
-      "pnl_pct": 102.0
+      "pnl": -0.5050505000000004,
+      "pnl_pct": -0.990099009900991
     }
   ],
   "trade_history": [],
