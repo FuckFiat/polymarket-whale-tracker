@@ -856,8 +856,11 @@ async def collect_data_and_generate():
             repo_dir = os.path.dirname(os.path.abspath(__file__))
             # Commit to main
             subprocess.run(["git", "add", "dashboard.html"], cwd=repo_dir, capture_output=True, timeout=10)
-            subprocess.run(["git", "commit", "-m", "dashboard auto-refresh"], cwd=repo_dir, capture_output=True, timeout=10)
-            subprocess.run(["git", "push", "origin", "main"], cwd=repo_dir, capture_output=True, timeout=30)
+            cp = subprocess.run(["git", "commit", "-m", "dashboard auto-refresh"], cwd=repo_dir, capture_output=True, timeout=10)
+            if cp.returncode == 0:
+                subprocess.run(["git", "push", "origin", "main"], cwd=repo_dir, capture_output=True, timeout=30)
+            else:
+                print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Nothing to commit on main")
             # Deploy to gh-pages by copying files directly (no branch switching)
             gh_dir = repo_dir + "-gh-pages"
             if os.path.exists(gh_dir):
