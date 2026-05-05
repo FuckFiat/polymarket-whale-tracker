@@ -8,13 +8,13 @@
       "market": "Will Arsenal FC win on 2026-05-05?",
       "outcome": "No",
       "entry_price": 0.225,
-      "cur_price": 0.045,
+      "cur_price": 0.025,
       "bet_size": 50.0,
       "shares": 222.2222,
       "entry_date": "2026-05-05 20:02",
       "status": "open",
-      "pnl": 39.99999599999998,
-      "pnl_pct": 23.225806451612897
+      "pnl": -44.44,
+      "pnl_pct": -88.9
     }
   ],
   "resolved": [],
@@ -24,7 +24,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-05 20:02 UTC",
-  "last_updated": "2026-05-05 20:53 UTC",
+  "last_updated": "2026-05-05 20:57 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
