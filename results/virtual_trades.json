@@ -1,0 +1,44 @@
+{
+  "balance": 900.0,
+  "initial_deposit": 1000.0,
+  "positions": [
+    {
+      "id": "bet_1778025921_1",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Thunder (-15.5)",
+      "outcome": "Thunder",
+      "entry_price": 0.505,
+      "cur_price": 0.495,
+      "bet_size": 50.0,
+      "shares": 99.0099,
+      "entry_date": "2026-05-06 00:05",
+      "status": "open",
+      "pnl": -0.99,
+      "pnl_pct": -2.0
+    },
+    {
+      "id": "bet_1778025922_2",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Thunder (-16.5)",
+      "outcome": "Thunder",
+      "entry_price": 0.455,
+      "cur_price": 0.455,
+      "bet_size": 50.0,
+      "shares": 109.8901,
+      "entry_date": "2026-05-06 00:05",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
+    }
+  ],
+  "resolved": [],
+  "total_won": 0,
+  "total_lost": 0,
+  "total_bets": 2,
+  "win_count": 0,
+  "loss_count": 0,
+  "created_at": "2026-05-06 00:05 UTC",
+  "last_updated": "2026-05-06 00:10 UTC",
+  "auto_betting": true,
+  "max_bet_pct": 5
+}
