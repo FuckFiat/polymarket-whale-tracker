@@ -7,9 +7,23 @@ import asyncio, aiohttp, json, time, os, sys
 from datetime import datetime, timezone
 from virtual_trading import load_portfolio, save_portfolio, place_bet, close_position, get_stats, update_prices
 from hyperliquid_monitor import scan_whale_positions, format_alert as hl_format_alert, load_hl_state, save_hl_state, HYPERLIQUID_WHALES, HL_API, refresh_leaderboard, get_user_state, get_all_mids
+from hyperliquid_formatter import format_alert_enhanced, format_hl_summary_markdown, format_eth_position_analysis, format_position_markdown
+from price_predictor import predict_price, format_prediction_markdown
+from trading_assistant import format_ta_markdown, get_reply_keyboard, get_coins_keyboard, cmd_analyze_coin
 from eth_whale_monitor import fetch_all_eth_data, format_eth_summary, format_eth_compact, load_eth_state, save_eth_state
 
-BOT_TOKEN = "8375563056:AAH0vHARkJW6cstYsIhkczZHxfYRp7v3PLw"
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(message)s',
+    handlers=[
+        logging.FileHandler('/tmp/whale_bot.log'),
+        logging.StreamHandler()
+    ]
+)
+log = logging.getLogger(__name__)
+
+BOT_TOKEN = "8660315287:AAF-j--gEBL-rACtQWKx4uTve3jNF-0wQ3o"
 CHAT_ID = 730668
 DATA_API = "https://data-api.polymarket.com"
 GAMMA_API = "https://gamma-api.polymarket.com"
@@ -48,10 +62,12 @@ def match_whale(address):
             return info
     return None
 
-async def tg_send(text, buttons=None, chat_id=None):
+async def tg_send(text, buttons=None, chat_id=None, parse_mode="Markdown", reply_markup=None):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    payload = {"chat_id": chat_id or CHAT_ID, "parse_mode": "Markdown", "text": text, "disable_web_page_preview": True}
-    if buttons:
+    payload = {"chat_id": chat_id or CHAT_ID, "parse_mode": parse_mode, "text": text, "disable_web_page_preview": True}
+    if reply_markup:
+        payload["reply_markup"] = reply_markup
+    elif buttons:
         payload["reply_markup"] = {"inline_keyboard": buttons}
     try:
         async with aiohttp.ClientSession() as s:
@@ -103,23 +119,46 @@ async def cmd_start(chat_id, args=""):
                 await tg_send(f"\U0001f3b0 Для ставки используйте /bet в боте", chat_id)
                 await cmd_bet(chat_id)
                 return
-    text = """🐋 *Whale Tracker Online*
+    text = """🐋 *NANO Whale Tracker*
 
- Polymarket + Hyperliquid киты в реальном времени
+📊 Polymarket + Hyperliquid киты в реальном времени
 
-/whales — Список китов
-/hlwhales — HL киты и монеты
-/status — Статус бота
-/markets — Топ рынки
-/check — Проверить китов
-/positions — Позиции и P&L
-/eth — ETH анализ (L/S, OI, funding)
-/ethwhales — ETH позиции китов на HL
+Выбери действие ниже 👇"""
+    
+    reply_kb = {
+        "keyboard": [
+            ["📊 Анализ ETH", "🐋 Киты", "🔮 Прогноз"],
+            ["📈 BTC", "📉 SOL", "💎 Монеты"],
+            ["📋 Статус", "❓ Помощь"]
+        ],
+        "resize_keyboard": True,
+        "one_time_keyboard": False
+    }
+    
+    await tg_send(text, chat_id=chat_id, reply_markup=reply_kb)
 
- Алерты прилетают автоматически 🐋"""
-    btns = [[{"text": "\U0001f40b Dashboard", "url": "https://fuckfiat.github.io/polymarket-whale-tracker/"}],
-            [{"text": "\U0001f4ca PolyMonit", "url": "https://polymonit.com/leaderboard/polymarket-whales"}, {"text": "\U0001f50d PolyIntel", "url": "https://polyintel.io/"}]]
-    await tg_send(text, btns, chat_id)
+async def cmd_analyze(chat_id):
+    """Show coin selection for technical analysis"""
+    text = """📊 *TECHNICAL ANALYSIS*
+
+Выбери монету для анализа 👇"""
+    await tg_send(text, chat_id=chat_id, parse_mode="Markdown", reply_markup=get_coins_keyboard())
+
+async def cmd_analyze_btc(chat_id):
+    """Analyze BTC"""
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+        await cmd_analyze_coin(chat_id, "BTC", session=session, send_func=tg_send)
+
+async def cmd_analyze_sol(chat_id):
+    """Analyze SOL"""
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+        await cmd_analyze_coin(chat_id, "SOL", session=session, send_func=tg_send)
+
+async def cmd_analyze_coin_handler(chat_id, coin):
+    """Analyze specific coin"""
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+        await cmd_analyze_coin(chat_id, coin, session=session, send_func=tg_send)
+
 
 async def cmd_help(chat_id):
     text = """🐋 *Команды бота:*
@@ -981,44 +1020,119 @@ async def cmd_eth(chat_id):
 
 
 async def cmd_ethwhales(chat_id):
-    """Show ETH whale positions from Hyperliquid"""
-    await tg_send("🔮 Сканирую ETH позиции китов на Hyperliquid...", chat_id=chat_id)
+    """Show ETH whale positions with Long analysis"""
+    await tg_send("🔮 *Сканирую ETH позиции китов на Hyperliquid...*", chat_id=chat_id)
     
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
         mids = await get_all_mids(session)
-        lines = ["🐋 ETH позиции китов на HL", "═══════════════════════════════"]
+        eth_price = float(mids.get("ETH", "0")) if mids else 0
+        
+        positions = []
         found = False
         
         for addr, info in HYPERLIQUID_WHALES.items():
             user_state = await get_user_state(session, addr)
             if not user_state:
                 continue
-            positions = user_state.get("assetPositions", [])
-            for pos in positions:
+            asset_positions = user_state.get("assetPositions", [])
+            for pos in asset_positions:
                 p = pos.get("position", {})
                 if p.get("coin") == "ETH":
                     found = True
                     size = float(p.get("szi", "0"))
-                    side = "LONG" if size > 0 else "SHORT"
                     entry = float(p.get("entryPx", "0"))
                     pnl = float(p.get("unrealizedPnl", "0"))
                     lev = p.get("leverage", {}).get("value", "1") if isinstance(p.get("leverage"), dict) else "1"
-                    liq = p.get("liquidationPx", "?")
-                    eth_price = float(mids.get("ETH", "0")) if mids else 0
-                    notional = abs(size) * eth_price
-                    pnl_s = "+" if pnl >= 0 else ""
-                    emoji = "🟢" if side == "LONG" else "🔴"
-                    lines.append(f"{emoji} {info['name']}")
-                    lines.append(f"  {side} {abs(size):,.2f} ETH (${notional:,.0f})")
-                    lines.append(f"  Вход: ${entry:,.2f} | PnL: {pnl_s}${pnl:,.0f}")
-                    lines.append(f"  Плечо: {lev}x | Ликв: ${liq}")
-                    lines.append("───────────────────")
+                    liq = p.get("liquidationPx", None)
+                    margin = p.get("marginUsed", "0")
+                    
+                    position = format_position_markdown(
+                        coin="ETH",
+                        size=size,
+                        entry_px=entry,
+                        unrealized_pnl=pnl,
+                        cur_px=eth_price,
+                        leverage=lev,
+                        liquidation_px=liq,
+                        margin_used=margin
+                    )
+                    position["whale"] = info["name"]
+                    position["account_value"] = float(user_state.get("marginSummary", {}).get("accountValue", 0))
+                    positions.append(position)
         
         if not found:
-            lines.append("😴 Нет открытых ETH позиций у китов")
-        lines.append(f"\n💎 ETH: ${eth_price:,.2f}")
+            await tg_send("😴 *Нет открытых ETH позиций у китов*\n\n💎 ETH: `${:,.2f}`".format(eth_price), chat_id)
+            return
         
-        await tg_send("\n".join(lines), chat_id)
+        # Send summary first
+        summary = format_hl_summary_markdown(positions)
+        await tg_send(summary, chat_id, parse_mode="Markdown")
+        
+        # Send detailed ETH positions with Long analysis
+        for pos in positions:
+            alert = {
+                "type": "position_update",
+                "whale": pos["whale"],
+                "coin": pos["coin"],
+                "side": pos["side"],
+                "size": pos["size"],
+                "entry": pos["entry"],
+                "current": pos["current"],
+                "pnl": pos["pnl"],
+                "notional": pos["notional"],
+                "leverage": pos["leverage"],
+                "liq_price": pos["liq_price"],
+                "liq_distance": pos["liq_distance"],
+                "margin_used": pos["margin_used"],
+                "account_value": pos["account_value"]
+            }
+            
+            msg = format_alert_enhanced(alert)
+            await tg_send(msg, chat_id, parse_mode="Markdown")
+            await asyncio.sleep(0.5)  # Rate limit
+
+
+async def cmd_predict(chat_id):
+    """Show price prediction for ETH based on whale positions"""
+    await tg_send("🔮 *Анализирую ETH позиции китов для предсказания...*", chat_id=chat_id)
+    
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+        mids = await get_all_mids(session)
+        eth_price = float(mids.get("ETH", "0")) if mids else 0
+        
+        positions = []
+        for addr, info in HYPERLIQUID_WHALES.items():
+            user_state = await get_user_state(session, addr)
+            if not user_state:
+                continue
+            asset_positions = user_state.get("assetPositions", [])
+            for pos in asset_positions:
+                p = pos.get("position", {})
+                if p.get("coin") == "ETH":
+                    size = float(p.get("szi", "0"))
+                    entry = float(p.get("entryPx", "0"))
+                    pnl = float(p.get("unrealizedPnl", "0"))
+                    lev = p.get("leverage", {}).get("value", "1") if isinstance(p.get("leverage"), dict) else "1"
+                    liq = p.get("liquidationPx", None)
+                    margin = p.get("marginUsed", "0")
+                    
+                    position = format_position_markdown(
+                        coin="ETH", size=size, entry_px=entry,
+                        unrealized_pnl=pnl, cur_px=eth_price,
+                        leverage=lev, liquidation_px=liq, margin_used=margin
+                    )
+                    positions.append(position)
+        
+        if not positions:
+            await tg_send("😴 *Нет данных по ETH позициям для анализа*", chat_id=chat_id)
+            return
+        
+        # Generate prediction
+        prediction = predict_price("ETH", eth_price, positions)
+        msg = format_prediction_markdown(prediction)
+        
+        await tg_send(msg, chat_id=chat_id, parse_mode="Markdown")
+
 
 COMMANDS = {
     "/start": cmd_start,
@@ -1036,6 +1150,11 @@ COMMANDS = {
     "/hlcheck": cmd_hlcheck,
     "/eth": cmd_eth,
     "/ethmonitor": cmd_eth,
+    "/predict": cmd_predict,
+    "/analyze": cmd_analyze,
+    "/ta": cmd_analyze,
+    "/btc": cmd_analyze_btc,
+    "/sol": cmd_analyze_sol,
     "/ethwhales": cmd_ethwhales,
 }
 
@@ -1046,7 +1165,7 @@ async def run_bot():
     with open("/tmp/whale_bot_pid", "w") as f:
         f.write(str(os.getpid()))
 
-    last_update_id = 0
+    last_update_id = 0 # RESET
     last_whale_check = 0
     session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30))
 
@@ -1173,6 +1292,23 @@ async def run_bot():
                                 await tg_send(f"🔮 Детали кита {addr_short}...", cb_chat)
                                 continue
                             
+                            # ===== Prediction menu callbacks =====
+                            if cb_data == "predict_menu":
+                                await cmd_predict(cb_chat)
+                                continue
+                            
+                            if cb_data == "eth_whales":
+                                await cmd_ethwhales(cb_chat)
+                                continue
+                            
+                            if cb_data == "status":
+                                await cmd_status(cb_chat)
+                                continue
+                            
+                            if cb_data == "help":
+                                await cmd_help(cb_chat)
+                                continue
+                            
                             # ===== ETH Monitor callbacks =====
                             if cb_data == "eth_refresh":
                                 await cmd_eth(cb_chat)
@@ -1197,6 +1333,39 @@ async def run_bot():
                                 continue
                             
                             continue
+
+                        # Handle reply keyboard buttons
+                        if text:
+                            if text == "📊 Анализ ETH":
+                                await cmd_ethwhales(chat_id)
+                                continue
+                            elif text == "🐋 Киты":
+                                await cmd_hlwhales(chat_id)
+                                continue
+                            elif text == "🔮 Прогноз":
+                                await cmd_predict(chat_id)
+                                continue
+                            elif text == "📈 BTC":
+                                await cmd_analyze_btc(chat_id)
+                                continue
+                            elif text == "📉 SOL":
+                                await cmd_analyze_sol(chat_id)
+                                continue
+                            elif text == "💎 Монеты":
+                                await cmd_analyze(chat_id)
+                                continue
+                            elif text == "📋 Статус":
+                                await cmd_status(chat_id)
+                                continue
+                            elif text == "❓ Помощь":
+                                await cmd_help(chat_id)
+                                continue
+                            elif text == "⬅️ Назад в меню":
+                                await cmd_start(chat_id)
+                                continue
+                            elif text in ["BTC", "ETH", "SOL", "HYPE", "XRP", "DOGE", "LINK", "AVAX", "ARB", "SUI"]:
+                                await cmd_analyze_coin_handler(chat_id, text)
+                                continue
 
                         # Handle commands
                         if text and text.lower().split()[0] in [c.lower() for c in COMMANDS]:
