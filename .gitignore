@@ -10,3 +10,4 @@ polymarket-whale-tracker-gh-pages/
 
 # Dashboard is auto-generated and deployed to gh-pages by dashboard_gen.py
 # Keep in repo for main branch tracking, but gh-pages has the live version
+cron.log
