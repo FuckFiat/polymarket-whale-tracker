@@ -8,13 +8,13 @@
       "market": "Lakers vs. Thunder",
       "outcome": "Thunder",
       "entry_price": 0.775,
-      "cur_price": 0.0155,
+      "cur_price": 0.9845,
       "bet_size": 50.0,
       "shares": 64.5161,
       "entry_date": "2026-05-08 02:49",
       "status": "open",
-      "pnl": -49.0,
-      "pnl_pct": -98.0
+      "pnl": -13.51612295,
+      "pnl_pct": -93.11111111111113
     }
   ],
   "resolved": [],
@@ -24,7 +24,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-08 02:49 UTC",
-  "last_updated": "2026-05-08 04:10 UTC",
+  "last_updated": "2026-05-08 04:11 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
