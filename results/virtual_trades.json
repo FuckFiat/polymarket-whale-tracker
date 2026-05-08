@@ -8,13 +8,13 @@
       "market": "Zalgiris Kaunas vs. Fenerbahce",
       "outcome": "Zalgiris Kaunas",
       "entry_price": 0.515,
-      "cur_price": 0.515,
+      "cur_price": 0.505,
       "bet_size": 50.0,
       "shares": 97.0874,
       "entry_date": "2026-05-08 15:59",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 0.9708740000000009,
+      "pnl_pct": 2.0618556701030855
     }
   ],
   "resolved": [],
@@ -24,7 +24,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-08 15:59 UTC",
-  "last_updated": "2026-05-08 16:24 UTC",
+  "last_updated": "2026-05-08 16:26 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
