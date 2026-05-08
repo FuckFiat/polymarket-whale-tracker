@@ -176,7 +176,7 @@ def format_alert_enhanced(alert):
 📊 *Position*
 ├─ Side: {side_icon}
 ├─ Coin: `#{alert['coin']}`
-├─ Size: `{abs_size:,.4f}`
+├─ Size: `{alert["size"]:,.4f}`
 ├─ Notional: {notional_str}
 └─ Leverage: `{alert['leverage']:.0f}x`
 
