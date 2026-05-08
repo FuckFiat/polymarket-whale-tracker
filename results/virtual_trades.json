@@ -8,13 +8,13 @@
       "market": "Zalgiris Kaunas vs. Fenerbahce",
       "outcome": "Zalgiris Kaunas",
       "entry_price": 0.515,
-      "cur_price": 0.43,
+      "cur_price": 0.425,
       "bet_size": 50.0,
       "shares": 97.0874,
       "entry_date": "2026-05-08 15:59",
       "status": "open",
-      "pnl": 8.252429000000008,
-      "pnl_pct": 17.525773195876315
+      "pnl": -8.74,
+      "pnl_pct": -17.5
     },
     {
       "id": "bet_1778260844_2",
@@ -22,13 +22,13 @@
       "market": "Knicks vs. 76ers: O/U 213.5",
       "outcome": "Under",
       "entry_price": 0.475,
-      "cur_price": 0.475,
+      "cur_price": 0.495,
       "bet_size": 50.0,
       "shares": 105.2632,
       "entry_date": "2026-05-08 17:20",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 2.11,
+      "pnl_pct": 4.2
     },
     {
       "id": "bet_1778260845_3",
@@ -36,13 +36,13 @@
       "market": "Knicks vs. 76ers: O/U 214.5",
       "outcome": "Under",
       "entry_price": 0.505,
-      "cur_price": 0.495,
+      "cur_price": 0.515,
       "bet_size": 50.0,
       "shares": 99.0099,
       "entry_date": "2026-05-08 17:20",
       "status": "open",
-      "pnl": 0.990099000000001,
-      "pnl_pct": 2.020202020202011
+      "pnl": 0.99,
+      "pnl_pct": 2.0
     }
   ],
   "resolved": [],
@@ -52,7 +52,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-08 15:59 UTC",
-  "last_updated": "2026-05-08 17:21 UTC",
+  "last_updated": "2026-05-08 17:25 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
