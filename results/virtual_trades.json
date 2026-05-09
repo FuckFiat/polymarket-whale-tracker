@@ -8,13 +8,13 @@
       "market": "Will Charlotte FC win on 2026-05-09?",
       "outcome": "Yes",
       "entry_price": 0.445,
-      "cur_price": 0.44,
+      "cur_price": 0.425,
       "bet_size": 50.0,
       "shares": 112.3596,
       "entry_date": "2026-05-09 23:30",
       "status": "open",
-      "pnl": -0.56,
-      "pnl_pct": -1.1
+      "pnl": -2.247192000000002,
+      "pnl_pct": -4.49438202247191
     }
   ],
   "resolved": [],
@@ -24,7 +24,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-09 23:51 UTC",
+  "last_updated": "2026-05-09 23:53 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
