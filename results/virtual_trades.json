@@ -22,13 +22,13 @@
       "market": "Will Gavin Newsom win the 2028 Democrati",
       "outcome": "No",
       "entry_price": 0.7524,
-      "cur_price": 0.2475,
+      "cur_price": 0.7524,
       "bet_size": 50.0,
       "shares": 66.454,
       "entry_date": "2026-05-09 14:20",
       "status": "open",
-      "pnl": -33.55,
-      "pnl_pct": -67.1
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "resolved": [],
@@ -38,7 +38,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 14:19 UTC",
-  "last_updated": "2026-05-09 14:47 UTC",
+  "last_updated": "2026-05-09 14:50 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
