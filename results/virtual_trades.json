@@ -64,13 +64,13 @@
       "market": "UFC 328: Sean Strickland vs. Khamzat Chi",
       "outcome": "Sean Strickland",
       "entry_price": 0.205,
-      "cur_price": 0.225,
+      "cur_price": 0.997,
       "bet_size": 50.0,
       "shares": 243.9024,
       "entry_date": "2026-05-10 03:53",
       "status": "open",
-      "pnl": 4.88,
-      "pnl_pct": 9.8
+      "pnl": 193.17,
+      "pnl_pct": 386.3
     }
   ],
   "resolved": [],
@@ -80,7 +80,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-10 04:53 UTC",
+  "last_updated": "2026-05-10 04:58 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
