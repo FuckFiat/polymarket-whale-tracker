@@ -13,8 +13,8 @@
       "shares": 112.3596,
       "entry_date": "2026-05-09 23:30",
       "status": "open",
-      "pnl": -30.34,
-      "pnl_pct": -60.7
+      "pnl": -30.337092000000002,
+      "pnl_pct": -60.67415730337079
     },
     {
       "id": "bet_1778371669_2",
@@ -22,13 +22,13 @@
       "market": "Spread: Thunder (-9.5)",
       "outcome": "Thunder",
       "entry_price": 0.495,
-      "cur_price": 0.475,
+      "cur_price": 0.425,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-10 00:07",
       "status": "open",
-      "pnl": -2.02,
-      "pnl_pct": -4.0
+      "pnl": 7.070706999999994,
+      "pnl_pct": 13.861386138613852
     },
     {
       "id": "bet_1778371700_3",
@@ -36,13 +36,13 @@
       "market": "Spread: Thunder (-8.5)",
       "outcome": "Thunder",
       "entry_price": 0.535,
-      "cur_price": 0.525,
+      "cur_price": 0.465,
       "bet_size": 50.0,
       "shares": 93.4579,
       "entry_date": "2026-05-10 00:08",
       "status": "open",
-      "pnl": -0.93,
-      "pnl_pct": -1.9
+      "pnl": 6.542052999999995,
+      "pnl_pct": 15.053763440860202
     }
   ],
   "resolved": [],
@@ -52,7 +52,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-10 01:28 UTC",
+  "last_updated": "2026-05-10 01:29 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
