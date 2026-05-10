@@ -1,5 +1,5 @@
 {
-  "balance": 750.0,
+  "balance": 700.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -71,16 +71,30 @@
       "status": "open",
       "pnl": 193.78,
       "pnl_pct": 387.6
+    },
+    {
+      "id": "bet_1778439513_6",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "Will FC Barcelona win on 2026-05-10?",
+      "outcome": "No",
+      "entry_price": 0.405,
+      "cur_price": 0.405,
+      "bet_size": 50.0,
+      "shares": 123.4568,
+      "entry_date": "2026-05-10 18:58",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "resolved": [],
   "total_won": 0,
   "total_lost": 0,
-  "total_bets": 5,
+  "total_bets": 6,
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-10 18:17 UTC",
+  "last_updated": "2026-05-10 18:59 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
