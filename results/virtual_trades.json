@@ -1,5 +1,5 @@
 {
-  "balance": 850.0,
+  "balance": 800.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -27,8 +27,8 @@
       "shares": 101.0101,
       "entry_date": "2026-05-10 00:07",
       "status": "open",
-      "pnl": 50.96,
-      "pnl_pct": 101.9
+      "pnl": -50.95959545,
+      "pnl_pct": -99.90099009900992
     },
     {
       "id": "bet_1778371700_3",
@@ -41,18 +41,32 @@
       "shares": 93.4579,
       "entry_date": "2026-05-10 00:08",
       "status": "open",
-      "pnl": 43.41,
-      "pnl_pct": 86.8
+      "pnl": -43.41119455,
+      "pnl_pct": -99.89247311827958
+    },
+    {
+      "id": "bet_1778383922_4",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "UFC 328: Tatsuro Taira vs. Joshua Van (F",
+      "outcome": "Joshua Van",
+      "entry_price": 0.265,
+      "cur_price": 0.265,
+      "bet_size": 50.0,
+      "shares": 188.6792,
+      "entry_date": "2026-05-10 03:32",
+      "status": "open",
+      "pnl": 0,
+      "pnl_pct": 0
     }
   ],
   "resolved": [],
   "total_won": 0,
   "total_lost": 0,
-  "total_bets": 3,
+  "total_bets": 4,
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-10 03:26 UTC",
+  "last_updated": "2026-05-10 03:32 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
