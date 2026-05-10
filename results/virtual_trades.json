@@ -78,13 +78,13 @@
       "market": "Will FC Barcelona win on 2026-05-10?",
       "outcome": "No",
       "entry_price": 0.405,
-      "cur_price": 0.405,
+      "cur_price": 0.065,
       "bet_size": 50.0,
       "shares": 123.4568,
       "entry_date": "2026-05-10 18:58",
       "status": "open",
-      "pnl": 0.0,
-      "pnl_pct": 0.0
+      "pnl": 41.97531200000001,
+      "pnl_pct": 57.14285714285716
     }
   ],
   "resolved": [],
@@ -94,7 +94,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-10 18:59 UTC",
+  "last_updated": "2026-05-10 20:32 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
