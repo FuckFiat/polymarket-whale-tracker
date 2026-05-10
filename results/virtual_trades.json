@@ -1,5 +1,5 @@
 {
-  "balance": 950.0,
+  "balance": 900.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -8,23 +8,37 @@
       "market": "Will Charlotte FC win on 2026-05-09?",
       "outcome": "Yes",
       "entry_price": 0.445,
-      "cur_price": 0.425,
+      "cur_price": 0.395,
       "bet_size": 50.0,
       "shares": 112.3596,
       "entry_date": "2026-05-09 23:30",
       "status": "open",
-      "pnl": -2.25,
-      "pnl_pct": -4.5
+      "pnl": -5.617979999999998,
+      "pnl_pct": -11.235955056179769
+    },
+    {
+      "id": "bet_1778371669_2",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Thunder (-9.5)",
+      "outcome": "Thunder",
+      "entry_price": 0.495,
+      "cur_price": 0.495,
+      "bet_size": 50.0,
+      "shares": 101.0101,
+      "entry_date": "2026-05-10 00:07",
+      "status": "open",
+      "pnl": 0,
+      "pnl_pct": 0
     }
   ],
   "resolved": [],
   "total_won": 0,
   "total_lost": 0,
-  "total_bets": 1,
+  "total_bets": 2,
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-10 00:02 UTC",
+  "last_updated": "2026-05-10 00:07 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
