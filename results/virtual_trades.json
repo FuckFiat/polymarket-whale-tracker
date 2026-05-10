@@ -22,13 +22,13 @@
       "market": "Spread: Thunder (-9.5)",
       "outcome": "Thunder",
       "entry_price": 0.495,
-      "cur_price": 0.635,
+      "cur_price": 0.835,
       "bet_size": 50.0,
       "shares": 101.0101,
       "entry_date": "2026-05-10 00:07",
       "status": "open",
-      "pnl": 14.14,
-      "pnl_pct": 28.3
+      "pnl": -34.343433999999995,
+      "pnl_pct": -67.32673267326732
     },
     {
       "id": "bet_1778371700_3",
@@ -36,13 +36,13 @@
       "market": "Spread: Thunder (-8.5)",
       "outcome": "Thunder",
       "entry_price": 0.535,
-      "cur_price": 0.725,
+      "cur_price": 0.88,
       "bet_size": 50.0,
       "shares": 93.4579,
       "entry_date": "2026-05-10 00:08",
       "status": "open",
-      "pnl": 17.76,
-      "pnl_pct": 35.5
+      "pnl": -32.24297549999999,
+      "pnl_pct": -74.19354838709677
     }
   ],
   "resolved": [],
@@ -52,7 +52,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-09 23:30 UTC",
-  "last_updated": "2026-05-10 02:42 UTC",
+  "last_updated": "2026-05-10 02:44 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
