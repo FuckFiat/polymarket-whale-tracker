@@ -1,7 +1,6 @@
 __pycache__/
-results/
-*.csv
-*.json
+results/*.csv
 venv/
 .DS_Store
 polymarket-whale-tracker-gh-pages/
+!dashboard.html
