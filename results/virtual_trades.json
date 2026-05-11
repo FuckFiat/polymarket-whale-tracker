@@ -22,13 +22,13 @@
       "market": "Spurs vs. Timberwolves",
       "outcome": "Spurs",
       "entry_price": 0.335,
-      "cur_price": 0.0005,
+      "cur_price": 0.9995,
       "bet_size": 50.0,
       "shares": 149.2537,
       "entry_date": "2026-05-11 01:08",
       "status": "open",
-      "pnl": 49.925362650000004,
-      "pnl_pct": 50.30075187969925
+      "pnl": 99.18,
+      "pnl_pct": 198.4
     }
   ],
   "resolved": [],
@@ -38,7 +38,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-10 23:03 UTC",
-  "last_updated": "2026-05-11 02:47 UTC",
+  "last_updated": "2026-05-11 02:51 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
