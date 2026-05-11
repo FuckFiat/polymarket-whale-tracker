@@ -24,7 +24,7 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-BOT_TOKEN = "8660315287:AAF-j--gEBL-rACtQWKx4uTve3jNF-0wQ3o"
+BOT_TOKEN = "8375563056:AAFMUgHzznsfDMKW6cMIkXz3iWXuxzQhoX0"
 CHAT_ID = 730668
 DATA_API = "https://data-api.polymarket.com"
 GAMMA_API = "https://gamma-api.polymarket.com"
