@@ -8,13 +8,13 @@
       "market": "Spread: Spurs (-5.5)",
       "outcome": "Spurs",
       "entry_price": 0.485,
-      "cur_price": 0.135,
+      "cur_price": 0.145,
       "bet_size": 50.0,
       "shares": 103.0928,
       "entry_date": "2026-05-10 23:03",
       "status": "open",
-      "pnl": -36.08,
-      "pnl_pct": -72.2
+      "pnl": 35.051551999999994,
+      "pnl_pct": 66.01941747572815
     }
   ],
   "resolved": [],
