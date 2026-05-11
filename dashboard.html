@@ -103,16 +103,16 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
 <div class="header">
   <h1>🐋 NANO POLYMARKET WHALE TRACKER v3.0</h1>
-  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">11.05.2026 12:04</span></div>
+  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">11.05.2026 12:15</span></div>
 </div>
 
 <div class="stats-row fade-in">
   <div class="stat-card"><div class="label">Active Whales</div><div class="value">9/10</div></div>
   <div class="stat-card"><div class="label">Positions</div><div class="value blue">72</div></div>
-  <div class="stat-card"><div class="label">Signals</div><div class="value yellow">0</div></div>
+  <div class="stat-card"><div class="label">Signals</div><div class="value yellow">1</div></div>
   <div class="stat-card"><div class="label">Win Rate</div><div class="value red">0%</div></div>
-  <div class="stat-card"><div class="label">ETH</div><div class="value purple">$2,336</div></div>
-  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$80,961</div></div>
+  <div class="stat-card"><div class="label">ETH</div><div class="value purple">$2,337</div></div>
+  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$81,024</div></div>
 </div>
 
 <!-- P&L Hero -->
@@ -128,7 +128,29 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
 <!-- Recent Signals with Instructions -->
 <div class="section"><div class="section-title">📋 ПОСЛЕДНИЕ СИГНАЛЫ + ИНСТРУКЦИИ <span class="badge">LIVE</span></div></div>
-<div style="padding:20px;color:#333;text-align:center">Сигналов пока нет — киты отдыхают 🐋</div>
+
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 Countryside</span>
+            <span class="signal-side side-sell">SELL</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Will Panama win the 2026 FIFA World Cup?</div>
+          <div class="signal-details">
+            <span>💰 $593</span>
+            <span>📊 @ 0.2¢</span>
+            <span>📐 296,543 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📉 Вход: продать (NO) @ 1.00¢ — ВЫСОКИЙ РИСК
+⚠️ YES на 100% — если resolve=YES, теряешь 0¢/$
+💰 Размер: кит ставит $593 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
 
 <!-- Whale Positions -->
 <div class="section"><div class="section-title">🐋 ПОЗИЦИИ КИТОВ <span class="badge">TOP 10</span></div></div>
@@ -426,22 +448,22 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
               <span class="pos-price">@ 0.4¢</span>
             </div>
             <div class="pos-item">
-              <span class="pos-market">Will Qatar win the 2026 FIFA World Cup?</span>
-              <span style="color:#ff4444;font-weight:600">-4,983 (-32%)</span>
-              <span class="pos-vol">$10,833</span>
-              <span class="pos-price">@ 0.2¢</span>
-            </div>
-            <div class="pos-item">
-              <span class="pos-market">Will Panama win the 2026 FIFA World Cup?</span>
-              <span style="color:#ff4444;font-weight:600">-5,570 (-35%)</span>
-              <span class="pos-vol">$10,408</span>
-              <span class="pos-price">@ 0.2¢</span>
-            </div>
-            <div class="pos-item">
               <span class="pos-market">Will Tunisia win the 2026 FIFA World Cup</span>
               <span style="color:#ff4444;font-weight:600">-4,761 (-25%)</span>
               <span class="pos-vol">$14,364</span>
               <span class="pos-price">@ 0.4¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Algeria win the 2026 FIFA World Cup</span>
+              <span style="color:#ff4444;font-weight:600">-5,175 (-27%)</span>
+              <span class="pos-vol">$14,272</span>
+              <span class="pos-price">@ 0.4¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Qatar win the 2026 FIFA World Cup?</span>
+              <span style="color:#ff4444;font-weight:600">-8,564 (-59%)</span>
+              <span class="pos-vol">$5,978</span>
+              <span class="pos-price">@ 0.1¢</span>
             </div></div>
         </div>
 </div>
@@ -460,14 +482,14 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
         </div>
         <div class="market-item">
           <span style="color:#666">othe</span> Will Trump visit China by May 15?
-          <span class="market-vol">$2.2M</span>
-        </div>
-        <div class="market-item">
-          <span style="color:#666">othe</span> Will Michelle Bowman be confirmed as Fed Chair?
-          <span class="market-vol">$2.1M</span>
+          <span class="market-vol">$2.3M</span>
         </div>
         <div class="market-item">
           <span style="color:#666">othe</span> US x Iran permanent peace deal by May 15, 2026?
+          <span class="market-vol">$2.1M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Will Michelle Bowman be confirmed as Fed Chair?
           <span class="market-vol">$2.1M</span>
         </div>
         <div class="market-item">
@@ -491,11 +513,11 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
           <span class="market-vol">$1.0M</span>
         </div>
         <div class="market-item">
-          <span style="color:#666">othe</span> Will the Los Angeles Lakers win the NBA Western Conference Finals?
-          <span class="market-vol">$0.9M</span>
+          <span style="color:#666">othe</span> Will Congo DR win the 2026 FIFA World Cup?
+          <span class="market-vol">$1.0M</span>
         </div>
         <div class="market-item">
-          <span style="color:#666">othe</span> Will Trump visit China by May 31?
+          <span style="color:#666">othe</span> Will Saudi Arabia win the 2026 FIFA World Cup?
           <span class="market-vol">$0.9M</span>
         </div>
 </div>
@@ -613,7 +635,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 <div class="refresh-bar">
   <span class="status"><span class="spinner"></span> LIVE • Auto-refresh <span id="countdown">120</span>s</span>
   <span style="color:#444">NANO Whale Tracker v3.0 • Polymarket API</span>
-  <span style="color:#555" id="update-time">11.05.2026 12:04</span>
+  <span style="color:#555" id="update-time">11.05.2026 12:15</span>
 </div>
 
 <script>
