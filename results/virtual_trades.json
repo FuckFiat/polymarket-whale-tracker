@@ -1,5 +1,5 @@
 {
-  "balance": 950.0,
+  "balance": 900.0,
   "initial_deposit": 1000.0,
   "positions": [
     {
@@ -13,18 +13,32 @@
       "shares": 103.0928,
       "entry_date": "2026-05-10 23:03",
       "status": "open",
-      "pnl": 30.927839999999993,
-      "pnl_pct": 58.252427184466015
+      "pnl": -30.93,
+      "pnl_pct": -61.9
+    },
+    {
+      "id": "bet_1778461712_2",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "Spurs vs. Timberwolves",
+      "outcome": "Spurs",
+      "entry_price": 0.335,
+      "cur_price": 0.335,
+      "bet_size": 50.0,
+      "shares": 149.2537,
+      "entry_date": "2026-05-11 01:08",
+      "status": "open",
+      "pnl": 0.0,
+      "pnl_pct": 0.0
     }
   ],
   "resolved": [],
   "total_won": 0,
   "total_lost": 0,
-  "total_bets": 1,
+  "total_bets": 2,
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-10 23:03 UTC",
-  "last_updated": "2026-05-11 01:05 UTC",
+  "last_updated": "2026-05-11 01:09 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
