@@ -8,13 +8,13 @@
       "market": "Spread: Spurs (-5.5)",
       "outcome": "Spurs",
       "entry_price": 0.485,
-      "cur_price": 0.375,
+      "cur_price": 0.36,
       "bet_size": 50.0,
       "shares": 103.0928,
       "entry_date": "2026-05-10 23:03",
       "status": "open",
-      "pnl": -11.34,
-      "pnl_pct": -22.7
+      "pnl": 12.8866,
+      "pnl_pct": 24.271844660194162
     },
     {
       "id": "bet_1778461712_2",
@@ -22,13 +22,13 @@
       "market": "Spurs vs. Timberwolves",
       "outcome": "Spurs",
       "entry_price": 0.335,
-      "cur_price": 0.585,
+      "cur_price": 0.555,
       "bet_size": 50.0,
       "shares": 149.2537,
       "entry_date": "2026-05-11 01:08",
       "status": "open",
-      "pnl": 37.31,
-      "pnl_pct": 74.6
+      "pnl": -32.83581400000001,
+      "pnl_pct": -33.082706766917305
     }
   ],
   "resolved": [],
@@ -38,7 +38,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-10 23:03 UTC",
-  "last_updated": "2026-05-11 01:30 UTC",
+  "last_updated": "2026-05-11 01:32 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
