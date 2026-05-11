@@ -1,0 +1,44 @@
+{
+  "balance": 900.0,
+  "initial_deposit": 1000.0,
+  "positions": [
+    {
+      "id": "bet_1778454224_1",
+      "whale": "🏆 Кит #5 — April #1",
+      "market": "Spread: Spurs (-5.5)",
+      "outcome": "Spurs",
+      "entry_price": 0.485,
+      "cur_price": 0.0005,
+      "bet_size": 50.0,
+      "shares": 103.0928,
+      "entry_date": "2026-05-10 23:03",
+      "status": "open",
+      "pnl": 49.9484616,
+      "pnl_pct": 94.07766990291262
+    },
+    {
+      "id": "bet_1778461712_2",
+      "whale": "🐋 Кит #1 — kcnyekchno",
+      "market": "Spurs vs. Timberwolves",
+      "outcome": "Spurs",
+      "entry_price": 0.335,
+      "cur_price": 0.9995,
+      "bet_size": 50.0,
+      "shares": 149.2537,
+      "entry_date": "2026-05-11 01:08",
+      "status": "open",
+      "pnl": 99.18,
+      "pnl_pct": 198.4
+    }
+  ],
+  "resolved": [],
+  "total_won": 0,
+  "total_lost": 0,
+  "total_bets": 2,
+  "win_count": 0,
+  "loss_count": 0,
+  "created_at": "2026-05-10 23:03 UTC",
+  "last_updated": "2026-05-11 04:51 UTC",
+  "auto_betting": true,
+  "max_bet_pct": 5
+}
