@@ -1,0 +1,65 @@
+{
+  "last_check": 1778487722.9605591,
+  "alerts_sent": 0,
+  "tracked_positions": {},
+  "seen_positions": {
+    "0x31ca8395:ETH:short": {
+      "size": 924.6075,
+      "entry": 2328.59,
+      "notional": 2155583.6951249996,
+      "timestamp": 1778487722.401558
+    }
+  },
+  "whale_pnl": {
+    "0xa822a9ce": {
+      "account_value": 10141.13,
+      "positions": 0,
+      "timestamp": 1778487719.706356
+    },
+    "0x1c498a93": {
+      "account_value": 0.0,
+      "positions": 0,
+      "timestamp": 1778487720.125026
+    },
+    "0x24de6b77": {
+      "account_value": 4500.0,
+      "positions": 0,
+      "timestamp": 1778487720.407382
+    },
+    "0xe6111266": {
+      "account_value": 9500.0,
+      "positions": 0,
+      "timestamp": 1778487720.7186391
+    },
+    "0x4ec8fe22": {
+      "account_value": 0.0,
+      "positions": 0,
+      "timestamp": 1778487721.063074
+    },
+    "0xdfc24b07": {
+      "account_value": 130569365.776574,
+      "positions": 0,
+      "timestamp": 1778487721.3491452
+    },
+    "0x87f9cd15": {
+      "account_value": 2696.150404,
+      "positions": 0,
+      "timestamp": 1778487721.627562
+    },
+    "0x31ca8395": {
+      "account_value": 114059100.773746,
+      "positions": 183,
+      "timestamp": 1778487722.4016268
+    },
+    "0x010461c1": {
+      "account_value": 0.0,
+      "positions": 0,
+      "timestamp": 1778487722.680277
+    },
+    "0xfc667adb": {
+      "account_value": 0.0,
+      "positions": 0,
+      "timestamp": 1778487722.960552
+    }
+  }
+}

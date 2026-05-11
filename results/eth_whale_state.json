@@ -1,0 +1,614 @@
+{
+  "last_check": 1778487734,
+  "history": [
+    {
+      "time": 1778475077,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.219
+        ],
+        [
+          "Binance Global",
+          2.0544
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2331.35,
+      "total_oi_usd": 8234328349.360004
+    },
+    {
+      "time": 1778475722,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.219
+        ],
+        [
+          "Binance Global",
+          2.1017
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2332.65,
+      "total_oi_usd": 8245026240.289504
+    },
+    {
+      "time": 1778476368,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2154
+        ],
+        [
+          "Binance Global",
+          2.1017
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2333.35,
+      "total_oi_usd": 8247742374.387244
+    },
+    {
+      "time": 1778477014,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2154
+        ],
+        [
+          "Binance Global",
+          2.1017
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2335.55,
+      "total_oi_usd": 8254907758.111855
+    },
+    {
+      "time": 1778477661,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2154
+        ],
+        [
+          "Binance Global",
+          2.1017
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2339.15,
+      "total_oi_usd": 8261196088.139624
+    },
+    {
+      "time": 1778478307,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2154
+        ],
+        [
+          "Binance Global",
+          2.1017
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2333.65,
+      "total_oi_usd": 8257675016.524145
+    },
+    {
+      "time": 1778478953,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2154
+        ],
+        [
+          "Binance Global",
+          2.1017
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2335.45,
+      "total_oi_usd": 8263827528.151605
+    },
+    {
+      "time": 1778479599,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2107
+        ],
+        [
+          "Binance Global",
+          2.1162
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2334.55,
+      "total_oi_usd": 8264990649.651264
+    },
+    {
+      "time": 1778480250,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2107
+        ],
+        [
+          "Binance Global",
+          2.1162
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2336.85,
+      "total_oi_usd": 8269516499.703505
+    },
+    {
+      "time": 1778480898,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2107
+        ],
+        [
+          "Binance Global",
+          2.1162
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2338.65,
+      "total_oi_usd": 8279137413.885505
+    },
+    {
+      "time": 1778481544,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2107
+        ],
+        [
+          "Binance Global",
+          2.1162
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2337.95,
+      "total_oi_usd": 8266537434.874764
+    },
+    {
+      "time": 1778482190,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2107
+        ],
+        [
+          "Binance Global",
+          2.1162
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2329.75,
+      "total_oi_usd": 8258254446.6437845
+    },
+    {
+      "time": 1778482836,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2107
+        ],
+        [
+          "Binance Global",
+          2.1162
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2331.85,
+      "total_oi_usd": 8255694190.510756
+    },
+    {
+      "time": 1778483482,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2255
+        ],
+        [
+          "Binance Global",
+          2.1008
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2330.75,
+      "total_oi_usd": 8250823333.304955
+    },
+    {
+      "time": 1778484129,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2255
+        ],
+        [
+          "Binance Global",
+          2.1008
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2330.45,
+      "total_oi_usd": 8251995182.596315
+    },
+    {
+      "time": 1778484775,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2255
+        ],
+        [
+          "Binance Global",
+          2.1008
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2330.15,
+      "total_oi_usd": 8251376738.854084
+    },
+    {
+      "time": 1778485424,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2255
+        ],
+        [
+          "Binance Global",
+          2.1008
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2329.25,
+      "total_oi_usd": 8250363728.473785
+    },
+    {
+      "time": 1778486071,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2255
+        ],
+        [
+          "Binance Global",
+          2.1008
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.007462999999999999
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2329.95,
+      "total_oi_usd": 8252222385.916004
+    },
+    {
+      "time": 1778486717,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2293
+        ],
+        [
+          "Binance Global",
+          2.0989
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.0019950000000000002
+        ],
+        [
+          "OKX",
+          0.01
+        ]
+      ],
+      "eth_price": 2329.85,
+      "total_oi_usd": 8265798045.943154
+    },
+    {
+      "time": 1778487087,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2293
+        ],
+        [
+          "Binance Global",
+          2.0989
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.0019950000000000002
+        ],
+        [
+          "OKX",
+          0.00976380691603
+        ]
+      ],
+      "eth_price": 2327.65,
+      "total_oi_usd": 8262011948.094505
+    },
+    {
+      "time": 1778487734,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2293
+        ],
+        [
+          "Binance Global",
+          2.0989
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          0.0019950000000000002
+        ],
+        [
+          "OKX",
+          0.009410810496700001
+        ]
+      ],
+      "eth_price": 2331.35,
+      "total_oi_usd": 8269452909.952505
+    }
+  ],
+  "alerts_sent": 0,
+  "last_data": {
+    "timestamp": 1778487734,
+    "time_utc": "2026-05-11 08:22 UTC",
+    "exchanges": {
+      "Binance": {
+        "exchange": "Binance",
+        "symbol": "ETHUSDT",
+        "timestamp": 1778487723,
+        "top_long_pct": 55.14,
+        "top_short_pct": 44.86,
+        "top_ls_ratio": 1.2293,
+        "global_long_pct": 67.73,
+        "global_short_pct": 32.269999999999996,
+        "global_ls_ratio": 2.0989,
+        "open_interest": 2062418.823,
+        "funding_rate": 1.995e-05,
+        "funding_rate_pct": 0.0019950000000000002,
+        "taker_buy_vol": 26766.195,
+        "taker_sell_vol": 27919.571,
+        "taker_ratio": 0.9587,
+        "success": true
+      },
+      "Bybit": {
+        "exchange": "Bybit",
+        "symbol": "ETHUSDT",
+        "timestamp": 1778487723,
+        "open_interest": 756664.57,
+        "funding_rate": 6.713e-05,
+        "funding_rate_pct": 0.006713,
+        "success": true
+      },
+      "OKX": {
+        "exchange": "OKX",
+        "symbol": "ETH-USDT-SWAP",
+        "timestamp": 1778487723,
+        "open_interest": 7659900.5000000205,
+        "open_interest_usd": 1785561106.0525048,
+        "funding_rate": 9.4108104967e-05,
+        "funding_rate_pct": 0.009410810496700001,
+        "next_funding_time": "1778544000000",
+        "success": true
+      },
+      "Hyperliquid": {
+        "exchange": "Hyperliquid",
+        "symbol": "ETH",
+        "timestamp": 1778487723,
+        "eth_price": 2331.35,
+        "hl_oi": 0.0,
+        "hl_max_leverage": 0,
+        "success": true
+      },
+      "Deribit": {
+        "exchange": "Deribit",
+        "symbol": "ETH",
+        "timestamp": 1778487723,
+        "error": "",
+        "success": false
+      }
+    },
+    "eth_price": 2331.35,
+    "total_oi_usd": 8269452909.952505,
+    "ls_ratios": [
+      [
+        "Binance Top",
+        1.2293
+      ],
+      [
+        "Binance Global",
+        2.0989
+      ]
+    ],
+    "funding_rates": [
+      [
+        "Binance",
+        0.0019950000000000002
+      ],
+      [
+        "OKX",
+        0.009410810496700001
+      ]
+    ]
+  },
+  "prev_avg_ls": 1.6641
+}
