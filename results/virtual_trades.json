@@ -13,8 +13,8 @@
       "shares": 103.0928,
       "entry_date": "2026-05-10 23:03",
       "status": "open",
-      "pnl": 14.94845599999999,
-      "pnl_pct": 28.15533980582523
+      "pnl": -14.95,
+      "pnl_pct": -29.9
     },
     {
       "id": "bet_1778461712_2",
@@ -27,8 +27,8 @@
       "shares": 149.2537,
       "entry_date": "2026-05-11 01:08",
       "status": "open",
-      "pnl": -47.761184000000014,
-      "pnl_pct": -48.12030075187971
+      "pnl": 47.76,
+      "pnl_pct": 95.5
     }
   ],
   "resolved": [],
@@ -38,7 +38,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-10 23:03 UTC",
-  "last_updated": "2026-05-11 01:59 UTC",
+  "last_updated": "2026-05-11 02:02 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
