@@ -8,13 +8,13 @@
       "market": "Spread: Spurs (-5.5)",
       "outcome": "Spurs",
       "entry_price": 0.485,
-      "cur_price": 0.0005,
+      "cur_price": 0.49,
       "bet_size": 50.0,
       "shares": 103.0928,
       "entry_date": "2026-05-10 23:03",
       "status": "open",
-      "pnl": 49.9484616,
-      "pnl_pct": 94.07766990291262
+      "pnl": -0.5154640000000005,
+      "pnl_pct": -0.9708737864077666
     },
     {
       "id": "bet_1778461712_2",
@@ -38,7 +38,7 @@
   "win_count": 0,
   "loss_count": 0,
   "created_at": "2026-05-10 23:03 UTC",
-  "last_updated": "2026-05-11 06:02 UTC",
+  "last_updated": "2026-05-11 06:05 UTC",
   "auto_betting": true,
   "max_bet_pct": 5
 }
