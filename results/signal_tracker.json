@@ -90,6 +90,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778577970.434178
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Zagreb: Thiago Monteiro vs Andres Andrade:BUY:266",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Zagreb: Thiago Monteiro vs Andres Andrade",
+      "size": 266.42,
+      "price": 0.66,
+      "instructions": "📈 Вход: купить YES @ 0.66¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.56¢ (-10-15%)\n💰 Размер: кит ставит $176 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778600498.553119
     }
   ],
   "total_pnl": 0,
