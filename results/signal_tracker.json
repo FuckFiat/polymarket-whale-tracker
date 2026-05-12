@@ -103,6 +103,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778600498.553119
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Cordoba: Juan Bautista Torres vs Bruno Fernandez:BUY:631",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Cordoba: Juan Bautista Torres vs Bruno Fernandez",
+      "size": 631.1,
+      "price": 0.77,
+      "instructions": "📈 Вход: купить YES @ 0.77¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+10%) или держи\n🛑 Стоп-лосс: 0.67¢ (-10-15%)\n💰 Размер: кит ставит $486 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778609359.930766
     }
   ],
   "total_pnl": 0,
