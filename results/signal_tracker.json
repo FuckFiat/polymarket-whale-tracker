@@ -51,6 +51,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778532447.096941
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Monte vs The Huns Esports - Map 2 Winner:BUY:858",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: Monte vs The Huns Esports - Map 2 Winner",
+      "size": 858.44,
+      "price": 0.17,
+      "instructions": "📈 Вход: купить YES @ 0.17¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.09¢ (потеря 50%)\n💰 Размер: кит ставит $146 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778575992.301562
     }
   ],
   "total_pnl": 0,
