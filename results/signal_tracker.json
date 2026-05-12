@@ -64,6 +64,32 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778575992.301562
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Monte vs The Huns Esports - Map 2 Winner:BUY:1039",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: Monte vs The Huns Esports - Map 2 Winner",
+      "size": 1039.38,
+      "price": 0.34971136639150263,
+      "instructions": "📈 Вход: купить YES @ 0.35¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 0¢ (+43%) или до resolve\n🛑 Стоп-лосс: 0.26¢ (-25%)\n💰 Размер: кит ставит $363 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778577970.4341388
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Games Total: O/U 2.5:BUY:500",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Games Total: O/U 2.5",
+      "size": 500.0,
+      "price": 0.35,
+      "instructions": "📈 Вход: купить YES @ 0.35¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 0¢ (+43%) или до resolve\n🛑 Стоп-лосс: 0.26¢ (-25%)\n💰 Размер: кит ставит $175 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778577970.434178
     }
   ],
   "total_pnl": 0,
