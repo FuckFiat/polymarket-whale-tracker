@@ -4,3 +4,4 @@ venv/
 .DS_Store
 polymarket-whale-tracker-gh-pages/
 !dashboard.html
+*.tmp
