@@ -116,6 +116,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778609359.930766
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Cordoba: Franco Roncadelli vs Pedro Sakamoto:BUY:1023",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Cordoba: Franco Roncadelli vs Pedro Sakamoto",
+      "size": 1022.954544,
+      "price": 0.43990224359372904,
+      "instructions": "📈 Вход: купить YES @ 0.44¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+34%) или до resolve\n🛑 Стоп-лосс: 0.33¢ (-25%)\n💰 Размер: кит ставит $450 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778611808.298555
     }
   ],
   "total_pnl": 0,
