@@ -142,6 +142,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778696656.601185
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Bordeaux: Luca Van Assche vs Juan Manuel Cerundolo:BUY:2230",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Bordeaux: Luca Van Assche vs Juan Manuel Cerundolo",
+      "size": 2230.0,
+      "price": 0.9,
+      "instructions": "📈 Вход: купить YES @ 0.90¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 10.0¢ на доллар если resolve=YES\n⚠️ Риск: 90¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $2,007 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778702365.0469692
     }
   ],
   "total_pnl": 0,
