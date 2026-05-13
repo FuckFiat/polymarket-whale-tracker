@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐋 NANO Polymarket Whale Tracker v3.2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#060610;color:#e0e0e0;font-family:'JetBrains Mono',monospace;min-height:100vh;overflow-x:hidden}
+
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,#0a1a2a 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,#1a0a2e 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,#0a2a1a 0%,transparent 50%);z-index:-1;animation:bgPulse 8s ease-in-out infinite alternate}
+@keyframes bgPulse{0%{opacity:.6}100%{opacity:1}}
+
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.015) 2px,rgba(0,255,136,0.015) 4px);pointer-events:none;z-index:9999}
+
+/* Floating P&L numbers */
+.float-container{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:100;overflow:hidden}
+.float-number{position:absolute;font-size:96px;font-weight:900;text-shadow:0 0 40px currentColor,0 0 80px currentColor,0 0 120px currentColor;opacity:0;animation:floatUp 5s ease-out infinite}
+@keyframes floatUp{0%{opacity:0;transform:translateY(100vh) scale(0.2)}8%{opacity:1;transform:translateY(75vh) scale(1.8)}20%{opacity:0.95;transform:translateY(50vh) scale(1.3)}40%{opacity:0.7;transform:translateY(20vh) scale(1)}60%{opacity:0.4;transform:translateY(-10vh) scale(0.7)}100%{opacity:0;transform:translateY(-30vh) scale(0.3)}}
+
+.header{background:linear-gradient(135deg,#0a0a1f 0%,#1a0a2e 50%,#0a1a1f 100%);border-bottom:1px solid #00ff8833;padding:25px 20px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,#00ff8808,transparent,#00ff8808,transparent);animation:rotateBg 20s linear infinite}
+@keyframes rotateBg{to{transform:rotate(360deg)}}
+.header h1{font-size:28px;color:#00ff88;text-shadow:0 0 30px #00ff8866,0 0 60px #00ff8833;position:relative;z-index:1;letter-spacing:2px}
+.header .subtitle{color:#666;font-size:11px;margin-top:5px;position:relative;z-index:1}
+.live-dot{display:inline-block;width:8px;height:8px;background:#00ff88;border-radius:50%;margin-right:8px;animation:livePulse 1.5s ease-in-out infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 #00ff8888}50%{box-shadow:0 0 0 8px #00ff8800}}
+
+/* Stats */
+.stats-row{display:flex;gap:12px;padding:15px 20px;flex-wrap:wrap}
+.stat-card{flex:1;min-width:100px;background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px 10px;text-align:center;position:relative;overflow:hidden;transition:all .3s}
+.stat-card:hover{border-color:#00ff8855;transform:translateY(-2px);box-shadow:0 5px 20px #00ff8811}
+.stat-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,#ffffff06,transparent);animation:shimmer 3s infinite}
+@keyframes shimmer{to{left:100%}}
+.stat-card .label{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:1.5px}
+.stat-card .value{font-size:20px;color:#00ff88;margin-top:4px;font-weight:700}
+.stat-card .value.red{color:#ff4444}.stat-card .value.blue{color:#4488ff}.stat-card .value.yellow{color:#ffaa00}.stat-card .value.purple{color:#aa66ff}
+
+/* P&L counter */
+.pnl-hero{background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:3px solid #00ff8855;border-radius:20px;padding:30px;margin:10px 20px;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 60px #00ff8815,inset 0 0 40px #00ff8805}
+.pnl-hero .pnl-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:3px;margin-bottom:4px}
+.pnl-hero .pnl-value{font-size:96px;font-weight:900;margin-top:8px;transition:all .8s cubic-bezier(.2,1,.3,1);animation:pnlGlow 2s ease-in-out infinite alternate}
+.pnl-hero .pnl-value.positive{color:#00ff88;text-shadow:0 0 40px #00ff8866,0 0 80px #00ff8844,0 0 120px #00ff8822}
+.pnl-hero .pnl-value.negative{color:#ff4444;text-shadow:0 0 40px #ff444466,0 0 80px #ff444444,0 0 120px #ff444422}
+.pnl-hero .pnl-details{font-size:15px;color:#aaa;margin-top:16px;letter-spacing:2px}
+.pnl-hero .pnl-details span{margin:0 14px}
+@keyframes pnlGlow{0%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.15);transform:scale(1.02)}100%{filter:brightness(1);transform:scale(1)}}
+
+/* Signals */
+.section{padding:8px 20px}
+.section-title{color:#00ff88;font-size:13px;margin-bottom:12px;border-left:3px solid #00ff88;padding-left:10px;display:flex;align-items:center;gap:8px}
+.section-title .badge{background:#00ff8822;color:#00ff88;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:400}
+
+.signal-card{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;margin:8px 20px;position:relative;overflow:hidden;transition:all .3s}
+.signal-card:hover{border-color:#00ff8844;box-shadow:0 5px 25px #00ff8811}
+.signal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:5px}
+.signal-whale{color:#00ff88;font-weight:700;font-size:13px}
+.signal-side{font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700}
+.side-buy{background:#00ff8822;color:#00ff88}.side-sell{background:#ff444422;color:#ff4444}
+.signal-pnl{font-size:16px;font-weight:700}
+.pnl-positive{color:#00ff88;text-shadow:0 0 10px #00ff8844}.pnl-negative{color:#ff4444;text-shadow:0 0 10px #ff444444}.pnl-pending{color:#ffaa00}
+.status-win{background:#00ff8822;color:#00ff88;padding:2px 6px;border-radius:4px;font-size:9px}.status-loss{background:#ff444422;color:#ff4444;padding:2px 6px;border-radius:4px;font-size:9px}.status-pending{background:#ffaa0022;color:#ffaa00;padding:2px 6px;border-radius:4px;font-size:9px}
+.signal-market{color:#aaa;font-size:11px;margin-bottom:6px}
+.signal-details{display:flex;gap:15px;font-size:10px;color:#888;margin-bottom:10px}
+.signal-instructions{background:#0a0a15;border:1px solid #1a1a3a;border-radius:8px;padding:10px;margin-top:8px}
+.instr-title{color:#ffaa00;font-size:10px;margin-bottom:5px;letter-spacing:1px}
+.instr-text{color:#ccc;font-size:10px;line-height:1.6;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
+.signal-pnl-popup{position:absolute;top:5px;right:10px;font-size:56px;font-weight:900;opacity:0;animation:pnlPop 4s ease-out infinite 1.5s}
+@keyframes pnlPop{0%{opacity:0;transform:scale(0.2) translateY(30px)}15%{opacity:1;transform:scale(1.4) translateY(0)}30%{opacity:0.9;transform:scale(1.1)}50%{opacity:0.6;transform:scale(0.95)}100%{opacity:0;transform:scale(0.4) translateY(-40px)}}
+
+/* Whale cards */
+.whale-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;padding:5px 20px}
+.whale-card{background:linear-gradient(135deg,#0d0d1a,#111125);border:1px solid #1a1a3a;border-radius:10px;padding:15px;transition:all .3s}
+.whale-card.active{border-color:#00ff8833}.whale-card.inactive{border-color:#1a1a3a;opacity:.6}
+.whale-card:hover{border-color:#00ff8855;box-shadow:0 5px 20px #00ff8811}
+.whale-header{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.whale-emoji{font-size:18px}.whale-name{color:#00ff88;font-weight:700;font-size:13px}.whale-tier{color:#666;font-size:9px;padding:1px 6px;border:1px solid #333;border-radius:3px;margin-left:auto}.whale-positions{color:#ffaa00;font-size:10px}
+.whale-strat{color:#555;font-size:10px;margin-bottom:8px}
+.whale-positions-list .pos-item{display:flex;gap:8px;font-size:10px;padding:3px 0;border-bottom:1px solid #111}
+.pos-market{color:#aaa;flex:1}.pos-vol{color:#ffaa00;font-weight:600}
+.no-pos{color:#333;font-size:10px;font-style:italic}
+
+/* Markets */
+.market-item{padding:8px 5px;border-bottom:1px solid #0a0a15;font-size:11px;display:flex;justify-content:space-between;align-items:center}
+.market-vol{color:#ffaa00;font-size:10px;font-weight:600}
+
+.fade-in{animation:fadeIn .5s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.refresh-bar{position:fixed;bottom:0;left:0;right:0;background:#060610ee;border-top:1px solid #1a1a3a;padding:8px 20px;display:flex;justify-content:space-between;font-size:10px;color:#444;z-index:50}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #1a1a3a;border-top-color:#00ff88;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:768px){.stats-row{gap:8px}.stat-card{min-width:70px;padding:10px 5px}.stat-card .value{font-size:16px}.header h1{font-size:20px}.whale-grid{grid-template-columns:1fr}.pnl-hero .pnl-value{font-size:32px}}
+</style>
+</head>
+<body>
+
+<div class="float-container">
+        <div class="float-number" style="animation-delay:0.0s;color:#00ff88;left:5%">+$2</div>
+        <div class="float-number" style="animation-delay:0.7s;color:#00ff88;left:21%">+$51</div>
+        <div class="float-number" style="animation-delay:1.4s;color:#00ff88;left:37%">+$43</div>
+        <div class="float-number" style="animation-delay:2.0999999999999996s;color:#00ff88;left:53%">+$139</div>
+        <div class="float-number" style="animation-delay:2.8s;color:#00ff88;left:69%">+$194</div></div>
+
+<div class="header">
+  <h1>🐋 NANO POLYMARKET WHALE TRACKER v3.0</h1>
+  <div class="subtitle"><span class="live-dot"></span>Real-time + Trade Instructions + P&L • <span id="timestamp">10.05.2026 20:56</span></div>
+</div>
+
+<div class="stats-row fade-in">
+  <div class="stat-card"><div class="label">Active Whales</div><div class="value">9/10</div></div>
+  <div class="stat-card"><div class="label">Positions</div><div class="value blue">70</div></div>
+  <div class="stat-card"><div class="label">Signals</div><div class="value yellow">20</div></div>
+  <div class="stat-card"><div class="label">Win Rate</div><div class="value red">0%</div></div>
+  <div class="stat-card"><div class="label">ETH</div><div class="value purple">$2,358</div></div>
+  <div class="stat-card"><div class="label">BTC</div><div class="value purple">$81,254</div></div>
+</div>
+
+<!-- P&L Hero -->
+<div class="pnl-hero fade-in">
+  <div class="pnl-label">📈 Если бы ты отработал все сигналы</div>
+  <div class="pnl-value positive">+$428</div>
+  <div class="pnl-details">
+    <span style="color:#00ff88">✅ 0 wins</span>
+    <span style="color:#ff4444">❌ 0 losses</span>
+    <span style="color:#ffaa00">⏳ 5 pending</span>
+  </div>
+</div>
+
+<!-- Recent Signals with Instructions -->
+<div class="section"><div class="section-title">📋 ПОСЛЕДНИЕ СИГНАЛЫ + ИНСТРУКЦИИ <span class="badge">LIVE</span></div></div>
+
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Jiujiang: Lanlana Tararudee vs Xinxin Yao</div>
+          <div class="signal-details">
+            <span>💰 $2,077</span>
+            <span>📊 @ 90.0¢</span>
+            <span>📐 2,308 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.90¢ — почти гарантировано, но ROI мизерный
+💰 Прибыль: 10.0¢ на доллар если resolve=YES
+⚠️ Риск: 90¢ на доллар если resolve=NO — НЕ СТОИТ
+💰 Размер: кит ставит $2,077 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Internazionali BNL d'Italia: Xinyu Wang vs Alexandra Eala</div>
+          <div class="signal-details">
+            <span>💰 $978</span>
+            <span>📊 @ 71.2¢</span>
+            <span>📐 1,373 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.71¢ — высокая вероятность, низкий ROI
+🎯 Тейк-профит: 1¢ (+11%) или держи
+🛑 Стоп-лосс: 0.61¢ (-10-15%)
+💰 Размер: кит ставит $978 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Francavilla: Ryan Seggerman vs Jay Clarke</div>
+          <div class="signal-details">
+            <span>💰 $265</span>
+            <span>📊 @ 21.0¢</span>
+            <span>📐 1,262 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.21¢ — лангшот, риск <30% капитала
+🎯 Тейк-профит: 1¢ (3x) или держи до resolve
+🛑 Стоп-лосс: 0.10¢ (потеря 50%)
+💰 Размер: кит ставит $265 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Internazionali BNL d'Italia: Madison Keys vs Peyton Stearns</div>
+          <div class="signal-details">
+            <span>💰 $305</span>
+            <span>📊 @ 40.7¢</span>
+            <span>📐 750 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.41¢ после стабилизации (1-5 мин)
+🎯 Тейк-профит: 1¢ (+37%) или до resolve
+🛑 Стоп-лосс: 0.30¢ (-25%)
+💰 Размер: кит ставит $305 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 kcnyekchno</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Will the Minnesota Timberwolves win the 2026 NBA Finals?</div>
+          <div class="signal-details">
+            <span>💰 $90,740</span>
+            <span>📊 @ 98.9¢</span>
+            <span>📐 91,750 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.99¢ — почти гарантировано, но ROI мизерный
+💰 Прибыль: 1.1¢ на доллар если resolve=YES
+⚠️ Риск: 99¢ на доллар если resolve=NO — НЕ СТОИТ
+💰 Размер: кит ставит $90,740 — ВЫСОКАЯ убеждённость
+📊 Рекомендация: $100-500 за ним, не больше 5% банкролла</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Jiujiang: Zhuoxuan Bai vs En-Shuo Liang</div>
+          <div class="signal-details">
+            <span>💰 $1,961</span>
+            <span>📊 @ 50.3¢</span>
+            <span>📐 3,897 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.50¢ — высокая вероятность, низкий ROI
+🎯 Тейк-профит: 1¢ (+16%) или держи
+🛑 Стоп-лосс: 0.40¢ (-10-15%)
+💰 Размер: кит ставит $1,961 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Internazionali BNL d'Italia: Jasmine Paolini vs Elise Mertens</div>
+          <div class="signal-details">
+            <span>💰 $152</span>
+            <span>📊 @ 66.0¢</span>
+            <span>📐 231 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.66¢ — высокая вероятность, низкий ROI
+🎯 Тейк-профит: 1¢ (+12%) или держи
+🛑 Стоп-лосс: 0.56¢ (-10-15%)
+💰 Размер: кит ставит $152 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+        <div class="signal-card fade-in">
+          <div class="signal-header">
+            <span class="signal-whale">🐋 RN1</span>
+            <span class="signal-side side-buy">BUY</span>
+            <span class="signal-pnl pnl-pending">PENDING</span>
+            <span class="status-pending">PENDING</span>
+          </div>
+          <div class="signal-market">Counter-Strike: Team Falcons vs K27 - Map 2 Winner</div>
+          <div class="signal-details">
+            <span>💰 $344</span>
+            <span>📊 @ 22.0¢</span>
+            <span>📐 1,564 shares</span>
+          </div>
+          <div class="signal-instructions">
+            <div class="instr-title">📋 ИНСТРУКЦИЯ:</div>
+            <pre class="instr-text">📈 Вход: купить YES @ 0.22¢ — лангшот, риск <30% капитала
+🎯 Тейк-профит: 1¢ (3x) или держи до resolve
+🛑 Стоп-лосс: 0.11¢ (потеря 50%)
+💰 Размер: кит ставит $344 — разведка/тест
+📊 Рекомендация: подожди подтверждения от других китов</pre>
+          </div>
+          <div class="signal-pnl-popup pnl-pending" data-pnl="0">$+0</div>
+        </div>
+
+<!-- Whale Positions -->
+<div class="section"><div class="section-title">🐋 ПОЗИЦИИ КИТОВ <span class="badge">TOP 10</span></div></div>
+<div class="whale-grid fade-in">
+
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">kcnyekchno</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">10 поз.</span>
+          </div>
+          <div class="whale-strat">NO на геополитику</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will the Detroit Pistons win the 2026 NB</span>
+              <span style="color:#00ff88;font-weight:600">+5,829 (+1%)</span>
+              <span class="pos-vol">$842,861</span>
+              <span class="pos-price">@ 94.7¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will FC Barcelona win on 2026-05-10?</span>
+              <span style="color:#00ff88;font-weight:600">+577 (+0%)</span>
+              <span class="pos-vol">$289,671</span>
+              <span class="pos-price">@ 40.5¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Lakers vs. Rockets</span>
+              <span style="color:#ff4444;font-weight:600">-201,544 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 30.0¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Arsenal FC win on 2026-05-05?</span>
+              <span style="color:#ff4444;font-weight:600">-123,264 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 21.8¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">432614799197</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">10 поз.</span>
+          </div>
+          <div class="whale-strat">Кросс-категорийный</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will Liverpool FC win on 2026-01-31?</span>
+              <span style="color:#ff4444;font-weight:600">-1,002,810 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 40.8¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Arsenal FC win on 2026-03-01?</span>
+              <span style="color:#ff4444;font-weight:600">-772,669 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 35.0¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Liverpool FC win on 2026-01-21?</span>
+              <span style="color:#ff4444;font-weight:600">-1,053,636 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 48.7¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will BV Borussia 09 Dortmund win on 2026</span>
+              <span style="color:#ff4444;font-weight:600">-1,085,444 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 53.9¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">HorizonSplendidView</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">10 поз.</span>
+          </div>
+          <div class="whale-strat">Спорт + макро</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will Manchester City FC win on 2026-02-2</span>
+              <span style="color:#ff4444;font-weight:600">-1,319,129 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 38.3¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Toulouse FC win on 2026-02-15?</span>
+              <span style="color:#ff4444;font-weight:600">-712,104 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 43.8¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Liverpool FC win on 2026-02-08?</span>
+              <span style="color:#ff4444;font-weight:600">-587,423 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 45.2¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Eintracht Frankfurt win on 2026-02-</span>
+              <span style="color:#ff4444;font-weight:600">-511,158 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 56.8¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card inactive fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">majorexploiter</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">0 поз.</span>
+          </div>
+          <div class="whale-strat">Геополитика</div>
+          <div class="whale-positions-list"><div class="no-pos">Нет открытых позиций</div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🏆</span>
+            <span class="whale-name">April #1</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">1 поз.</span>
+          </div>
+          <div class="whale-strat">Спорт, ивенты</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Knicks vs. 76ers: O/U 213.5</span>
+              <span style="color:#ff4444;font-weight:600">-987 (-1%)</span>
+              <span class="pos-vol">$103,784</span>
+              <span class="pos-price">@ 48.5¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">reachingthesky</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">5 поз.</span>
+          </div>
+          <div class="whale-strat">Спорт</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will Eintracht Frankfurt win on 2026-03-</span>
+              <span style="color:#ff4444;font-weight:600">-730,929 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 43.6¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will FC Barcelona win on 2026-03-18?</span>
+              <span style="color:#ff4444;font-weight:600">-640,415 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 40.4¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Newcastle United FC win on 2026-03-</span>
+              <span style="color:#ff4444;font-weight:600">-95,000 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 19.0¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Liverpool FC win on 2026-03-18?</span>
+              <span style="color:#ff4444;font-weight:600">-45,000 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 22.5¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">beachboy4</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">4 поз.</span>
+          </div>
+          <div class="whale-strat">Спорт, футбол</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will Olympique de Marseille win on 2026-</span>
+              <span style="color:#00ff88;font-weight:600">+1,288 (+1%)</span>
+              <span class="pos-vol">$157,925</span>
+              <span class="pos-price">@ 51.5¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Donald Trump win the 2028 Republica</span>
+              <span style="color:#ff4444;font-weight:600">-5,663 (-57%)</span>
+              <span class="pos-vol">$4,351</span>
+              <span class="pos-price">@ 1.8¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Charlotte FC win on 2026-05-09?</span>
+              <span style="color:#ff4444;font-weight:600">-33,342 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 46.0¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will J.D. Vance win the 2028 Republican </span>
+              <span style="color:#ff4444;font-weight:600">-32 (-32%)</span>
+              <span class="pos-vol">$68</span>
+              <span class="pos-price">@ 37.1¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐈</span>
+            <span class="whale-name">Crypto Leader</span>
+            <span class="whale-tier">dolphin</span>
+            <span class="whale-positions">10 поз.</span>
+          </div>
+          <div class="whale-strat">Крипто, DeFi</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will the price of Bitcoin be between $70</span>
+              <span style="color:#ff4444;font-weight:600">-32,291 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 49.0¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will the price of Bitcoin be between $70</span>
+              <span style="color:#ff4444;font-weight:600">-19,165 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 32.3¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will the price of Bitcoin be between $72</span>
+              <span style="color:#ff4444;font-weight:600">-29,359 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 58.0¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will the price of Bitcoin be between $70</span>
+              <span style="color:#ff4444;font-weight:600">-3,570 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 8.2¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">RN1</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">10 поз.</span>
+          </div>
+          <div class="whale-strat">Хай-волюм ротация</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will SC Freiburg win on 2026-05-10?</span>
+              <span style="color:#ff4444;font-weight:600">-1,394 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 0.9¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will West Ham United FC win on 2026-05-1</span>
+              <span style="color:#ff4444;font-weight:600">-440 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 0.5¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Paris Saint-Germain FC win on 2026-</span>
+              <span style="color:#ff4444;font-weight:600">-14,733 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 19.9¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Counter-Strike: Natus Vincere vs Vitalit</span>
+              <span style="color:#ff4444;font-weight:600">-15,286 (-100%)</span>
+              <span class="pos-vol">$0</span>
+              <span class="pos-price">@ 28.5¢</span>
+            </div></div>
+        </div>
+        <div class="whale-card active fade-in">
+          <div class="whale-header">
+            <span class="whale-emoji">🐋</span>
+            <span class="whale-name">Countryside</span>
+            <span class="whale-tier">whale</span>
+            <span class="whale-positions">10 поз.</span>
+          </div>
+          <div class="whale-strat">Спорт, турниры</div>
+          <div class="whale-positions-list">
+            <div class="pos-item">
+              <span class="pos-market">Will Ivory Coast win the 2026 FIFA World</span>
+              <span style="color:#ff4444;font-weight:600">-4,197 (-17%)</span>
+              <span class="pos-vol">$20,093</span>
+              <span class="pos-price">@ 0.4¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Panama win the 2026 FIFA World Cup?</span>
+              <span style="color:#ff4444;font-weight:600">-5,589 (-35%)</span>
+              <span class="pos-vol">$10,442</span>
+              <span class="pos-price">@ 0.2¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Qatar win the 2026 FIFA World Cup?</span>
+              <span style="color:#ff4444;font-weight:600">-5,098 (-33%)</span>
+              <span class="pos-vol">$10,387</span>
+              <span class="pos-price">@ 0.2¢</span>
+            </div>
+            <div class="pos-item">
+              <span class="pos-market">Will Tunisia win the 2026 FIFA World Cup</span>
+              <span style="color:#ff4444;font-weight:600">-4,777 (-25%)</span>
+              <span class="pos-vol">$14,413</span>
+              <span class="pos-price">@ 0.4¢</span>
+            </div></div>
+        </div>
+</div>
+
+<!-- Hot Markets -->
+<div class="section"><div class="section-title">🔥 HOT MARKETS <span class="badge">24H VOLUME</span></div></div>
+<div class="section fade-in" style="max-height:350px;overflow-y:auto">
+
+        <div class="market-item">
+          <span style="color:#666">othe</span> Will Arsenal FC win on 2026-05-10?
+          <span class="market-vol">$8.4M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Will FC Barcelona win on 2026-05-10?
+          <span class="market-vol">$7.3M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Will Bitcoin hit $150k by June 30, 2026?
+          <span class="market-vol">$5.8M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Indian Premier League: Royal Challengers Bangalore vs Mumbai Indians
+          <span class="market-vol">$2.1M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Will Stade Rennais FC 1901 win on 2026-05-10?
+          <span class="market-vol">$1.4M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> US x Iran permanent peace deal by May 15, 2026?
+          <span class="market-vol">$1.4M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> US x Iran permanent peace deal by May 11, 2026?
+          <span class="market-vol">$1.4M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Knicks vs. 76ers
+          <span class="market-vol">$1.3M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Will 1. FC Köln win on 2026-05-10?
+          <span class="market-vol">$1.3M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Hantavirus pandemic in 2026?
+          <span class="market-vol">$1.1M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Internazionali BNL d'Italia: Learner Tien vs Alexander Bublik
+          <span class="market-vol">$1.0M</span>
+        </div>
+        <div class="market-item">
+          <span style="color:#666">othe</span> Will 1. FSV Mainz 05 win on 2026-05-10?
+          <span class="market-vol">$0.9M</span>
+        </div>
+</div>
+
+<!-- Virtual Trading Widget -->
+
+    <div class="section" style="margin-top:20px"><div class="section-title">🎰 ВИРТУАЛЬНЫЙ ДЕПОЗИТ <span class="badge">PAPER TRADING</span></div></div>
+
+    <div style="background:linear-gradient(135deg,#0a1a0a,#1a2a0a);border:3px solid #00ff8855;border-radius:20px;padding:25px;margin:10px 20px;box-shadow:0 0 40px #00ff8815,inset 0 0 60px #00ff8805">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px">
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#0d1a0d,#0a120a);border-radius:12px;border:1px solid #00ff8822">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">💰 Баланс</div>
+          <div id="counter-balance" style="font-size:42px;font-weight:700;color:#00ff88;text-shadow:0 0 20px #00ff8844;animation:glow 2s ease-in-out infinite alternate">$750</div>
+        </div>
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#0d0d1a,#0a0a15);border-radius:12px;border:1px solid #4488ff22">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">📊 Ставок</div>
+          <div style="font-size:42px;font-weight:700;color:#4488ff;text-shadow:0 0 15px #4488ff33">5</div>
+        </div>
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#1a1a0a,#15150a);border-radius:12px;border:1px solid #ffaa0022">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">🏆 Win Rate</div>
+          <div style="font-size:42px;font-weight:700;color:#ffaa00;text-shadow:0 0 15px #ffaa0033">0%</div>
+        </div>
+        <div style="text-align:center;flex:1;min-width:110px;padding:10px;background:linear-gradient(180deg,#0a1a0a,#0a150a);border-radius:12px;border:1px solid #00ff8833">
+          <div style="font-size:10px;color:#666;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">📈 ROI</div>
+          <div style="font-size:42px;font-weight:700;color:#00ff88;text-shadow:0 0 20px #00ff8844">+42.8%</div>
+        </div>
+      </div>'
+
+      <div style="border-top:2px solid #1a1a3a;padding-top:16px;margin-top:12px">
+        <div style="font-size:11px;color:#ffaa00;margin-bottom:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700">⚡ Открытые ставки (5)</div>
+        
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #1a1a3a;font-size:11px;flex-wrap:wrap;gap:4px;background:linear-gradient(90deg,#0a0f0a,#0d0d1a);border-radius:6px;margin:2px 0">
+      <span style="color:#ccc;flex:1;min-width:100px;font-size:10px">🐋 Кит #7 — beachboy4: <span style="color:#00ff88;font-weight:600">Yes</span> Will Charlotte FC win on </span>
+      <span style="color:#ffaa00;font-weight:700;margin:0 6px;font-size:12px">$50 @ 44¢</span>
+      <span style="color:#00ff88;font-weight:900;margin-right:8px;font-size:13px;text-shadow:0 0 10px #00ff8866">+1.63</span>
+      <button onclick="showClose('bet_1778369405_1','🐋 Кит #7 — beachboy4: Yes Will Charlotte FC wi')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600;transition:all .2s">✕</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #1a1a3a;font-size:11px;flex-wrap:wrap;gap:4px;background:linear-gradient(90deg,#0a0f0a,#0d0d1a);border-radius:6px;margin:2px 0">
+      <span style="color:#ccc;flex:1;min-width:100px;font-size:10px">🏆 Кит #5 — April #1: <span style="color:#00ff88;font-weight:600">Thunder</span> Spread: Thunder (-9.5)</span>
+      <span style="color:#ffaa00;font-weight:700;margin:0 6px;font-size:12px">$50 @ 50¢</span>
+      <span style="color:#00ff88;font-weight:900;margin-right:8px;font-size:16px;text-shadow:0 0 10px #00ff8866">+51.01</span>
+      <button onclick="showClose('bet_1778371669_2','🏆 Кит #5 — April #1: Thunder Spread: Thunder (-9.')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600;transition:all .2s">✕</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #1a1a3a;font-size:11px;flex-wrap:wrap;gap:4px;background:linear-gradient(90deg,#0a0f0a,#0d0d1a);border-radius:6px;margin:2px 0">
+      <span style="color:#ccc;flex:1;min-width:100px;font-size:10px">🏆 Кит #5 — April #1: <span style="color:#00ff88;font-weight:600">Thunder</span> Spread: Thunder (-8.5)</span>
+      <span style="color:#ffaa00;font-weight:700;margin:0 6px;font-size:12px">$50 @ 54¢</span>
+      <span style="color:#00ff88;font-weight:900;margin-right:8px;font-size:16px;text-shadow:0 0 10px #00ff8866">+43.46</span>
+      <button onclick="showClose('bet_1778371700_3','🏆 Кит #5 — April #1: Thunder Spread: Thunder (-8.')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600;transition:all .2s">✕</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #1a1a3a;font-size:11px;flex-wrap:wrap;gap:4px;background:linear-gradient(90deg,#0a0f0a,#0d0d1a);border-radius:6px;margin:2px 0">
+      <span style="color:#ccc;flex:1;min-width:100px;font-size:10px">🐋 Кит #1 — kcnyekchno: <span style="color:#00ff88;font-weight:600">Joshua Van</span> UFC 328: Tatsuro Taira vs</span>
+      <span style="color:#ffaa00;font-weight:700;margin:0 6px;font-size:12px">$50 @ 26¢</span>
+      <span style="color:#00ff88;font-weight:900;margin-right:8px;font-size:16px;text-shadow:0 0 10px #00ff8866">+138.58</span>
+      <button onclick="showClose('bet_1778383922_4','🐋 Кит #1 — kcnyekchno: Joshua Van UFC 328: Tatsuro Tai')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600;transition:all .2s">✕</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #1a1a3a;font-size:11px;flex-wrap:wrap;gap:4px;background:linear-gradient(90deg,#0a0f0a,#0d0d1a);border-radius:6px;margin:2px 0">
+      <span style="color:#ccc;flex:1;min-width:100px;font-size:10px">🐋 Кит #1 — kcnyekchno: <span style="color:#00ff88;font-weight:600">Sean Strickland</span> UFC 328: Sean Strickland </span>
+      <span style="color:#ffaa00;font-weight:700;margin:0 6px;font-size:12px">$50 @ 20¢</span>
+      <span style="color:#00ff88;font-weight:900;margin-right:8px;font-size:16px;text-shadow:0 0 10px #00ff8866">+193.78</span>
+      <button onclick="showClose('bet_1778385222_5','🐋 Кит #1 — kcnyekchno: Sean Strickland UFC 328: Sean Strick')" style="background:#1a1a0a;border:1px solid #ffaa0033;color:#ffaa00;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:10px;font-weight:600;transition:all .2s">✕</button>
+    </div>
+        <div style="margin-top:12px;padding-top:10px;border-top:2px solid #1a1a3a;font-size:11px;color:#ffaa00;text-transform:uppercase;letter-spacing:2px;font-weight:700">📜 История (0 закрыто)</div>
+        <div style="color:#333;text-align:center;padding:5px">Ещё нет закрытых ставок</div>
+        <div style="margin-top:16px;padding-top:12px;border-top:2px solid #1a1a3a;font-size:11px;color:#888;line-height:2">
+          💰 Депозит: <span style="color:#00ff88;font-weight:700">$1000</span> | 💵 Выиграно: <span style="color:#00ff88;font-weight:700">$0.00</span> | 💸 Проиграно: <span style="color:#ff4444;font-weight:700">$0.00</span><br>
+          📊 P&L: <span style="color:#00ff88;font-size:14px;font-weight:700">$+428.46</span> | 📈 Старт: $1000 | Сейчас: <span style="color:#00ff88;font-weight:700">$1,428.46</span>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center">
+        <button onclick="loadSignals()" style="background:linear-gradient(135deg,#1a3a1a,#0a2a0a);border:1px solid #00ff8855;color:#00ff88;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s">🎰 Ставка</button>
+        <button onclick="topUp()" style="background:linear-gradient(135deg,#1a2a1a,#0a1a0a);border:1px solid #4488ff55;color:#4488ff;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s">➕ Пополнить</button>
+        <button onclick="refreshPortfolio()" style="background:linear-gradient(135deg,#1a1a2a,#0a0a1a);border:1px solid #aaa55;color:#aaa;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600;transition:all .2s">🔄 Обновить</button>
+      </div>
+    </div>
+
+    <!-- SIGNAL MODAL -->
+    <div id="signalModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000;overflow-y:auto">
+      <div style="max-width:500px;margin:40px auto;background:#0d0d1a;border:2px solid #00ff8833;border-radius:15px;padding:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+          <h2 style="color:#00ff88;font-size:14px;margin:0">🎰 СИГНАЛЫ КИТОВ</h2>
+          <button onclick="closeModal()" style="background:none;border:1px solid #333;color:#ff4444;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:12px">✕</button>
+        </div>
+        <div id="signalList" style="max-height:60vh;overflow-y:auto">
+          <div style="color:#666;text-align:center;padding:20px">Загрузка...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLOSE POSITION MODAL -->
+    <div id="closeModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:1000">
+      <div style="max-width:400px;margin:80px auto;background:#0d0d1a;border:2px solid #ffaa0033;border-radius:15px;padding:20px;text-align:center">
+        <h2 style="color:#ffaa00;font-size:14px;margin-bottom:15px">📋 ЗАКРЫТЬ СТАВКУ</h2>
+        <p id="closeInfo" style="color:#888;font-size:11px;margin-bottom:15px"></p>
+        <div style="display:flex;gap:10px;justify-content:center">
+          <button id="closeWinBtn" onclick="closePosition('win')" style="background:#0a2a0a;border:2px solid #00ff88;color:#00ff88;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">✅ WIN</button>
+          <button id="closeLossBtn" onclick="closePosition('loss')" style="background:#2a0a0a;border:2px solid #ff4444;color:#ff4444;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700">❌ LOSS</button>
+        </div>
+        <button onclick="document.getElementById('closeModal').style.display='none'" style="background:none;border:1px solid #333;color:#888;padding:6px 16px;border-radius:5px;cursor:pointer;font-size:11px;margin-top:10px">Отмена</button>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a2a;border:1px solid #00ff88;color:#00ff88;padding:12px 24px;border-radius:10px;font-size:12px;z-index:2000;transition:opacity .3s"></div>
+
+    <script src="dashboard.js"></script>
+
+    <div style="background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:15px;margin:10px 20px">
+      <h3 style="color:#00ff88;font-size:12px;margin-bottom:10px">⚡ КАК ИСПОЛЬЗОВАТЬ</h3>
+      <div style="font-size:10px;color:#999;line-height:1.8">
+        <div>1️⃣ <b style="color:#ffaa00">🎰 Ставка</b> — сигналы китов + кнопки ставок по $50</div>
+        <div>2️⃣ <b style="color:#ffaa00">❌ WIN/LOSS</b> — закрыть позицию прямо из дашборда</div>
+        <div>3️⃣ <b style="color:#ffaa00">➕ Пополнить</b> — +$500 к депозиту</div>
+        <div>4️⃣ <b style="color:#ffaa00">🔄 Обновить</b> — синхронизировать с ботом</div>
+        <div style="margin-top:8px;color:#ff4444">⚠️ Это симуляция. Реальные деньги НЕ используются. Синхронизировано с Telegram ботом.</div>
+      </div>
+    </div>
+
+<!-- Strategy Guide -->
+<div class="section" style="margin-top:15px"><div class="section-title">💰 СТРАТЕГИИ <span class="badge">GUIDE</span></div></div>
+<div style="padding:5px 20px 80px 20px;font-size:10px;color:#888;line-height:1.8">
+<div style="background:#0d0d1a;border:1px solid #1a1a3a;border-radius:10px;padding:15px">
+  <h3 style="color:#00ff88;font-size:12px;margin-bottom:10px">⚡ КАК ПОЛЬЗОВАТЬСЯ СИГНАЛАМИ</h3>
+  <div>1️⃣ <b style="color:#ffaa00">Смотри сигналы выше</b> — каждый сигнал содержит конкретную инструкцию: когда входить, где тейк-профит, где стоп-лосс</div>
+  <div>2️⃣ <b style="color:#ffaa00">P&L трекер</b> — мы считаем сколько ты бы заработал если отработал каждый сигнал на $100</div>
+  <div>3️⃣ <b style="color:#ffaa00">Входи ПОСЛЕ кита</b> — не вместе с ним. Подожди стабилизации цены 1-5 минут</div>
+  <div>4️⃣ <b style="color:#ff4444">Стоп-лосс = жизнь</b> — каждый сигнал содержит точный стоп-лосс</div>
+  <div>5️⃣ <b style="color:#00ff88">Выходи раньше кита</b> — забирай прибыль и беги 💀</div>
+</div>
+</div>
+
+<div class="refresh-bar">
+  <span class="status"><span class="spinner"></span> LIVE • Auto-refresh <span id="countdown">120</span>s</span>
+  <span style="color:#444">NANO Whale Tracker v3.0 • Polymarket API</span>
+  <span style="color:#555" id="update-time">10.05.2026 20:56</span>
+</div>
+
+<script>
+let cd=120;
+setInterval(()=>{
+  cd--;
+  document.getElementById('countdown').textContent=cd;
+  if(cd<=0){cd=120;location.reload();}
+},1000);
+</script>
+</body>
+</html>
