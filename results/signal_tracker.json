@@ -155,6 +155,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778702365.0469692
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Colorado Rockies vs. Pittsburgh Pirates:BUY:1050",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Colorado Rockies vs. Pittsburgh Pirates",
+      "size": 1050.0,
+      "price": 0.63,
+      "instructions": "📈 Вход: купить YES @ 0.63¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+13%) или держи\n🛑 Стоп-лосс: 0.53¢ (-10-15%)\n💰 Размер: кит ставит $662 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778713705.078636
     }
   ],
   "total_pnl": 0,
