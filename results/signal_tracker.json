@@ -129,6 +129,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778611808.298555
+    },
+    {
+      "key": "0x2a2c53bd278c04da9962fcf96490e17f3dfb9bc1:Will Stade Rennais FC 1901 win on 2026-05-17?:BUY:13952",
+      "whale_name": "kcnyekchno",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will Stade Rennais FC 1901 win on 2026-05-17?",
+      "size": 13951.68,
+      "price": 0.71,
+      "instructions": "📈 Вход: купить YES @ 0.71¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+11%) или держи\n🛑 Стоп-лосс: 0.61¢ (-10-15%)\n💰 Размер: кит ставит $9,906 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778696656.601185
     }
   ],
   "total_pnl": 0,
