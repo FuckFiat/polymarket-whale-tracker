@@ -246,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778777408.655894
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Internazionali BNL d'Italia: Martin Landaluce vs Daniil Medvedev:BUY:463",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Internazionali BNL d'Italia: Martin Landaluce vs Daniil Medvedev",
+      "size": 463.32,
+      "price": 0.64,
+      "instructions": "📈 Вход: купить YES @ 0.64¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.54¢ (-10-15%)\n💰 Размер: кит ставит $297 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778784652.483108
     }
   ],
   "total_pnl": 0,
