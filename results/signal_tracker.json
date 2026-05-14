@@ -168,6 +168,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778713705.078636
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Wild vs. Avalanche: O/U 5.5:BUY:456",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Wild vs. Avalanche: O/U 5.5",
+      "size": 455.99,
+      "price": 0.33,
+      "instructions": "📈 Вход: купить YES @ 0.33¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 0¢ (+45%) или до resolve\n🛑 Стоп-лосс: 0.25¢ (-25%)\n💰 Размер: кит ставит $150 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778722327.8933928
     }
   ],
   "total_pnl": 0,
