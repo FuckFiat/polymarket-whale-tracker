@@ -220,6 +220,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778724487.15901
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Paris: Aliaksandra Sasnovich vs Anna Blinkova:BUY:273",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Paris: Aliaksandra Sasnovich vs Anna Blinkova",
+      "size": 273.0,
+      "price": 0.73,
+      "instructions": "📈 Вход: купить YES @ 0.73¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+11%) или держи\n🛑 Стоп-лосс: 0.63¢ (-10-15%)\n💰 Размер: кит ставит $199 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778751145.542542
     }
   ],
   "total_pnl": 0,
