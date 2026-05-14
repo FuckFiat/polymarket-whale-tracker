@@ -181,6 +181,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778722327.8933928
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Detroit Tigers vs. New York Mets:BUY:535",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Detroit Tigers vs. New York Mets",
+      "size": 535.35,
+      "price": 0.56,
+      "instructions": "📈 Вход: купить YES @ 0.56¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+14%) или держи\n🛑 Стоп-лосс: 0.46¢ (-10-15%)\n💰 Размер: кит ставит $300 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778723047.193737
     }
   ],
   "total_pnl": 0,
