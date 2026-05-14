@@ -194,6 +194,32 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778723047.193737
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Wild vs. Avalanche:BUY:2762",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Wild vs. Avalanche",
+      "size": 2762.32,
+      "price": 0.18,
+      "instructions": "📈 Вход: купить YES @ 0.18¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.09¢ (потеря 50%)\n💰 Размер: кит ставит $497 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778724487.158889
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Wild vs. Avalanche:BUY:1280",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Wild vs. Avalanche",
+      "size": 1279.69,
+      "price": 0.18,
+      "instructions": "📈 Вход: купить YES @ 0.18¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.09¢ (потеря 50%)\n💰 Размер: кит ставит $230 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778724487.15901
     }
   ],
   "total_pnl": 0,
