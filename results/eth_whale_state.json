@@ -1,5 +1,5 @@
 {
-  "last_check": 1778827120,
+  "last_check": 1778828143,
   "history": [
     {
       "time": 1778475077,
@@ -550,24 +550,74 @@
       ],
       "eth_price": 2252.85,
       "total_oi_usd": 8611135118.021084
+    },
+    {
+      "time": 1778827521,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2942
+        ],
+        [
+          "Binance Global",
+          2.5894
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          -0.0006929999999999999
+        ],
+        [
+          "OKX",
+          0.00513788966297
+        ]
+      ],
+      "eth_price": 2255.25,
+      "total_oi_usd": 8608481987.410004
+    },
+    {
+      "time": 1778828143,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2942
+        ],
+        [
+          "Binance Global",
+          2.5894
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          -0.0006929999999999999
+        ],
+        [
+          "OKX",
+          0.00477065446278
+        ]
+      ],
+      "eth_price": 2254.15,
+      "total_oi_usd": 8610086519.784704
     }
   ],
   "alerts_sent": 0,
   "last_data": {
-    "timestamp": 1778827120,
-    "time_utc": "2026-05-15 06:38 UTC",
+    "timestamp": 1778828143,
+    "time_utc": "2026-05-15 06:55 UTC",
     "exchanges": {
       "Binance": {
         "exchange": "Binance",
         "symbol": "ETHUSDT",
-        "timestamp": 1778827109,
+        "timestamp": 1778828133,
         "top_long_pct": 56.410000000000004,
         "top_short_pct": 43.59,
         "top_ls_ratio": 1.2942,
         "global_long_pct": 72.14,
         "global_short_pct": 27.860000000000003,
         "global_ls_ratio": 2.5894,
-        "open_interest": 2152668.639,
+        "open_interest": 2153211.192,
         "funding_rate": -6.93e-06,
         "funding_rate_pct": -0.0006929999999999999,
         "taker_buy_vol": 199239.884,
@@ -578,7 +628,7 @@
       "Bybit": {
         "exchange": "Bybit",
         "symbol": "ETHUSDT",
-        "timestamp": 1778827109,
+        "timestamp": 1778828133,
         "open_interest": 818955.76,
         "funding_rate": 2.435e-05,
         "funding_rate_pct": 0.002435,
@@ -587,19 +637,19 @@
       "OKX": {
         "exchange": "OKX",
         "symbol": "ETH-USDT-SWAP",
-        "timestamp": 1778827109,
-        "open_interest": 7886204.020000017,
-        "open_interest_usd": 1776399000.3210838,
-        "funding_rate": 5.30344597938e-05,
-        "funding_rate_pct": 0.00530344597938,
+        "timestamp": 1778828133,
+        "open_interest": 7871221.700000018,
+        "open_interest_usd": 1774102530.184704,
+        "funding_rate": 4.77065446278e-05,
+        "funding_rate_pct": 0.00477065446278,
         "next_funding_time": "1778860800000",
         "success": true
       },
       "Hyperliquid": {
         "exchange": "Hyperliquid",
         "symbol": "ETH",
-        "timestamp": 1778827109,
-        "eth_price": 2252.85,
+        "timestamp": 1778828133,
+        "eth_price": 2254.15,
         "hl_oi": 0.0,
         "hl_max_leverage": 0,
         "success": true
@@ -607,13 +657,13 @@
       "Deribit": {
         "exchange": "Deribit",
         "symbol": "ETH",
-        "timestamp": 1778827109,
+        "timestamp": 1778828133,
         "error": "",
         "success": false
       }
     },
-    "eth_price": 2252.85,
-    "total_oi_usd": 8611135118.021084,
+    "eth_price": 2254.15,
+    "total_oi_usd": 8610086519.784704,
     "ls_ratios": [
       [
         "Binance Top",
@@ -631,7 +681,7 @@
       ],
       [
         "OKX",
-        0.00530344597938
+        0.00477065446278
       ]
     ]
   },
