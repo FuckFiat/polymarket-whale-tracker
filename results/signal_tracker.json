@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0xbddf61af533ff524d27154e589d2d7a81510c684:Will Panama win the 2026 FIFA World Cup?:SELL:296543",
-      "whale_name": "Countryside",
-      "emoji": "🐋",
-      "side": "SELL",
-      "market": "Will Panama win the 2026 FIFA World Cup?",
-      "size": 296543.0,
-      "price": 0.002,
-      "instructions": "📉 Вход: продать (NO) @ 1.00¢ — ВЫСОКИЙ РИСК\n⚠️ YES на 100% — если resolve=YES, теряешь 0¢/$\n💰 Размер: кит ставит $593 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778494519.755212
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: FURIA vs Spirit - Map 2 Winner:BUY:1579",
       "whale_name": "RN1",
       "emoji": "🐋",
