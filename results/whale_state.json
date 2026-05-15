@@ -1,7 +1,7 @@
 {
   "last_trades": {},
-  "last_check": 1778871914.1601322,
-  "alerts_sent": 21213,
+  "last_check": 1778872225.5457668,
+  "alerts_sent": 21220,
   "seen_positions": {
     "0x2a2c53bd:Will Aston Villa FC win on 2026-05-03?:Yes": 1777831435.433974,
     "0x2005d16a:Counter-Strike: Natus Vincere vs Vitalit:Vitality": 1777831443.266465,
@@ -437,7 +437,8 @@
     "0x2005d16a:Counter-Strike: FURIA vs Team Falcons (B:FURIA": 1778864640.331181,
     "0x2005d16a:Counter-Strike: FURIA vs Team Falcons (B:Team Falcons": 1778864943.4861891,
     "0x2005d16a:Counter-Strike: FURIA vs Team Falcons - :Team Falcons": 1778865853.616835,
-    "0x2005d16a:Internazionali BNL d'Italia: Jannik Sinn:Jannik Sinner": 1778869791.7230878
+    "0x2005d16a:Internazionali BNL d'Italia: Jannik Sinn:Jannik Sinner": 1778869791.7230878,
+    "0x2005d16a:Internazionali BNL d'Italia: Jannik Sinn:Daniil Medvedev": 1778872224.405143
   },
   "last_position_count": {
     "0x2a2c53bd": 33,
@@ -448,19 +449,19 @@
     "0xefbc5fec": 0,
     "0xc2e7800b": 1,
     "0xde17f714": 0,
-    "0x2005d16a": 11,
+    "0x2005d16a": 10,
     "0xbddf61af": 36
   },
   "last_activity": {
-    "0x2a2c53bd": "$1,492,601 | P&L: $-5,374,737 | 19:05",
-    "0xdc876e68": "$0 | P&L: $-17,649,786 | 19:05",
-    "0x02227b8f": "$0 | P&L: $-4,628,504 | 19:05",
-    "0x019782ca": "$0 | P&L: $+0 | 19:05",
-    "0x492442ea": "$0 | P&L: $+0 | 19:05",
-    "0xefbc5fec": "$0 | P&L: $-1,530,129 | 19:05",
-    "0xc2e7800b": "$5,387 | P&L: $-4,728 | 19:05",
-    "0xde17f714": "$0 | P&L: $-179,007 | 19:05",
-    "0x2005d16a": "$296,545 | P&L: $-614,041 | 19:05",
-    "0xbddf61af": "$379,596 | P&L: $-14,635,795 | 19:05"
+    "0x2a2c53bd": "$1,492,601 | P&L: $-5,374,737 | 19:10",
+    "0xdc876e68": "$0 | P&L: $-17,649,786 | 19:10",
+    "0x02227b8f": "$0 | P&L: $-4,628,504 | 19:10",
+    "0x019782ca": "$0 | P&L: $+0 | 19:10",
+    "0x492442ea": "$0 | P&L: $+0 | 19:10",
+    "0xefbc5fec": "$0 | P&L: $-1,530,129 | 19:10",
+    "0xc2e7800b": "$5,387 | P&L: $-4,728 | 19:10",
+    "0xde17f714": "$0 | P&L: $-179,007 | 19:10",
+    "0x2005d16a": "$314,475 | P&L: $-617,399 | 19:10",
+    "0xbddf61af": "$379,600 | P&L: $-14,635,773 | 19:10"
   }
 }
