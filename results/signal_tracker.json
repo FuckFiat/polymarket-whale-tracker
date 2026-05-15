@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778784652.483108
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: MOUZ vs Aurora Gaming - Map 1 Winner:BUY:310",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: MOUZ vs Aurora Gaming - Map 1 Winner",
+      "size": 310.0,
+      "price": 0.85,
+      "instructions": "📈 Вход: купить YES @ 0.85¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 15.0¢ на доллар если resolve=YES\n⚠️ Риск: 85¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $264 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778825475.878869
     }
   ],
   "total_pnl": 0,
