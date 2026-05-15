@@ -1,65 +1,65 @@
 {
-  "last_check": 1778879722.379186,
+  "last_check": 1778879907.78026,
   "alerts_sent": 0,
   "tracked_positions": {},
   "seen_positions": {
     "0x31ca8395:ETH:short": {
       "size": 941.0741,
       "entry": 2292.24,
-      "notional": 2091207.8113150003,
-      "timestamp": 1778879721.732803
+      "notional": 2092242.992825,
+      "timestamp": 1778879907.1384819
     }
   },
   "whale_pnl": {
     "0xa822a9ce": {
       "account_value": 10141.13,
       "positions": 0,
-      "timestamp": 1778879719.274663
+      "timestamp": 1778879904.5543349
     },
     "0x1c498a93": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879719.586907
+      "timestamp": 1778879904.872994
     },
     "0x24de6b77": {
       "account_value": 4500.0,
       "positions": 0,
-      "timestamp": 1778879719.912548
+      "timestamp": 1778879905.186913
     },
     "0xe6111266": {
       "account_value": 9500.0,
       "positions": 0,
-      "timestamp": 1778879720.225184
+      "timestamp": 1778879905.519186
     },
     "0x4ec8fe22": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879720.541308
+      "timestamp": 1778879905.831237
     },
     "0xdfc24b07": {
-      "account_value": 127204662.664471,
+      "account_value": 127219852.571267,
       "positions": 0,
-      "timestamp": 1778879720.857569
+      "timestamp": 1778879906.249984
     },
     "0x87f9cd15": {
       "account_value": 2696.150404,
       "positions": 0,
-      "timestamp": 1778879721.170889
+      "timestamp": 1778879906.561302
     },
     "0x31ca8395": {
-      "account_value": 114080578.646295,
+      "account_value": 114078036.467263,
       "positions": 183,
-      "timestamp": 1778879721.732882
+      "timestamp": 1778879907.138581
     },
     "0x010461c1": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879722.046628
+      "timestamp": 1778879907.456355
     },
     "0xfc667adb": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879722.3791811
+      "timestamp": 1778879907.780252
     }
   }
 }
