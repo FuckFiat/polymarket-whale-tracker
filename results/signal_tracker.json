@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: FURIA vs Spirit - Map 2 Winner:BUY:1579",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Counter-Strike: FURIA vs Spirit - Map 2 Winner",
-      "size": 1579.12,
-      "price": 0.07,
-      "instructions": "📈 Вход: купить YES @ 0.07¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.04¢ (потеря 50%)\n💰 Размер: кит ставит $111 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778511021.283396
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: FURIA vs Spirit - Map 2 Winner:BUY:288",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778825475.878869
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: MOUZ vs Aurora Gaming - Map 2 Winner:BUY:780",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: MOUZ vs Aurora Gaming - Map 2 Winner",
+      "size": 780.0,
+      "price": 0.94,
+      "instructions": "📈 Вход: купить YES @ 0.94¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 6.0¢ на доллар если resolve=YES\n⚠️ Риск: 94¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $733 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778828746.4963012
     }
   ],
   "total_pnl": 0,
