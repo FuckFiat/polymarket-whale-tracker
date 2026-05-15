@@ -1,65 +1,65 @@
 {
-  "last_check": 1778879172.356983,
+  "last_check": 1778879355.78316,
   "alerts_sent": 0,
   "tracked_positions": {},
   "seen_positions": {
     "0x31ca8395:ETH:short": {
-      "size": 941.0746,
+      "size": 941.0201,
       "entry": 2292.25,
-      "notional": 2089326.77319,
-      "timestamp": 1778879171.73531
+      "notional": 2090617.305165,
+      "timestamp": 1778879355.157015
     }
   },
   "whale_pnl": {
     "0xa822a9ce": {
       "account_value": 10141.13,
       "positions": 0,
-      "timestamp": 1778879169.0802681
+      "timestamp": 1778879352.430624
     },
     "0x1c498a93": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879169.390217
+      "timestamp": 1778879352.755906
     },
     "0x24de6b77": {
       "account_value": 4500.0,
       "positions": 0,
-      "timestamp": 1778879169.71152
+      "timestamp": 1778879353.080101
     },
     "0xe6111266": {
       "account_value": 9500.0,
       "positions": 0,
-      "timestamp": 1778879170.02157
+      "timestamp": 1778879353.438037
     },
     "0x4ec8fe22": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879170.3377018
+      "timestamp": 1778879353.7480268
     },
     "0xdfc24b07": {
-      "account_value": 127204598.739142,
+      "account_value": 127204642.608077,
       "positions": 0,
-      "timestamp": 1778879170.646776
+      "timestamp": 1778879354.073039
     },
     "0x87f9cd15": {
       "account_value": 2696.150404,
       "positions": 0,
-      "timestamp": 1778879170.95591
+      "timestamp": 1778879354.382796
     },
     "0x31ca8395": {
-      "account_value": 114087397.663219,
+      "account_value": 114083565.49087,
       "positions": 183,
-      "timestamp": 1778879171.735394
+      "timestamp": 1778879355.157148
     },
     "0x010461c1": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879172.046177
+      "timestamp": 1778879355.46877
     },
     "0xfc667adb": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778879172.356972
+      "timestamp": 1778879355.7831511
     }
   }
 }
