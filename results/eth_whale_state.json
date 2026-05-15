@@ -1,5 +1,5 @@
 {
-  "last_check": 1778487734,
+  "last_check": 1778827120,
   "history": [
     {
       "time": 1778475077,
@@ -525,56 +525,81 @@
       ],
       "eth_price": 2331.35,
       "total_oi_usd": 8269452909.952505
+    },
+    {
+      "time": 1778827120,
+      "ls_ratios": [
+        [
+          "Binance Top",
+          1.2942
+        ],
+        [
+          "Binance Global",
+          2.5894
+        ]
+      ],
+      "funding_rates": [
+        [
+          "Binance",
+          -0.0006929999999999999
+        ],
+        [
+          "OKX",
+          0.00530344597938
+        ]
+      ],
+      "eth_price": 2252.85,
+      "total_oi_usd": 8611135118.021084
     }
   ],
   "alerts_sent": 0,
   "last_data": {
-    "timestamp": 1778487734,
-    "time_utc": "2026-05-11 08:22 UTC",
+    "timestamp": 1778827120,
+    "time_utc": "2026-05-15 06:38 UTC",
     "exchanges": {
       "Binance": {
         "exchange": "Binance",
         "symbol": "ETHUSDT",
-        "timestamp": 1778487723,
-        "top_long_pct": 55.14,
-        "top_short_pct": 44.86,
-        "top_ls_ratio": 1.2293,
-        "global_long_pct": 67.73,
-        "global_short_pct": 32.269999999999996,
-        "global_ls_ratio": 2.0989,
-        "open_interest": 2062418.823,
-        "funding_rate": 1.995e-05,
-        "funding_rate_pct": 0.0019950000000000002,
-        "taker_buy_vol": 26766.195,
-        "taker_sell_vol": 27919.571,
-        "taker_ratio": 0.9587,
+        "timestamp": 1778827109,
+        "top_long_pct": 56.410000000000004,
+        "top_short_pct": 43.59,
+        "top_ls_ratio": 1.2942,
+        "global_long_pct": 72.14,
+        "global_short_pct": 27.860000000000003,
+        "global_ls_ratio": 2.5894,
+        "open_interest": 2152668.639,
+        "funding_rate": -6.93e-06,
+        "funding_rate_pct": -0.0006929999999999999,
+        "taker_buy_vol": 199239.884,
+        "taker_sell_vol": 229856.013,
+        "taker_ratio": 0.8668,
         "success": true
       },
       "Bybit": {
         "exchange": "Bybit",
         "symbol": "ETHUSDT",
-        "timestamp": 1778487723,
-        "open_interest": 756664.57,
-        "funding_rate": 6.713e-05,
-        "funding_rate_pct": 0.006713,
+        "timestamp": 1778827109,
+        "open_interest": 818955.76,
+        "funding_rate": 2.435e-05,
+        "funding_rate_pct": 0.002435,
         "success": true
       },
       "OKX": {
         "exchange": "OKX",
         "symbol": "ETH-USDT-SWAP",
-        "timestamp": 1778487723,
-        "open_interest": 7659900.5000000205,
-        "open_interest_usd": 1785561106.0525048,
-        "funding_rate": 9.4108104967e-05,
-        "funding_rate_pct": 0.009410810496700001,
-        "next_funding_time": "1778544000000",
+        "timestamp": 1778827109,
+        "open_interest": 7886204.020000017,
+        "open_interest_usd": 1776399000.3210838,
+        "funding_rate": 5.30344597938e-05,
+        "funding_rate_pct": 0.00530344597938,
+        "next_funding_time": "1778860800000",
         "success": true
       },
       "Hyperliquid": {
         "exchange": "Hyperliquid",
         "symbol": "ETH",
-        "timestamp": 1778487723,
-        "eth_price": 2331.35,
+        "timestamp": 1778827109,
+        "eth_price": 2252.85,
         "hl_oi": 0.0,
         "hl_max_leverage": 0,
         "success": true
@@ -582,31 +607,31 @@
       "Deribit": {
         "exchange": "Deribit",
         "symbol": "ETH",
-        "timestamp": 1778487723,
+        "timestamp": 1778827109,
         "error": "",
         "success": false
       }
     },
-    "eth_price": 2331.35,
-    "total_oi_usd": 8269452909.952505,
+    "eth_price": 2252.85,
+    "total_oi_usd": 8611135118.021084,
     "ls_ratios": [
       [
         "Binance Top",
-        1.2293
+        1.2942
       ],
       [
         "Binance Global",
-        2.0989
+        2.5894
       ]
     ],
     "funding_rates": [
       [
         "Binance",
-        0.0019950000000000002
+        -0.0006929999999999999
       ],
       [
         "OKX",
-        0.009410810496700001
+        0.00530344597938
       ]
     ]
   },

@@ -1,7 +1,7 @@
 {
   "last_trades": {},
-  "last_check": 1778487718.813131,
-  "alerts_sent": 20996,
+  "last_check": 1778827105.4951308,
+  "alerts_sent": 21003,
   "seen_positions": {
     "0x2a2c53bd:Will Aston Villa FC win on 2026-05-03?:Yes": 1777831435.433974,
     "0x2005d16a:Counter-Strike: Natus Vincere vs Vitalit:Vitality": 1777831443.266465,
@@ -423,30 +423,37 @@
     "0x2005d16a:Counter-Strike: PARIVISION vs Aurora Gam:Aurora Gaming": 1778478876.612881,
     "0x2005d16a:Counter-Strike: PARIVISION vs Aurora Gam:PARIVISION": 1778479204.8521118,
     "0x2005d16a:Counter-Strike: TheMongolz vs G2 (BO3) -:TheMongolz": 1778484051.638062,
-    "0x2005d16a:Counter-Strike: TheMongolz vs G2 - Map 2:TheMongolz": 1778487338.654131
+    "0x2005d16a:Counter-Strike: TheMongolz vs G2 - Map 2:TheMongolz": 1778487338.654131,
+    "0x2a2c53bd:Will Turkiye win the 2026 FIFA World Cup:Yes": 1778826888.381941,
+    "0x492442ea:Canadiens vs. Sabres:Canadiens": 1778826981.472338,
+    "0x2005d16a:Counter-Strike: MOUZ vs Aurora Gaming - :MOUZ": 1778827043.382849,
+    "0x2005d16a:Bordeaux: Botic van de Zandschulp vs Que:Quentin Halys": 1778827043.3828511,
+    "0x2005d16a:Counter-Strike: MOUZ vs Aurora Gaming (B:MOUZ": 1778827043.382853,
+    "0x2005d16a:Bordeaux: Juan Manuel Cerundolo vs Roman:Juan Manuel Cerundolo": 1778827043.382855,
+    "0xbddf61af:Will Iraq win the 2026 FIFA World Cup?:Yes": 1778827074.375762
   },
   "last_position_count": {
-    "0x2a2c53bd": 37,
+    "0x2a2c53bd": 33,
     "0xdc876e68": 0,
     "0x02227b8f": 0,
     "0x019782ca": 0,
-    "0x492442ea": 0,
+    "0x492442ea": 1,
     "0xefbc5fec": 0,
-    "0xc2e7800b": 2,
+    "0xc2e7800b": 1,
     "0xde17f714": 0,
-    "0x2005d16a": 9,
-    "0xbddf61af": 40
+    "0x2005d16a": 6,
+    "0xbddf61af": 36
   },
   "last_activity": {
-    "0x2a2c53bd": "$1,419,665 | P&L: $-5,012,805 | 08:17",
-    "0xdc876e68": "$0 | P&L: $-17,649,786 | 08:17",
-    "0x02227b8f": "$0 | P&L: $-4,628,504 | 08:18",
-    "0x019782ca": "$0 | P&L: $+0 | 08:18",
-    "0x492442ea": "$0 | P&L: $-406,919 | 08:18",
-    "0xefbc5fec": "$0 | P&L: $-1,530,129 | 08:19",
-    "0xc2e7800b": "$440,567 | P&L: $+173,136 | 08:19",
-    "0xde17f714": "$0 | P&L: $-179,007 | 08:20",
-    "0x2005d16a": "$185,486 | P&L: $-551,366 | 08:20",
-    "0xbddf61af": "$510,524 | P&L: $-13,863,814 | 08:21"
+    "0x2a2c53bd": "$1,493,364 | P&L: $-5,373,974 | 06:34",
+    "0xdc876e68": "$0 | P&L: $-17,649,786 | 06:35",
+    "0x02227b8f": "$0 | P&L: $-4,628,504 | 06:35",
+    "0x019782ca": "$0 | P&L: $+0 | 06:36",
+    "0x492442ea": "$30,459 | P&L: $+15,230 | 06:36",
+    "0xefbc5fec": "$0 | P&L: $-1,530,129 | 06:36",
+    "0xc2e7800b": "$5,163 | P&L: $-4,952 | 06:36",
+    "0xde17f714": "$0 | P&L: $-179,007 | 06:36",
+    "0x2005d16a": "$89,080 | P&L: $-630,471 | 06:37",
+    "0xbddf61af": "$384,151 | P&L: $-14,639,534 | 06:37"
   }
 }
