@@ -1,65 +1,65 @@
 {
-  "last_check": 1778884678.034241,
+  "last_check": 1778884862.622577,
   "alerts_sent": 0,
   "tracked_positions": {},
   "seen_positions": {
     "0x31ca8395:ETH:short": {
-      "size": 940.1728,
+      "size": 939.8058,
       "entry": 2291.51,
-      "notional": 2088170.7974400003,
-      "timestamp": 1778884677.399056
+      "notional": 2087825.57499,
+      "timestamp": 1778884861.96097
     }
   },
   "whale_pnl": {
     "0xa822a9ce": {
       "account_value": 10141.13,
       "positions": 0,
-      "timestamp": 1778884674.614274
+      "timestamp": 1778884859.394057
     },
     "0x1c498a93": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778884674.9787579
+      "timestamp": 1778884859.7058518
     },
     "0x24de6b77": {
       "account_value": 4500.0,
       "positions": 0,
-      "timestamp": 1778884675.3027
+      "timestamp": 1778884860.017965
     },
     "0xe6111266": {
       "account_value": 9500.0,
       "positions": 0,
-      "timestamp": 1778884675.6249
+      "timestamp": 1778884860.4170098
     },
     "0x4ec8fe22": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778884676.0160608
+      "timestamp": 1778884860.733935
     },
     "0xdfc24b07": {
-      "account_value": 127220180.036577,
+      "account_value": 127220188.836938,
       "positions": 0,
-      "timestamp": 1778884676.325293
+      "timestamp": 1778884861.048207
     },
     "0x87f9cd15": {
       "account_value": 2696.150404,
       "positions": 0,
-      "timestamp": 1778884676.6351008
+      "timestamp": 1778884861.3632011
     },
     "0x31ca8395": {
-      "account_value": 114086844.239676,
+      "account_value": 114085334.536759,
       "positions": 183,
-      "timestamp": 1778884677.3991559
+      "timestamp": 1778884861.961
     },
     "0x010461c1": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778884677.7110488
+      "timestamp": 1778884862.3054059
     },
     "0xfc667adb": {
       "account_value": 0.0,
       "positions": 0,
-      "timestamp": 1778884678.0342321
+      "timestamp": 1778884862.62257
     }
   }
 }
