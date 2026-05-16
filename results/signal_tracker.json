@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778947143.381171
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will FC Porto vs. CD Santa Clara end in a draw?:BUY:1084",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will FC Porto vs. CD Santa Clara end in a draw?",
+      "size": 1083.77,
+      "price": 0.91,
+      "instructions": "📈 Вход: купить YES @ 0.91¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 9.0¢ на доллар если resolve=YES\n⚠️ Риск: 91¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $986 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778947867.343101
     }
   ],
   "total_pnl": 0,
