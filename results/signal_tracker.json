@@ -1,45 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2a2c53bd278c04da9962fcf96490e17f3dfb9bc1:Will Stade Rennais FC 1901 win on 2026-05-17?:BUY:13952",
-      "whale_name": "kcnyekchno",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will Stade Rennais FC 1901 win on 2026-05-17?",
-      "size": 13951.68,
-      "price": 0.71,
-      "instructions": "📈 Вход: купить YES @ 0.71¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+11%) или держи\n🛑 Стоп-лосс: 0.61¢ (-10-15%)\n💰 Размер: кит ставит $9,906 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778696656.601185
-    },
-    {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Bordeaux: Luca Van Assche vs Juan Manuel Cerundolo:BUY:2230",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Bordeaux: Luca Van Assche vs Juan Manuel Cerundolo",
-      "size": 2230.0,
-      "price": 0.9,
-      "instructions": "📈 Вход: купить YES @ 0.90¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 10.0¢ на доллар если resolve=YES\n⚠️ Риск: 90¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $2,007 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778702365.0469692
-    },
-    {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Colorado Rockies vs. Pittsburgh Pirates:BUY:1050",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Colorado Rockies vs. Pittsburgh Pirates",
-      "size": 1050.0,
-      "price": 0.63,
-      "instructions": "📈 Вход: купить YES @ 0.63¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+13%) или держи\n🛑 Стоп-лосс: 0.53¢ (-10-15%)\n💰 Размер: кит ставит $662 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778713705.078636
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Wild vs. Avalanche: O/U 5.5:BUY:456",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -285,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778946784.465214
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:GP SAR La Princesse Lalla Meryem, Qualification: Anastasia Zolotareva vs Zhibek Kulambayeva:BUY:184",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "GP SAR La Princesse Lalla Meryem, Qualification: Anastasia Zolotareva vs Zhibek Kulambayeva",
+      "size": 183.67,
+      "price": 0.86,
+      "instructions": "📈 Вход: купить YES @ 0.86¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 14.0¢ на доллар если resolve=YES\n⚠️ Риск: 86¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $158 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778947143.381171
     }
   ],
   "total_pnl": 0,
