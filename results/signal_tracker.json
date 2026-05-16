@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Zagreb: Thiago Monteiro vs Andres Andrade:BUY:266",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Zagreb: Thiago Monteiro vs Andres Andrade",
-      "size": 266.42,
-      "price": 0.66,
-      "instructions": "📈 Вход: купить YES @ 0.66¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.56¢ (-10-15%)\n💰 Размер: кит ставит $176 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778600498.553119
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Cordoba: Juan Bautista Torres vs Bruno Fernandez:BUY:631",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1778939943.631849
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Bordeaux: Raphael Collignon vs Tallon Griekspoor:BUY:809",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Bordeaux: Raphael Collignon vs Tallon Griekspoor",
+      "size": 809.05,
+      "price": 0.14,
+      "instructions": "📈 Вход: купить YES @ 0.14¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.07¢ (потеря 50%)\n💰 Размер: кит ставит $113 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1778945348.559094
     }
   ],
   "total_pnl": 0,
