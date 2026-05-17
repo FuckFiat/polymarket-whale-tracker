@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Internazionali BNL d'Italia: Martin Landaluce vs Daniil Medvedev:BUY:463",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Internazionali BNL d'Italia: Martin Landaluce vs Daniil Medvedev",
-      "size": 463.32,
-      "price": 0.64,
-      "instructions": "📈 Вход: купить YES @ 0.64¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.54¢ (-10-15%)\n💰 Размер: кит ставит $297 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778784652.483108
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: MOUZ vs Aurora Gaming - Map 1 Winner:BUY:310",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779027422.2034292
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Brentford FC win on 2026-05-17?:BUY:1350",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will Brentford FC win on 2026-05-17?",
+      "size": 1350.0,
+      "price": 0.22,
+      "instructions": "📈 Вход: купить YES @ 0.22¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.11¢ (потеря 50%)\n💰 Размер: кит ставит $297 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779033362.043473
     }
   ],
   "total_pnl": 0,
