@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Paris: Katie Volynets vs Yulia Starodubtseva:BUY:286",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Paris: Katie Volynets vs Yulia Starodubtseva",
-      "size": 285.77,
-      "price": 0.35174965881653075,
-      "instructions": "📈 Вход: купить YES @ 0.35¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+43%) или до resolve\n🛑 Стоп-лосс: 0.26¢ (-25%)\n💰 Размер: кит ставит $101 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778841884.713152
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Internazionali BNL d'Italia: Jannik Sinner vs Daniil Medvedev:BUY:4730",
       "whale_name": "RN1",
       "emoji": "🐋",
