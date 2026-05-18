@@ -1,32 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Internazionali BNL d'Italia: Jannik Sinner vs Daniil Medvedev:BUY:4730",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Internazionali BNL d'Italia: Jannik Sinner vs Daniil Medvedev",
-      "size": 4730.0,
-      "price": 0.06,
-      "instructions": "📈 Вход: купить YES @ 0.06¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.03¢ (потеря 50%)\n💰 Размер: кит ставит $284 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778868607.5792441
-    },
-    {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: FURIA vs Team Falcons - Map 2 Winner:BUY:278",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Counter-Strike: FURIA vs Team Falcons - Map 2 Winner",
-      "size": 278.4,
-      "price": 0.45,
-      "instructions": "📈 Вход: купить YES @ 0.45¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+33%) или до resolve\n🛑 Стоп-лосс: 0.34¢ (-25%)\n💰 Размер: кит ставит $125 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778869327.6836119
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: magic vs Team Falcons (BO3) - PGL Astana Playoffs:BUY:2073",
       "whale_name": "RN1",
       "emoji": "🐋",
