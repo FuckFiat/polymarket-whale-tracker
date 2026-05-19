@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Bordeaux: Raphael Collignon vs Tallon Griekspoor:BUY:809",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Bordeaux: Raphael Collignon vs Tallon Griekspoor",
-      "size": 809.05,
-      "price": 0.14,
-      "instructions": "📈 Вход: купить YES @ 0.14¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.07¢ (потеря 50%)\n💰 Размер: кит ставит $113 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778945348.559094
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will VfB Stuttgart win on 2026-05-16?:BUY:1530",
       "whale_name": "RN1",
       "emoji": "🐋",
