@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will VfB Stuttgart win on 2026-05-16?:BUY:1530",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will VfB Stuttgart win on 2026-05-16?",
-      "size": 1530.0,
-      "price": 0.07,
-      "instructions": "📈 Вход: купить YES @ 0.07¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.04¢ (потеря 50%)\n💰 Размер: кит ставит $107 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778945704.6903749
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will VfB Stuttgart win on 2026-05-16?:BUY:2882",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779187922.516547
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Tianjin Jinmen Hu FC vs. Henan FC end in a draw?:BUY:423",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will Tianjin Jinmen Hu FC vs. Henan FC end in a draw?",
+      "size": 423.04,
+      "price": 0.92,
+      "instructions": "📈 Вход: купить YES @ 0.92¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 8.0¢ на доллар если resolve=YES\n⚠️ Риск: 92¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $389 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779197730.653885
     }
   ],
   "total_pnl": 0,
