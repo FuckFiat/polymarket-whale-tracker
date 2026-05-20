@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779287120.047322
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Roland Garros, Qualification ATP: Henrique Rocha vs Borna Gojo:BUY:770",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Roland Garros, Qualification ATP: Henrique Rocha vs Borna Gojo",
+      "size": 770.0,
+      "price": 0.82,
+      "instructions": "📈 Вход: купить YES @ 0.82¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 18.0¢ на доллар если resolve=YES\n⚠️ Риск: 82¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $631 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779290377.277449
     }
   ],
   "total_pnl": 0,
