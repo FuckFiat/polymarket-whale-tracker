@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Brentford FC win on 2026-05-17?:BUY:1350",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will Brentford FC win on 2026-05-17?",
-      "size": 1350.0,
-      "price": 0.22,
-      "instructions": "📈 Вход: купить YES @ 0.22¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.11¢ (потеря 50%)\n💰 Размер: кит ставит $297 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779033362.043473
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will EC Bahia win on 2026-05-17?:BUY:1180",
       "whale_name": "RN1",
       "emoji": "🐋",
