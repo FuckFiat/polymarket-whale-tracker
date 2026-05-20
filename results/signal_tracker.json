@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:GP SAR La Princesse Lalla Meryem, Qualification: Anastasia Zolotareva vs Zhibek Kulambayeva:BUY:184",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "GP SAR La Princesse Lalla Meryem, Qualification: Anastasia Zolotareva vs Zhibek Kulambayeva",
-      "size": 183.67,
-      "price": 0.86,
-      "instructions": "📈 Вход: купить YES @ 0.86¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 14.0¢ на доллар если resolve=YES\n⚠️ Риск: 86¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $158 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778947143.381171
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will FC Porto vs. CD Santa Clara end in a draw?:BUY:1084",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779233458.026294
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Roland Garros, Qualification ATP: Alejandro Moro Canas vs Lukas Neumayer:BUY:677",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Roland Garros, Qualification ATP: Alejandro Moro Canas vs Lukas Neumayer",
+      "size": 676.57,
+      "price": 0.75,
+      "instructions": "📈 Вход: купить YES @ 0.75¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+11%) или держи\n🛑 Стоп-лосс: 0.65¢ (-10-15%)\n💰 Размер: кит ставит $507 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779275597.8294919
     }
   ],
   "total_pnl": 0,
