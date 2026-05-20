@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: BET-M 33 vs Tricked - Map 2 Winner:BUY:500",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Counter-Strike: BET-M 33 vs Tricked - Map 2 Winner",
-      "size": 500.0,
-      "price": 0.5,
-      "instructions": "📈 Вход: купить YES @ 0.50¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+16%) или держи\n🛑 Стоп-лосс: 0.40¢ (-10-15%)\n💰 Размер: кит ставит $250 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779127257.6535301
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Arsenal FC win on 2026-05-18?:BUY:1227",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779290377.277449
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:GP SAR La Princesse Lalla Meryem: Yulia Starodubtseva vs Anhelina Kalinina:BUY:435",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "GP SAR La Princesse Lalla Meryem: Yulia Starodubtseva vs Anhelina Kalinina",
+      "size": 434.71,
+      "price": 0.9599539923167169,
+      "instructions": "📈 Вход: купить YES @ 0.96¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 4.0¢ на доллар если resolve=YES\n⚠️ Риск: 96¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $417 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779300893.324362
     }
   ],
   "total_pnl": 0,
