@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779280638.096592
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Shanghai Shenhua FC win on 2026-05-20?:BUY:1743",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will Shanghai Shenhua FC win on 2026-05-20?",
+      "size": 1743.32,
+      "price": 0.23,
+      "instructions": "📈 Вход: купить YES @ 0.23¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.12¢ (потеря 50%)\n💰 Размер: кит ставит $401 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779282088.6125069
     }
   ],
   "total_pnl": 0,
