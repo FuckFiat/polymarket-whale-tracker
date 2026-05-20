@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Paris: Madison Keys vs Diane Parry:BUY:686",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Paris: Madison Keys vs Diane Parry",
-      "size": 686.24,
-      "price": 0.21,
-      "instructions": "📈 Вход: купить YES @ 0.21¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.10¢ (потеря 50%)\n💰 Размер: кит ставит $144 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779020942.6213062
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Games Total: O/U 4.5:BUY:500",
       "whale_name": "RN1",
       "emoji": "🐋",
