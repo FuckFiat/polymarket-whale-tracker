@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will FC Porto vs. CD Santa Clara end in a draw?:BUY:1084",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will FC Porto vs. CD Santa Clara end in a draw?",
-      "size": 1083.77,
-      "price": 0.91,
-      "instructions": "📈 Вход: купить YES @ 0.91¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 9.0¢ на доллар если resolve=YES\n⚠️ Риск: 91¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $986 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1778947867.343101
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Paris: Diane Parry vs Alina Charaeva:BUY:3997",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779275597.8294919
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Internationaux de Strasbourg: Shuai Zhang vs Diane Parry:BUY:246",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Internationaux de Strasbourg: Shuai Zhang vs Diane Parry",
+      "size": 246.26,
+      "price": 0.44,
+      "instructions": "📈 Вход: купить YES @ 0.44¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+34%) или до resolve\n🛑 Стоп-лосс: 0.33¢ (-25%)\n💰 Размер: кит ставит $108 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779278482.615972
     }
   ],
   "total_pnl": 0,
