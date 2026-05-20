@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779282798.2192929
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Shanghai Shenhua FC vs. Wuhan San Zhen FC end in a draw?:BUY:1425",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will Shanghai Shenhua FC vs. Wuhan San Zhen FC end in a draw?",
+      "size": 1424.6,
+      "price": 0.23,
+      "instructions": "📈 Вход: купить YES @ 0.23¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.12¢ (потеря 50%)\n💰 Размер: кит ставит $328 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779284239.914539
     }
   ],
   "total_pnl": 0,
