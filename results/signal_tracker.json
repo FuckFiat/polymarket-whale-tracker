@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will EC Bahia win on 2026-05-17?:BUY:1180",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will EC Bahia win on 2026-05-17?",
-      "size": 1180.0,
-      "price": 0.15,
-      "instructions": "📈 Вход: купить YES @ 0.15¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.07¢ (потеря 50%)\n💰 Размер: кит ставит $177 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779051392.4454458
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Internationaux de Strasbourg: Marie Bouzkova vs Katerina Siniakova:BUY:343",
       "whale_name": "RN1",
       "emoji": "🐋",
