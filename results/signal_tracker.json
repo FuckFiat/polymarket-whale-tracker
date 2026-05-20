@@ -259,6 +259,32 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779282088.6125069
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Legacy vs TYLOO - Map 2 Winner:BUY:1106",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: Legacy vs TYLOO - Map 2 Winner",
+      "size": 1105.9,
+      "price": 0.69,
+      "instructions": "📈 Вход: купить YES @ 0.69¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.59¢ (-10-15%)\n💰 Размер: кит ставит $763 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779282798.2191439
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Legacy vs TYLOO - Map 2 Winner:BUY:7970",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: Legacy vs TYLOO - Map 2 Winner",
+      "size": 7970.0,
+      "price": 0.69,
+      "instructions": "📈 Вход: купить YES @ 0.69¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.59¢ (-10-15%)\n💰 Размер: кит ставит $5,499 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779282798.2192929
     }
   ],
   "total_pnl": 0,
