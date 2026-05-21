@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: 100 Thieves vs Nuclear TigeRES - Map 2 Winner:BUY:257",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Counter-Strike: 100 Thieves vs Nuclear TigeRES - Map 2 Winner",
-      "size": 257.0,
-      "price": 0.41,
-      "instructions": "📈 Вход: купить YES @ 0.41¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+37%) или до resolve\n🛑 Стоп-лосс: 0.31¢ (-25%)\n💰 Размер: кит ставит $105 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779205132.858772
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: 100 Thieves vs Nuclear TigeRES - Map 2 Winner:BUY:283",
       "whale_name": "RN1",
       "emoji": "🐋",
