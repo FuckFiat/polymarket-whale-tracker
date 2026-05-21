@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Tianjin Jinmen Hu FC vs. Henan FC end in a draw?:BUY:423",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will Tianjin Jinmen Hu FC vs. Henan FC end in a draw?",
-      "size": 423.04,
-      "price": 0.92,
-      "instructions": "📈 Вход: купить YES @ 0.92¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 8.0¢ на доллар если resolve=YES\n⚠️ Риск: 92¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $389 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779197730.653885
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: 100 Thieves vs Nuclear TigeRES - Map 2 Winner:BUY:257",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779349411.577882
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Roland Garros, Qualification ATP: Jesper de Jong vs Michael Zheng:BUY:890",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Roland Garros, Qualification ATP: Jesper de Jong vs Michael Zheng",
+      "size": 890.0,
+      "price": 0.6,
+      "instructions": "📈 Вход: купить YES @ 0.60¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+13%) или держи\n🛑 Стоп-лосс: 0.50¢ (-10-15%)\n💰 Размер: кит ставит $534 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779355556.133448
     }
   ],
   "total_pnl": 0,
