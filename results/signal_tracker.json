@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779355556.133448
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:GP SAR La Princesse Lalla Meryem: Camila Osorio vs Panna Udvardy:BUY:186",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "GP SAR La Princesse Lalla Meryem: Camila Osorio vs Panna Udvardy",
+      "size": 186.3,
+      "price": 0.92,
+      "instructions": "📈 Вход: купить YES @ 0.92¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 8.0¢ на доллар если resolve=YES\n⚠️ Риск: 92¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $171 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779364283.712717
     }
   ],
   "total_pnl": 0,
