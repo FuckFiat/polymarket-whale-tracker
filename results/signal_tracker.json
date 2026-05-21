@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Arsenal FC win on 2026-05-18?:BUY:2010",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will Arsenal FC win on 2026-05-18?",
-      "size": 2010.0,
-      "price": 0.12,
-      "instructions": "📈 Вход: купить YES @ 0.12¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.06¢ (потеря 50%)\n💰 Размер: кит ставит $241 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779131670.71894
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Boston Red Sox vs. Kansas City Royals:BUY:195",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779306321.1276128
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: 3DMAX vs Liquid - Map 1 Winner:BUY:444",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: 3DMAX vs Liquid - Map 1 Winner",
+      "size": 444.0,
+      "price": 0.47,
+      "instructions": "📈 Вход: купить YES @ 0.47¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+32%) или до resolve\n🛑 Стоп-лосс: 0.35¢ (-25%)\n💰 Размер: кит ставит $209 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779334431.2737799
     }
   ],
   "total_pnl": 0,
