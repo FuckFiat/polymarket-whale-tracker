@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779364283.712717
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Games Total: O/U 2.5:BUY:573",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Games Total: O/U 2.5",
+      "size": 573.4,
+      "price": 0.32,
+      "instructions": "📈 Вход: купить YES @ 0.32¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 0¢ (+47%) или до resolve\n🛑 Стоп-лосс: 0.24¢ (-25%)\n💰 Размер: кит ставит $183 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779371850.283458
     }
   ],
   "total_pnl": 0,
