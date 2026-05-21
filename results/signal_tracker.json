@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: 100 Thieves vs Nuclear TigeRES - Map 2 Winner:BUY:283",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Counter-Strike: 100 Thieves vs Nuclear TigeRES - Map 2 Winner",
-      "size": 283.0,
-      "price": 0.57,
-      "instructions": "📈 Вход: купить YES @ 0.57¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+14%) или держи\n🛑 Стоп-лосс: 0.47¢ (-10-15%)\n💰 Размер: кит ставит $161 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779205132.8588428
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Baltimore Orioles vs. Tampa Bay Rays: O/U 10.5:BUY:875",
       "whale_name": "RN1",
       "emoji": "🐋",
