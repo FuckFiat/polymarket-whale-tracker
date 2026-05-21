@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779371850.283458
+    },
+    {
+      "key": "0x492442eab586f242b53bda933fd5de859c8a3782:Cavaliers vs. Knicks: O/U 215.5:BUY:92864",
+      "whale_name": "April #1",
+      "emoji": "🏆",
+      "side": "BUY",
+      "market": "Cavaliers vs. Knicks: O/U 215.5",
+      "size": 92863.99,
+      "price": 0.51,
+      "instructions": "📈 Вход: купить YES @ 0.51¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+16%) или держи\n🛑 Стоп-лосс: 0.41¢ (-10-15%)\n💰 Размер: кит ставит $47,361 — средняя убеждённость\n📊 Рекомендация: $50-200 за ним, не больше 3% банкролла",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779378685.150298
     }
   ],
   "total_pnl": 0,
