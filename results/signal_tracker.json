@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779466973.995563
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Bounty Hunters Esports vs MIBR Academy (BO3) - CCT South America Series 2 Playoffs:BUY:861",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: Bounty Hunters Esports vs MIBR Academy (BO3) - CCT South America Series 2 Playoffs",
+      "size": 861.26,
+      "price": 0.34,
+      "instructions": "📈 Вход: купить YES @ 0.34¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 0¢ (+44%) или до resolve\n🛑 Стоп-лосс: 0.26¢ (-25%)\n💰 Размер: кит ставит $293 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779474578.862947
     }
   ],
   "total_pnl": 0,
