@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Legacy vs TYLOO - Map 2 Winner:BUY:7970",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Counter-Strike: Legacy vs TYLOO - Map 2 Winner",
-      "size": 7970.0,
-      "price": 0.69,
-      "instructions": "📈 Вход: купить YES @ 0.69¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.59¢ (-10-15%)\n💰 Размер: кит ставит $5,499 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779282798.2192929
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Shanghai Shenhua FC vs. Wuhan San Zhen FC end in a draw?:BUY:1425",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779424275.96738
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Fake do Biru vs paiN Academy (BO3) - CCT South America Series 2 Playoffs:BUY:386",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: Fake do Biru vs paiN Academy (BO3) - CCT South America Series 2 Playoffs",
+      "size": 385.76,
+      "price": 0.27,
+      "instructions": "📈 Вход: купить YES @ 0.27¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.14¢ (потеря 50%)\n💰 Размер: кит ставит $104 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779460302.0911329
     }
   ],
   "total_pnl": 0,
