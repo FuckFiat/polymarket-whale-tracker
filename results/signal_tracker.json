@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Roland Garros, Qualification ATP: Henrique Rocha vs Borna Gojo:BUY:770",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Roland Garros, Qualification ATP: Henrique Rocha vs Borna Gojo",
-      "size": 770.0,
-      "price": 0.82,
-      "instructions": "📈 Вход: купить YES @ 0.82¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 18.0¢ на доллар если resolve=YES\n⚠️ Риск: 82¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $631 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779290377.277449
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:GP SAR La Princesse Lalla Meryem: Yulia Starodubtseva vs Anhelina Kalinina:BUY:435",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779474578.862947
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Everton de Viña del Mar vs. CD Coquimbo Unido end in a draw?:BUY:1118",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will Everton de Viña del Mar vs. CD Coquimbo Unido end in a draw?",
+      "size": 1117.59,
+      "price": 0.17,
+      "instructions": "📈 Вход: купить YES @ 0.17¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.09¢ (потеря 50%)\n💰 Размер: кит ставит $190 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779483230.202581
     }
   ],
   "total_pnl": 0,
