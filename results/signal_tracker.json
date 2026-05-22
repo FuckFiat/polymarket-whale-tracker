@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:GP SAR La Princesse Lalla Meryem: Janice Tjen vs Camila Osorio:BUY:146",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "GP SAR La Princesse Lalla Meryem: Janice Tjen vs Camila Osorio",
-      "size": 146.28,
-      "price": 0.74,
-      "instructions": "📈 Вход: купить YES @ 0.74¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+11%) или держи\n🛑 Стоп-лосс: 0.64¢ (-10-15%)\n💰 Размер: кит ставит $108 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779287120.047322
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Roland Garros, Qualification ATP: Henrique Rocha vs Borna Gojo:BUY:770",
       "whale_name": "RN1",
       "emoji": "🐋",
