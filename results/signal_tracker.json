@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Chongqing Tonglianglong FC win on 2026-05-20?:BUY:2915",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will Chongqing Tonglianglong FC win on 2026-05-20?",
-      "size": 2915.14,
-      "price": 0.65,
-      "instructions": "📈 Вход: купить YES @ 0.65¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.55¢ (-10-15%)\n💰 Размер: кит ставит $1,895 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779279197.8646011
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Internationaux de Strasbourg: Shuai Zhang vs Diane Parry:BUY:1459",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779388034.349762
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Toronto Blue Jays vs. New York Yankees:BUY:14826",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Toronto Blue Jays vs. New York Yankees",
+      "size": 14826.0,
+      "price": 0.01,
+      "instructions": "📈 Вход: купить YES @ 0.01¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.01¢ (потеря 50%)\n💰 Размер: кит ставит $148 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779415022.593856
     }
   ],
   "total_pnl": 0,
