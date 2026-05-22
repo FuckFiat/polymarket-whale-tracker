@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Shanghai Shenhua FC vs. Wuhan San Zhen FC end in a draw?:BUY:1425",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will Shanghai Shenhua FC vs. Wuhan San Zhen FC end in a draw?",
-      "size": 1424.6,
-      "price": 0.23,
-      "instructions": "📈 Вход: купить YES @ 0.23¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.12¢ (потеря 50%)\n💰 Размер: кит ставит $328 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779284239.914539
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:GP SAR La Princesse Lalla Meryem: Janice Tjen vs Camila Osorio:BUY:146",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1779460302.0911329
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: ex-Zero Tenacity vs SAW (BO3) - CCT Europe Closed Qualifier: Series #3 Group C:BUY:211",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Counter-Strike: ex-Zero Tenacity vs SAW (BO3) - CCT Europe Closed Qualifier: Series #3 Group C",
+      "size": 211.17,
+      "price": 0.55,
+      "instructions": "📈 Вход: купить YES @ 0.55¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+15%) или держи\n🛑 Стоп-лосс: 0.45¢ (-10-15%)\n💰 Размер: кит ставит $116 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1779466973.995563
     }
   ],
   "total_pnl": 0,
