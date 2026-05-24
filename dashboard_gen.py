@@ -8,8 +8,38 @@
 - Сигнальный P&L трекер
 """
 
-import asyncio, aiohttp, json, time, os, sys
+import asyncio, aiohttp, json, time, os, sys, socket
 from datetime import datetime, timezone, timedelta
+
+# DoH DNS resolver - bypasses broken local DNS
+class DoHResolver(aiohttp.abc.AbstractResolver):
+    """DNS resolver using Cloudflare DoH (1.1.1.1) to bypass broken local DNS."""
+    async def resolve(self, host, port=0, family=0):
+        try:
+            url = f"https://1.1.1.1/dns-query?name={host}&type=A"
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False, resolver=aiohttp.resolver.DefaultResolver())) as doh_session:
+                # Use direct IP to avoid recursion
+                pass
+        except:
+            pass
+        # Fallback: use urllib sync DoH
+        import urllib.request, ssl
+        ctx = ssl.create_default_context()
+        try:
+            req = urllib.request.Request(f"https://1.1.1.1/dns-query?name={host}&type=A", headers={"Accept": "application/dns-json"})
+            with urllib.request.urlopen(req, context=ctx, timeout=5) as resp:
+                data = json.loads(resp.read())
+                ips = [ans["data"] for ans in data.get("Answer", []) if ans.get("type") == 1]
+                if ips:
+                    return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", (ip, port)) for ip in ips]
+        except Exception as e:
+            print(f"[DoH] resolve failed for {host}: {e}")
+        raise OSError(f"Cannot resolve {host} via DoH")
+
+    async def close(self):
+        pass
+
+DOH_RESOLVER = DoHResolver()
 
 DATA_API = "https://data-api.polymarket.com"
 GAMMA_API = "https://gamma-api.polymarket.com"
@@ -734,7 +764,7 @@ async def collect_data_and_generate():
     """Main data collection + dashboard generation."""
     print(f"[{datetime.now(timezone.utc).strftime('%H:%M:%S')}] Collecting data...")
     
-    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15)) as session:
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=15), connector=aiohttp.TCPConnector(resolver=DOH_RESOLVER)) as session:
         # Parallel fetches
         prices_task = fetch_crypto_prices(session)
         markets_task = fetch_top_markets(session)
