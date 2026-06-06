@@ -14,27 +14,33 @@ from datetime import datetime, timezone, timedelta
 # DoH DNS resolver - bypasses broken local DNS
 class DoHResolver(aiohttp.abc.AbstractResolver):
     """DNS resolver using Cloudflare DoH (1.1.1.1) to bypass broken local DNS."""
+    _cache = {}
+
     async def resolve(self, host, port=0, family=0):
-        try:
-            url = f"https://1.1.1.1/dns-query?name={host}&type=A"
-            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False, resolver=aiohttp.resolver.DefaultResolver())) as doh_session:
-                # Use direct IP to avoid recursion
-                pass
-        except:
-            pass
-        # Fallback: use urllib sync DoH
-        import urllib.request, ssl
-        ctx = ssl.create_default_context()
-        try:
-            req = urllib.request.Request(f"https://1.1.1.1/dns-query?name={host}&type=A", headers={"Accept": "application/dns-json"})
-            with urllib.request.urlopen(req, context=ctx, timeout=5) as resp:
-                data = json.loads(resp.read())
-                ips = [ans["data"] for ans in data.get("Answer", []) if ans.get("type") == 1]
-                if ips:
-                    return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", (ip, port)) for ip in ips]
-        except Exception as e:
-            print(f"[DoH] resolve failed for {host}: {e}")
-        raise OSError(f"Cannot resolve {host} via DoH")
+        # Check cache first
+        if host in self._cache:
+            ips = self._cache[host]
+        else:
+            import urllib.request, ssl as _ssl
+            ctx = _ssl.create_default_context()
+            try:
+                req = urllib.request.Request(
+                    f"https://1.1.1.1/dns-query?name={host}&type=A",
+                    headers={"Accept": "application/dns-json"},
+                )
+                with urllib.request.urlopen(req, context=ctx, timeout=5) as resp:
+                    data = json.loads(resp.read())
+                    ips = [ans["data"] for ans in data.get("Answer", []) if ans.get("type") == 1]
+                    if ips:
+                        self._cache[host] = ips
+                    else:
+                        raise OSError(f"No A records for {host}")
+            except Exception as e:
+                print(f"[DoH] resolve failed for {host}: {e}")
+                raise OSError(f"Cannot resolve {host} via DoH")
+
+        # aiohttp >= 3.10 expects list of dicts
+        return [{"host": ip, "family": socket.AF_INET, "proto": socket.SOCK_STREAM, "port": port} for ip in ips]
 
     async def close(self):
         pass
