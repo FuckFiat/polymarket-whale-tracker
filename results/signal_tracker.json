@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1780843842.867445
+    },
+    {
+      "key": "0xbddf61af533ff524d27154e589d2d7a81510c684:San Francisco Giants vs. Chicago Cubs: O/U 9.5:BUY:617",
+      "whale_name": "Countryside",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "San Francisco Giants vs. Chicago Cubs: O/U 9.5",
+      "size": 617.45,
+      "price": 0.37,
+      "instructions": "📈 Вход: купить YES @ 0.37¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+41%) или до resolve\n🛑 Стоп-лосс: 0.28¢ (-25%)\n💰 Размер: кит ставит $228 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1780872769.982684
     }
   ],
   "total_pnl": 0,
