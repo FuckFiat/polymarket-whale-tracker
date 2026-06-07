@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1780838084.513388
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:HSBC Championships, Qualification: Elsa Jacquemot vs Hanyu Guo:BUY:192",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "HSBC Championships, Qualification: Elsa Jacquemot vs Hanyu Guo",
+      "size": 192.0,
+      "price": 0.7867708333333333,
+      "instructions": "📈 Вход: купить YES @ 0.79¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+10%) или держи\n🛑 Стоп-лосс: 0.69¢ (-10-15%)\n💰 Размер: кит ставит $151 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1780843842.867445
     }
   ],
   "total_pnl": 0,
