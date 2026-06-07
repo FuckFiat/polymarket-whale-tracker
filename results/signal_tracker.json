@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1780833356.761002
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Birmingham: Alexandra Eala vs Nikola Bartunkova:BUY:450",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Birmingham: Alexandra Eala vs Nikola Bartunkova",
+      "size": 450.0,
+      "price": 0.33,
+      "instructions": "📈 Вход: купить YES @ 0.33¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 0¢ (+45%) или до resolve\n🛑 Стоп-лосс: 0.25¢ (-25%)\n💰 Размер: кит ставит $148 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1780838084.513388
     }
   ],
   "total_pnl": 0,
