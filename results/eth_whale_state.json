@@ -1,0 +1,219 @@
+{
+  "last_check": 1778920771,
+  "history": [
+    {
+      "time": 1778906672,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778907285,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778907898,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778908511,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778909124,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778909737,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778910350,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778910963,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778911576,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778912189,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778912802,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778913415,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778914028,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778914641,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778915254,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778915867,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778916480,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778917093,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778917706,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778918319,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778918932,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778919545,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778920158,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    },
+    {
+      "time": 1778920771,
+      "ls_ratios": [],
+      "funding_rates": [],
+      "eth_price": 0,
+      "total_oi_usd": 0
+    }
+  ],
+  "alerts_sent": 0,
+  "last_data": {
+    "timestamp": 1778920771,
+    "time_utc": "2026-05-16 08:39 UTC",
+    "exchanges": {
+      "Binance": {
+        "exchange": "Binance",
+        "symbol": "ETHUSDT",
+        "timestamp": 1778920760,
+        "error": "",
+        "success": false
+      },
+      "Bybit": {
+        "exchange": "Bybit",
+        "symbol": "ETHUSDT",
+        "timestamp": 1778920760,
+        "error": "",
+        "success": false
+      },
+      "OKX": {
+        "exchange": "OKX",
+        "symbol": "ETH-USDT-SWAP",
+        "timestamp": 1778920760,
+        "error": "",
+        "success": false
+      },
+      "Hyperliquid": {
+        "exchange": "Hyperliquid",
+        "symbol": "ETH",
+        "timestamp": 1778920760,
+        "error": "",
+        "success": false
+      },
+      "Deribit": {
+        "exchange": "Deribit",
+        "symbol": "ETH",
+        "timestamp": 1778920760,
+        "error": "",
+        "success": false
+      }
+    },
+    "total_oi_usd": 0,
+    "ls_ratios": [],
+    "funding_rates": []
+  },
+  "prev_avg_ls": 0
+}
