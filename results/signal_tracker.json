@@ -1,32 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Colorado Rockies vs. Arizona Diamondbacks:BUY:223",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Colorado Rockies vs. Arizona Diamondbacks",
-      "size": 223.0,
-      "price": 0.58,
-      "instructions": "📈 Вход: купить YES @ 0.58¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+14%) или держи\n🛑 Стоп-лосс: 0.48¢ (-10-15%)\n💰 Размер: кит ставит $129 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779419339.937044
-    },
-    {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Team Falcons vs Legacy - Map 2 Winner:BUY:215",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Counter-Strike: Team Falcons vs Legacy - Map 2 Winner",
-      "size": 214.55,
-      "price": 0.79,
-      "instructions": "📈 Вход: купить YES @ 0.79¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+10%) или держи\n🛑 Стоп-лосс: 0.69¢ (-10-15%)\n💰 Размер: кит ставит $169 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779424275.96738
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Counter-Strike: Fake do Biru vs paiN Academy (BO3) - CCT South America Series 2 Playoffs:BUY:386",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +233,32 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1780946292.8091662
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:France vs. Northern Ireland: O/U 4.5:BUY:994",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "France vs. Northern Ireland: O/U 4.5",
+      "size": 994.05,
+      "price": 0.84,
+      "instructions": "📈 Вход: купить YES @ 0.84¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 16.0¢ на доллар если resolve=YES\n⚠️ Риск: 84¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $835 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1780952531.9868228
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:France vs. Northern Ireland: O/U 4.5:BUY:883",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "France vs. Northern Ireland: O/U 4.5",
+      "size": 882.87,
+      "price": 0.82,
+      "instructions": "📈 Вход: купить YES @ 0.82¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 18.0¢ на доллар если resolve=YES\n⚠️ Риск: 82¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $724 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1780952531.9870908
     }
   ],
   "total_pnl": 0,
