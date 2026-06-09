@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1781007636.160102
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Modena: Xinyu Gao vs Lucia Bronzetti:BUY:7160",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Modena: Xinyu Gao vs Lucia Bronzetti",
+      "size": 7160.0,
+      "price": 0.36,
+      "instructions": "📈 Вход: купить YES @ 0.36¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+42%) или до resolve\n🛑 Стоп-лосс: 0.27¢ (-25%)\n💰 Размер: кит ставит $2,578 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781011570.18192
     }
   ],
   "total_pnl": 0,
