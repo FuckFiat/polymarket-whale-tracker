@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1781011570.18192
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Libema Open: Tamara Korpatsch vs Gabriela Ruse:BUY:3428",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Libema Open: Tamara Korpatsch vs Gabriela Ruse",
+      "size": 3427.83,
+      "price": 0.15,
+      "instructions": "📈 Вход: купить YES @ 0.15¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.07¢ (потеря 50%)\n💰 Размер: кит ставит $514 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781016986.946802
     }
   ],
   "total_pnl": 0,
