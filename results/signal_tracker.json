@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1780977405.4247308
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Philippines vs. Myanmar: O/U 2.5:BUY:246",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Philippines vs. Myanmar: O/U 2.5",
+      "size": 245.66,
+      "price": 0.41,
+      "instructions": "📈 Вход: купить YES @ 0.41¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+37%) или до resolve\n🛑 Стоп-лосс: 0.31¢ (-25%)\n💰 Размер: кит ставит $101 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781007636.160102
     }
   ],
   "total_pnl": 0,
