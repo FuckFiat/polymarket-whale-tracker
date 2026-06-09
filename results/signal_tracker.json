@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:HSBC Championships, Qualification: Talia Gibson vs Alina Charaeva:BUY:374",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "HSBC Championships, Qualification: Talia Gibson vs Alina Charaeva",
-      "size": 374.0,
-      "price": 0.41114973262032084,
-      "instructions": "📈 Вход: купить YES @ 0.41¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+36%) или до resolve\n🛑 Стоп-лосс: 0.31¢ (-25%)\n💰 Размер: кит ставит $154 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1780827230.0375402
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:HSBC Championships, Qualification: Priscilla Hon vs Polina Kudermetova:BUY:3900",
       "whale_name": "RN1",
       "emoji": "🐋",
