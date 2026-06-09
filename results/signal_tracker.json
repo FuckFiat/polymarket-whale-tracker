@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Tampa Bay Rays vs. New York Yankees:BUY:392",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Tampa Bay Rays vs. New York Yankees",
-      "size": 392.15,
-      "price": 0.32,
-      "instructions": "📈 Вход: купить YES @ 0.32¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 0¢ (+47%) или до resolve\n🛑 Стоп-лосс: 0.24¢ (-25%)\n💰 Размер: кит ставит $125 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779492276.528935
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Spread: New York Yankees (-1.5):BUY:255",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1781016986.946802
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Armenia win on 2026-06-09?:BUY:1954",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will Armenia win on 2026-06-09?",
+      "size": 1953.88,
+      "price": 0.19,
+      "instructions": "📈 Вход: купить YES @ 0.19¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.10¢ (потеря 50%)\n💰 Размер: кит ставит $371 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781023613.4475489
     }
   ],
   "total_pnl": 0,
