@@ -259,6 +259,32 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1781052852.1428201
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Seattle Mariners vs. Baltimore Orioles: O/U 11.5:BUY:4259",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Seattle Mariners vs. Baltimore Orioles: O/U 11.5",
+      "size": 4258.65,
+      "price": 0.21,
+      "instructions": "📈 Вход: купить YES @ 0.21¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.10¢ (потеря 50%)\n💰 Размер: кит ставит $894 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781056133.768051
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Seattle Mariners vs. Baltimore Orioles:BUY:905",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Seattle Mariners vs. Baltimore Orioles",
+      "size": 905.31,
+      "price": 0.16,
+      "instructions": "📈 Вход: купить YES @ 0.16¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 0¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.08¢ (потеря 50%)\n💰 Размер: кит ставит $145 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781056133.768094
     }
   ],
   "total_pnl": 0,
