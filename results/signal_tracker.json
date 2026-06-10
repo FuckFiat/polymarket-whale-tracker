@@ -1,32 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:HSBC Championships, Qualification: Heather Watson vs Beatriz Haddad Maia:BUY:2980",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "HSBC Championships, Qualification: Heather Watson vs Beatriz Haddad Maia",
-      "size": 2980.0,
-      "price": 0.58,
-      "instructions": "📈 Вход: купить YES @ 0.58¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+14%) или держи\n🛑 Стоп-лосс: 0.48¢ (-10-15%)\n💰 Размер: кит ставит $1,728 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1780830475.784897
-    },
-    {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Centurion 2: Philip Henning vs Alexander Donski:BUY:180",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Centurion 2: Philip Henning vs Alexander Donski",
-      "size": 180.0,
-      "price": 0.8,
-      "instructions": "📈 Вход: купить YES @ 0.80¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 20.0¢ на доллар если resolve=YES\n⚠️ Риск: 80¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $144 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1780830475.78493
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Birmingham: Arthur Fery vs Yunchaokete Bu:BUY:3247",
       "whale_name": "RN1",
       "emoji": "🐋",
