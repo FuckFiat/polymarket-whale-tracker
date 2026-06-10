@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:HSBC Championships, Qualification: Priscilla Hon vs Polina Kudermetova:BUY:3900",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "HSBC Championships, Qualification: Priscilla Hon vs Polina Kudermetova",
-      "size": 3900.491903,
-      "price": 0.40239539987067113,
-      "instructions": "📈 Вход: купить YES @ 0.40¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+37%) или до resolve\n🛑 Стоп-лосс: 0.30¢ (-25%)\n💰 Размер: кит ставит $1,570 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1780830115.213094
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:HSBC Championships, Qualification: Heather Watson vs Beatriz Haddad Maia:BUY:2980",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -259,6 +246,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1781030474.390721
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Spread: Miami Marlins (-3.5):BUY:2635",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Spread: Miami Marlins (-3.5)",
+      "size": 2635.08,
+      "price": 0.21,
+      "instructions": "📈 Вход: купить YES @ 0.21¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.10¢ (потеря 50%)\n💰 Размер: кит ставит $553 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781052852.1428201
     }
   ],
   "total_pnl": 0,
