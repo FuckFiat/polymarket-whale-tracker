@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Libema Open: Otto Virtanen vs Kamil Majchrzak:BUY:1407",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Libema Open: Otto Virtanen vs Kamil Majchrzak",
-      "size": 1406.59,
-      "price": 0.68,
-      "instructions": "📈 Вход: купить YES @ 0.68¢ — высокая вероятность, низкий ROI\n🎯 Тейк-профит: 1¢ (+12%) или держи\n🛑 Стоп-лосс: 0.58¢ (-10-15%)\n💰 Размер: кит ставит $956 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1780830475.785069
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Libema Open: Otto Virtanen vs Kamil Majchrzak:BUY:818",
       "whale_name": "RN1",
       "emoji": "🐋",
