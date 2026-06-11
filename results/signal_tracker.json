@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1780872769.982684
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Mexico vs. South Africa: O/U 2.5:BUY:312",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Mexico vs. South Africa: O/U 2.5",
+      "size": 312.5,
+      "price": 0.36,
+      "instructions": "📈 Вход: купить YES @ 0.36¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+42%) или до resolve\n🛑 Стоп-лосс: 0.27¢ (-25%)\n💰 Размер: кит ставит $112 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781208708.568158
     }
   ],
   "total_pnl": 0,
