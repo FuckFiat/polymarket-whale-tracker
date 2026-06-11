@@ -259,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1781138953.53597
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:ITF Ceska Lipa: Lucie Havlickova vs Jana Kovackova:BUY:1084",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "ITF Ceska Lipa: Lucie Havlickova vs Jana Kovackova",
+      "size": 1084.33,
+      "price": 0.17,
+      "instructions": "📈 Вход: купить YES @ 0.17¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.09¢ (потеря 50%)\n💰 Размер: кит ставит $184 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781182919.8765461
     }
   ],
   "total_pnl": 0,
