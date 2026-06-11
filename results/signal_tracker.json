@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Club Blooming vs. Carabobo FC: O/U 2.5:BUY:364",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Club Blooming vs. Carabobo FC: O/U 2.5",
-      "size": 363.63,
-      "price": 0.4,
-      "instructions": "📈 Вход: купить YES @ 0.40¢ после стабилизации (1-5 мин)\n🎯 Тейк-профит: 1¢ (+37%) или до resolve\n🛑 Стоп-лосс: 0.30¢ (-25%)\n💰 Размер: кит ставит $145 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1779416459.728138
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Colorado Rockies vs. Arizona Diamondbacks:BUY:223",
       "whale_name": "RN1",
       "emoji": "🐋",
@@ -272,6 +259,19 @@
       "pnl": 0,
       "status": "pending",
       "timestamp": 1781208708.568158
+    },
+    {
+      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will South Africa win on 2026-06-11?:BUY:4610",
+      "whale_name": "RN1",
+      "emoji": "🐋",
+      "side": "BUY",
+      "market": "Will South Africa win on 2026-06-11?",
+      "size": 4610.0,
+      "price": 0.989,
+      "instructions": "📈 Вход: купить YES @ 0.99¢ — почти гарантировано, но ROI мизерный\n💰 Прибыль: 1.1¢ на доллар если resolve=YES\n⚠️ Риск: 99¢ на доллар если resolve=NO — НЕ СТОИТ\n💰 Размер: кит ставит $4,559 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
+      "pnl": 0,
+      "status": "pending",
+      "timestamp": 1781209067.743683
     }
   ],
   "total_pnl": 0,
