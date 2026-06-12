@@ -1,19 +1,6 @@
 {
   "signals": [
     {
-      "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Will Armenia win on 2026-06-09?:BUY:1954",
-      "whale_name": "RN1",
-      "emoji": "🐋",
-      "side": "BUY",
-      "market": "Will Armenia win on 2026-06-09?",
-      "size": 1953.88,
-      "price": 0.19,
-      "instructions": "📈 Вход: купить YES @ 0.19¢ — лангшот, риск <30% капитала\n🎯 Тейк-профит: 1¢ (3x) или держи до resolve\n🛑 Стоп-лосс: 0.10¢ (потеря 50%)\n💰 Размер: кит ставит $371 — разведка/тест\n📊 Рекомендация: подожди подтверждения от других китов",
-      "pnl": 0,
-      "status": "pending",
-      "timestamp": 1781023613.4475489
-    },
-    {
       "key": "0x2005d16a84ceefa912d4e380cd32e7ff827875ea:Modena: Andrea Lazaro Garcia vs Julia Grabher:BUY:2435",
       "whale_name": "RN1",
       "emoji": "🐋",
